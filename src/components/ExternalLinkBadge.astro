@@ -1,0 +1,44 @@
+---
+import { isPlaceholderLink } from '../data/site';
+
+interface Props {
+  label: string;
+  href?: string;
+  tone?: 'light' | 'dark';
+  size?: 'sm' | 'md';
+}
+
+const { label, href, tone = 'light', size = 'md' } = Astro.props;
+const disabled = !href || isPlaceholderLink(href);
+const isHttp = !disabled && href.startsWith('http');
+---
+
+{
+  disabled ? (
+    <span
+      class:list={[
+        'external-badge',
+        tone === 'dark' ? 'external-badge-dark' : 'external-badge-light',
+        size === 'sm' ? 'external-badge-sm' : 'external-badge-md',
+        'external-badge-disabled'
+      ]}
+      aria-disabled="true"
+    >
+      {label}
+      <span class="sr-only"> (link currently unavailable)</span>
+    </span>
+  ) : (
+    <a
+      href={href}
+      class:list={[
+        'external-badge',
+        tone === 'dark' ? 'external-badge-dark' : 'external-badge-light',
+        size === 'sm' ? 'external-badge-sm' : 'external-badge-md'
+      ]}
+      target={isHttp ? '_blank' : undefined}
+      rel={isHttp ? 'noreferrer noopener' : undefined}
+    >
+      {label}
+    </a>
+  )
+}

@@ -1,0 +1,164 @@
+---
+type Slide = {
+  src: string;
+  alt: string;
+  label: string;
+};
+
+interface Props {
+  slides: Slide[];
+  autoplayMs?: number;
+}
+
+const { slides, autoplayMs = 6500 } = Astro.props as Props;
+const hasSlides = slides.length > 0;
+---
+
+<figure class="home-slideshow card lift" data-home-slideshow data-autoplay-ms={String(autoplayMs)}>
+  <div class="home-slideshow-media-shell">
+    {
+      hasSlides ? (
+        slides.map((slide, index) => (
+          <img
+            src={slide.src}
+            alt={slide.alt}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+            class="home-slideshow-image"
+            data-slide
+            data-slide-label={slide.label}
+            data-active={index === 0 ? 'true' : 'false'}
+          />
+        ))
+      ) : (
+        <div class="home-slideshow-empty">No static diagnostics images available yet.</div>
+      )
+    }
+  </div>
+  {
+    hasSlides && (
+      <figcaption class="home-slideshow-caption">
+        <p class="home-slideshow-kicker">Featured diagnostics</p>
+        <p class="home-slideshow-title" data-slide-title>
+          {slides[0]?.label}
+        </p>
+      </figcaption>
+    )
+  }
+</figure>
+
+<script is:inline>
+  (() => {
+    const slideshowRoots = Array.from(document.querySelectorAll('[data-home-slideshow]'));
+
+    slideshowRoots.forEach((root) => {
+      if (!(root instanceof HTMLElement)) {
+        return;
+      }
+
+      const slides = Array.from(root.querySelectorAll('[data-slide]'));
+      const titleEl = root.querySelector('[data-slide-title]');
+
+      if (slides.length <= 1) {
+        return;
+      }
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+
+      const intervalMs = Number(root.dataset.autoplayMs || '6500');
+      let currentIndex = 0;
+
+      const setActiveSlide = (nextIndex) => {
+        currentIndex = nextIndex;
+
+        slides.forEach((slide, index) => {
+          if (slide instanceof HTMLElement) {
+            slide.dataset.active = index === currentIndex ? 'true' : 'false';
+          }
+        });
+
+        if (titleEl instanceof HTMLElement) {
+          const activeSlide = slides[currentIndex];
+          if (activeSlide instanceof HTMLElement) {
+            titleEl.textContent = activeSlide.dataset.slideLabel || '';
+          }
+        }
+      };
+
+      window.setInterval(() => {
+        setActiveSlide((currentIndex + 1) % slides.length);
+      }, intervalMs);
+    });
+  })();
+</script>
+
+<style>
+  .home-slideshow {
+    margin: 0;
+    display: grid;
+    gap: 0.78rem;
+    padding: clamp(0.8rem, 1.7vw, 1.1rem);
+  }
+
+  .home-slideshow-media-shell {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+    border: 1px solid color-mix(in oklab, var(--line) 84%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    min-height: clamp(20rem, 56vw, 37.5rem);
+  }
+
+  .home-slideshow-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: clamp(0.22rem, 0.8vw, 0.48rem);
+    opacity: 0;
+    transition: opacity 620ms ease;
+  }
+
+  .home-slideshow-image[data-active='true'] {
+    opacity: 1;
+  }
+
+  .home-slideshow-caption {
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .home-slideshow-kicker {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .home-slideshow-title {
+    margin: 0;
+    font-size: 0.92rem;
+    color: color-mix(in oklab, var(--fg) 90%, var(--muted) 10%);
+  }
+
+  .home-slideshow-empty {
+    min-height: inherit;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    font-size: 0.92rem;
+    color: var(--muted);
+    padding: 1.25rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .home-slideshow-image {
+      transition: none;
+    }
+  }
+</style>

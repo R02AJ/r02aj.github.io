@@ -1,0 +1,56 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Robert Jenkinson Alvarez research website</title>
+  <desc id="desc">Geometric machine learning, quantitative finance, and structure-preserving models.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F1217"/>
+      <stop offset="1" stop-color="#1A2230"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(270 190) rotate(12) scale(390 250)">
+      <stop stop-color="#3F6FD8" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#3F6FD8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(930 420) rotate(-18) scale(320 210)">
+      <stop stop-color="#2E8DA0" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#2E8DA0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+
+  <g opacity="0.36">
+    <path d="M0 126H1200" stroke="white" stroke-opacity="0.22"/>
+    <path d="M0 252H1200" stroke="white" stroke-opacity="0.18"/>
+    <path d="M0 378H1200" stroke="white" stroke-opacity="0.16"/>
+    <path d="M0 504H1200" stroke="white" stroke-opacity="0.12"/>
+    <path d="M240 0V630" stroke="white" stroke-opacity="0.12"/>
+    <path d="M480 0V630" stroke="white" stroke-opacity="0.16"/>
+    <path d="M720 0V630" stroke="white" stroke-opacity="0.14"/>
+    <path d="M960 0V630" stroke="white" stroke-opacity="0.1"/>
+  </g>
+
+  <g transform="translate(96 90)">
+    <rect width="300" height="42" rx="21" fill="white" fill-opacity="0.09" stroke="white" stroke-opacity="0.24"/>
+    <text x="24" y="27" fill="#D7DFED" font-size="16" font-family="Space Grotesk, Arial, sans-serif" letter-spacing="1.6">RESEARCH PROFILE</text>
+  </g>
+
+  <text x="96" y="240" fill="#F1F4FA" font-size="74" font-family="Newsreader, Georgia, serif">Robert Jenkinson Alvarez</text>
+  <text x="96" y="326" fill="#CAD4E4" font-size="37" font-family="Newsreader, Georgia, serif">
+    Geometric machine learning, quantitative finance,
+  </text>
+  <text x="96" y="374" fill="#CAD4E4" font-size="37" font-family="Newsreader, Georgia, serif">
+    and structure-preserving models.
+  </text>
+
+  <g transform="translate(96 436)">
+    <rect width="834" height="96" rx="24" fill="white" fill-opacity="0.06" stroke="white" stroke-opacity="0.2"/>
+    <text x="30" y="44" fill="#E7EDF8" font-size="22" font-family="Space Grotesk, Arial, sans-serif">
+      Research projects • Web-native summaries • CV downloads • Papers / code / data
+    </text>
+    <text x="30" y="72" fill="#A9B6C8" font-size="16" font-family="Space Grotesk, Arial, sans-serif">
+      hamiltonian geometry • option-surface no-arbitrage structure • manifold stochastic modelling
+    </text>
+  </g>
+</svg>

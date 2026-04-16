@@ -1,0 +1,14 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { title = 'Takeaway' } = Astro.props;
+---
+
+<aside class="summary-box summary-box-take">
+  <p class="summary-box-title">{title}</p>
+  <div class="summary-box-body">
+    <slot />
+  </div>
+</aside>

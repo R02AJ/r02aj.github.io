@@ -1,0 +1,25 @@
+---
+interface Props {
+  title?: string;
+  tone?: 'note' | 'result' | 'warning';
+}
+
+const { title = 'Note', tone = 'note' } = Astro.props;
+
+const toneClass =
+  tone === 'result'
+    ? 'border-emerald-600/35 bg-emerald-50 text-emerald-900'
+    : tone === 'warning'
+      ? 'border-amber-600/35 bg-amber-50 text-amber-900'
+      : 'border-[color:var(--line)] bg-[color:var(--bg-elevated)] text-[color:var(--fg)]';
+---
+
+<aside class:list={[
+  'my-6 rounded-2xl border px-4 py-4',
+  toneClass
+]}>
+  <p class="meta-label mb-2">{title}</p>
+  <div class="text-sm leading-7">
+    <slot />
+  </div>
+</aside>

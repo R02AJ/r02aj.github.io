@@ -1,0 +1,1077 @@
+---
+import { existsSync, readdirSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import Badge from '../../components/Badge.astro';
+import HamJepaLeapfrogDiagram from '../../components/summary/HamJepaLeapfrogDiagram.astro';
+import HamJepaPipelineDiagram from '../../components/summary/HamJepaPipelineDiagram.astro';
+import HamJepaEncoderConstructionDiagram from '../../components/research/HamJepaEncoderConstructionDiagram.astro';
+import HamJepaMatchingChoiceDiagram from '../../components/research/HamJepaMatchingChoiceDiagram.astro';
+import HamJepaPredictorNotEnoughDiagram from '../../components/research/HamJepaPredictorNotEnoughDiagram.astro';
+import HamJepaRegularizerFigure from '../../components/research/HamJepaRegularizerFigure.astro';
+import HamJepaSymplecticComparisonDiagram from '../../components/research/HamJepaSymplecticComparisonDiagram.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isPlaceholderLink, siteConfig, toAbsoluteUrl, withBase } from '../../data/site';
+
+type MediaAsset = {
+  name: string;
+  lower: string;
+  src: string;
+};
+
+const imagesDir = fileURLToPath(new URL('../../../public/images/hamjepa', import.meta.url));
+const imageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.avif', '.gif', '.mp4', '.webm']);
+
+const mediaAssets: MediaAsset[] = existsSync(imagesDir)
+  ? readdirSync(imagesDir)
+      .filter((name) => {
+        const dotIndex = name.lastIndexOf('.');
+        return dotIndex > 0 && imageExtensions.has(name.slice(dotIndex).toLowerCase());
+      })
+      .map((name) => ({
+        name,
+        lower: name.toLowerCase(),
+        src: withBase(`/images/hamjepa/${name}`)
+      }))
+  : [];
+
+function findExactAsset(name: string): string | undefined {
+  return mediaAssets.find((asset) => asset.lower === name.toLowerCase())?.src;
+}
+
+function resolvePaperFigure(stem: string): { src?: string; format?: 'png' | 'pdf' } {
+  const pngPath = fileURLToPath(new URL(`../../../public/images/hamjepa/${stem}.png`, import.meta.url));
+  const pdfPath = fileURLToPath(new URL(`../../../public/images/hamjepa/${stem}.pdf`, import.meta.url));
+
+  if (existsSync(pngPath)) {
+    return { src: withBase(`/images/hamjepa/${stem}.png`), format: 'png' };
+  }
+
+  if (existsSync(pdfPath)) {
+    return { src: withBase(`/images/hamjepa/${stem}.pdf`), format: 'pdf' };
+  }
+
+  return {};
+}
+
+const technicalSummaryHref = withBase('/research/hamjepa/summary');
+const paperHref = !isPlaceholderLink(siteConfig.links.hamjepaPaper)
+  ? withBase(siteConfig.links.hamjepaPaper)
+  : undefined;
+
+const preferredPdfPath = fileURLToPath(new URL('../../../public/files/summary_hamjepa.pdf', import.meta.url));
+const fallbackPdfPath = fileURLToPath(
+  new URL('../../../public/files/summaries/hamjepa-technical-summary.pdf', import.meta.url)
+);
+
+const openPdfHref = existsSync(preferredPdfPath)
+  ? withBase('/files/summary_hamjepa.pdf')
+  : existsSync(fallbackPdfPath)
+    ? withBase('/files/summaries/hamjepa-technical-summary.pdf')
+    : undefined;
+
+const zenodoHref = siteConfig.links.zenodo;
+
+const assets = {
+  driftGif: findExactAsset('visualizing_drift_sigreg_vs_hamjepa.gif'),
+  energyVideo: findExactAsset('energy_surface_sigreg_vs_hamjepa.mp4'),
+  energyDrift: findExactAsset('energy_drift_heatmap.png'),
+  energyDriftCompare: findExactAsset('energy_drift_heatmap_sigreg_vs_hamjepa.png'),
+  reversibility: findExactAsset('time_reversibility_heatmap.png'),
+  liouvilleArea: findExactAsset('liouville_area_preservation.png'),
+  liouvilleBlob: findExactAsset('liouville_blob_area.png'),
+  symplecticityDefect: findExactAsset('symplecticity_defect_hist.png'),
+  energyVsTime: findExactAsset('energy_vs_time.png'),
+  covarianceStability: findExactAsset('covariance_stability.png'),
+  projectionCartoon: findExactAsset('lejepa_style_projection_cartoon.png'),
+  projectionSketch: findExactAsset('lejepa_style_projection_sketch.png'),
+  directionalDiscrepancy: findExactAsset('lejepa_style_directional_discrepancy.png')
+};
+
+const furtherResultsAssets = {
+  qpSigreg: resolvePaperFigure('fig_imagenet_qp_decomposition_SIGReg_tokens'),
+  qpHamjepa: resolvePaperFigure('fig_imagenet_qp_decomposition_MV_HJEPA'),
+  epochDynamics: resolvePaperFigure('fig_imagenet_epoch_dynamics')
+};
+
+const furtherResultsPairPanels = [
+  {
+    title: 'SIGReg+tokens',
+    src: furtherResultsAssets.qpSigreg.src,
+    alt: 'ImageNet-100 q/p decomposition across pretraining for SIGReg tokens'
+  },
+  {
+    title: 'HamJEPA',
+    src: furtherResultsAssets.qpHamjepa.src,
+    alt: 'ImageNet-100 q/p decomposition across pretraining for HamJEPA'
+  }
+].filter((item): item is { title: string; src: string; alt: string } => Boolean(item.src));
+
+const furtherEpochPanel = furtherResultsAssets.epochDynamics.src
+  ? {
+      title: 'ImageNet-100 training dynamics',
+      src: furtherResultsAssets.epochDynamics.src,
+      alt: 'ImageNet-100 sparse-checkpoint training dynamics showing geometry and accuracy'
+    }
+  : undefined;
+
+const regularizerSequence: Array<{
+  id: 'energy' | 'variance' | 'logdet' | 'participation' | 'mean';
+  title: string;
+}> = [
+  {
+    id: 'energy',
+    title: 'Energy budget'
+  },
+  {
+    id: 'variance',
+    title: 'Variance floor'
+  },
+  {
+    id: 'logdet',
+    title: 'Projected log-det floor'
+  },
+  {
+    id: 'participation',
+    title: 'Participation-ratio / top-eigenvalue control'
+  },
+  {
+    id: 'mean',
+    title: 'Mean penalty'
+  }
+];
+
+const routePath = '/research/hamjepa';
+const canonicalUrl = toAbsoluteUrl(routePath);
+
+const pageJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: 'Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction',
+  alternativeHeadline: 'Visual guide (Appendix-style)',
+  description:
+    'Appendix-style visual guide for HamJEPA: conceptual mechanism first, selected geometry diagnostics second.',
+  url: canonicalUrl,
+  author: {
+    '@type': 'Person',
+    name: siteConfig.name
+  },
+  isAccessibleForFree: true
+};
+---
+
+<BaseLayout
+  title="Beyond Isotropy in JEPAs | Visual guide"
+  description="Appendix-style visual guide companion to HamJEPA."
+  ogType="article"
+  jsonLd={pageJsonLd}
+>
+  <section class="section-tight ham-appendix-band">
+    <div class="page-shell">
+      <header class="ham-appendix-shell ham-appendix-header" data-reveal>
+        <a href={withBase('/research')} class="subtle-link text-sm">
+          <span aria-hidden="true">←</span> Back to research index
+        </a>
+
+        <div class="flex flex-wrap gap-2">
+          <Badge label="Geometric deep learning" />
+          <Badge label="Visual guide" tone="accent" />
+        </div>
+
+        <h1 class="ham-appendix-title">Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction</h1>
+        <p class="body-copy ham-appendix-intro">
+          A visual overview of HamJEPA, pairing the core phase-space construction and symplectic predictor with the
+          geometry diagnostics that explain its behavior.
+        </p>
+
+        <nav class="ham-appendix-actions" aria-label="HamJEPA visual guide links">
+          <a href={technicalSummaryHref} class="ham-action-link">
+            Technical summary
+          </a>
+          {
+            paperHref ? (
+              <a
+                href={paperHref}
+                class="ham-action-link"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Paper PDF"
+                title="Paper PDF"
+              >
+                Paper PDF
+              </a>
+            ) : (
+              <span class="ham-action-link ham-action-disabled" aria-disabled="true">
+                Paper PDF
+              </span>
+            )
+          }
+          {
+            openPdfHref ? (
+              <a
+                href={openPdfHref}
+                class="ham-action-link"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Summary PDF"
+                title="Summary PDF"
+              >
+                Summary PDF
+              </a>
+            ) : (
+              <span class="ham-action-link ham-action-disabled" aria-disabled="true">
+                Summary PDF
+              </span>
+            )
+          }
+          <a href={zenodoHref} class="ham-action-link" target="_blank" rel="noreferrer noopener">
+            Zenodo
+          </a>
+        </nav>
+      </header>
+    </div>
+  </section>
+
+  <section class="section-tight section-divider ham-appendix-band">
+    <div class="page-shell">
+      <article class="ham-appendix-shell ham-appendix-content">
+        <section id="intro" class="ham-appendix-section" data-reveal>
+          <p class="body-copy">
+            The sequence below explains how HamJEPA is built: how the encoder forms a phase-space state, how the
+            predictor advances that state through structured Hamiltonian transport, and why encoder-side anti-collapse
+            regularization is still needed to keep the representation non-degenerate.
+          </p>
+        </section>
+
+        <section id="highest-level" class="ham-appendix-section" data-reveal>
+          <h2>1. HamJEPA at the highest level</h2>
+          <p class="body-copy">
+            Two views are encoded to phase-space states, one state is evolved by a symplectic predictor, and the
+            predicted target is matched while encoder-side anti-collapse controls remain active.
+          </p>
+          <HamJepaPipelineDiagram />
+        </section>
+
+        <section id="encoder-construction" class="ham-appendix-section" data-reveal>
+          <h2>2. How the encoder constructs the phase-space state</h2>
+          <p class="body-copy">
+            The split is implemented at token level: the channel stack for each token is partitioned into q and p
+            halves before flattening, so s=[q;p] is a construction choice, not a post-hoc relabeling.
+          </p>
+          <HamJepaEncoderConstructionDiagram />
+        </section>
+
+        <section id="predictor-rollout" class="ham-appendix-section" data-reveal>
+          <h2>3. What the predictor is doing</h2>
+          <p class="body-copy">
+            The predictor uses a Hamiltonian rollout
+            <span class="ham-math-inline">H<sub>φ</sub>(q, p) = T(p) + V<sub>φ</sub>(q)</span> with half-kick, drift,
+            and half-kick updates repeated for K steps. The mapping is structured transport, not free-form
+            regression.
+          </p>
+          <HamJepaLeapfrogDiagram />
+        </section>
+
+        <section id="symplectic-geometry" class="ham-appendix-section" data-reveal>
+          <h2>4. What symplectic means geometrically</h2>
+          <p class="body-copy">
+            Symplectic transport allows deformations but constrains local volume behavior, separating geometric
+            transport from unconstrained collapse.
+          </p>
+          <HamJepaSymplecticComparisonDiagram />
+        </section>
+
+        <section id="predictor-not-enough" class="ham-appendix-section" data-reveal>
+          <h2>5. Why the predictor alone is not enough</h2>
+          <p class="body-copy">
+            Symplecticity constrains the predictor, but it does not by itself prevent encoder collapse. A collapsed
+            encoder could still map many different views to almost the same latent state, and a perfectly symplectic
+            predictor would then only move around an already-degenerate state cloud.
+          </p>
+          <HamJepaPredictorNotEnoughDiagram />
+        </section>
+
+        <section id="regularizers" class="ham-appendix-section" data-reveal>
+          <h2>6. Encoder-side anti-collapse regularizers</h2>
+          <p class="body-copy">
+            The next figures isolate the role of each encoder-side anti-collapse regularizer.
+          </p>
+
+          <div class="ham-regularizer-sequence">
+            {
+              regularizerSequence.map((card) => (
+                <section class="ham-regularizer-block">
+                  <h3>{card.title}</h3>
+                  <HamJepaRegularizerFigure variant={card.id} />
+                </section>
+              ))
+            }
+          </div>
+        </section>
+
+        <section id="matching-choice" class="ham-appendix-section" data-reveal>
+          <h2>7. Why CIFAR-100 and ImageNet-100 use different matching choices</h2>
+          <p class="body-copy">
+            Matching/readout choices are dataset-regime dependent. The guide keeps these settings explicit so q, p, and
+            (q,p) comparisons remain interpretable.
+          </p>
+          <div class="ham-regime-cards" aria-label="Regime comparison summary">
+            <article class="ham-regime-card">
+              <h3>CIFAR-100</h3>
+              <p class="body-copy">
+                Emphasize matching mainly <span class="ham-math-inline">q</span>: the content coordinate remains the
+                cleanest readout while <span class="ham-math-inline">p</span> stays more auxiliary.
+              </p>
+            </article>
+            <article class="ham-regime-card">
+              <h3>ImageNet-100</h3>
+              <p class="body-copy">
+                Match the full <span class="ham-math-inline">[q; p]</span> state: both coordinates are directly
+                constrained and <span class="ham-math-inline">p</span> becomes more informative.
+              </p>
+            </article>
+          </div>
+          <HamJepaMatchingChoiceDiagram />
+        </section>
+
+        <section id="how-to-read" class="ham-appendix-section" data-reveal>
+          <h2>8. How to read the sequence</h2>
+          <p class="body-copy">
+            Taken together, the figures decompose the method into three conceptual layers: the encoder constructs a
+            structured phase-space state, the predictor evolves that state with a symplectic Hamiltonian rollout, and
+            the regularizers ensure that the encoder supplies a non-degenerate cloud of states for those dynamics to
+            act on. HamJEPA changes both the representation parameterization and the predictor family, while avoiding
+            forced Euclidean isotropy.
+          </p>
+        </section>
+      </article>
+    </div>
+  </section>
+
+  <section id="further-results" class="section-tight section-divider ham-appendix-band">
+    <div class="page-shell">
+      <article class="ham-appendix-shell ham-appendix-content ham-further-results">
+        <section class="ham-appendix-section ham-further-intro" data-reveal>
+          <h2>Further results</h2>
+          <p class="body-copy">
+            Selected ImageNet-100 training-readout figures that complement the conceptual appendix sequence before the
+            broader geometry diagnostics.
+          </p>
+        </section>
+
+        {
+          furtherResultsPairPanels.length > 0 && (
+            <section class="ham-appendix-section ham-further-block ham-further-pair" data-reveal>
+              <div class="ham-further-stack">
+                {
+                  furtherResultsPairPanels.map((panel, index) => (
+                    <figure class="ham-further-figure lift">
+                      <figcaption class="ham-further-figure-head">
+                        <p class="ham-further-figure-title">{panel.title}</p>
+                      </figcaption>
+                      <div class="ham-further-media-shell">
+                        <img
+                          src={panel.src}
+                          alt={panel.alt}
+                          loading={index === 0 ? 'eager' : 'lazy'}
+                          decoding="async"
+                          class="ham-further-media"
+                        />
+                      </div>
+                    </figure>
+                  ))
+                }
+              </div>
+              <p class="body-copy ham-further-caption">
+                <strong>q/p decomposition across pretraining (ImageNet-100).</strong> We evaluate frozen features
+                extracted at sparse pretraining checkpoints using (left) a linear probe top-1 and (right) the best
+                kNN top-1 across the evaluated k values. For SIGReg+tokens, concatenating (q,p) is consistently better
+                than either half alone, indicating that the split halves are complementary (and/or that doubling
+                feature dimension helps). For HamJEPA, q, p, and (q,p) track each other closely, suggesting that both
+                phase-space coordinates are individually informative and largely redundant under the symplectic
+                objective. (Left) SIGReg tokens. (Right) HamJEPA.
+              </p>
+            </section>
+          )
+        }
+
+        {
+          furtherEpochPanel && (
+            <section class="ham-appendix-section ham-further-block ham-further-epoch" data-reveal>
+              <figure class="ham-further-figure lift">
+                <figcaption class="ham-further-figure-head">
+                  <p class="ham-further-figure-title">{furtherEpochPanel.title}</p>
+                </figcaption>
+                <div class="ham-further-media-shell">
+                  <img
+                    src={furtherEpochPanel.src}
+                    alt={furtherEpochPanel.alt}
+                    loading="lazy"
+                    decoding="async"
+                    class="ham-further-media"
+                  />
+                </div>
+              </figure>
+              <p class="body-copy ham-further-caption">
+                <strong>ImageNet-100 training dynamics from sparse checkpoints (geometry vs. accuracy).</strong> Using
+                the q representation at a set of pretraining epochs, we plot: (a) linear probe top-1; (b) best kNN
+                top-1 over k (shaded region indicates the spread over the k sweep); (c) effective-rank proxy computed
+                from the top-256 eigenvalues of the mean-centered q covariance; (d) probe accuracy versus effective
+                rank (points annotated by epoch), with the plotted correlation coefficient rho. HamJEPA improves
+                steadily and shows increasing effective rank, while SIGReg+tokens improves modestly while its effective
+                rank decreases; the deltas at epoch 45 are annotated in panels (a,b).
+              </p>
+            </section>
+          )
+        }
+      </article>
+    </div>
+  </section>
+
+  <section id="selected-geometry-diagnostics" class="section-tight section-divider ham-appendix-band">
+    <div class="page-shell">
+      <article class="ham-appendix-shell ham-appendix-content ham-appendix-secondary">
+        <section class="ham-appendix-section" data-reveal>
+          <h2>Selected geometry diagnostics</h2>
+          <p class="body-copy">
+            Empirical geometry diagnostics are included as a secondary section after the conceptual appendix sequence.
+          </p>
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>1. Visual hook: drift in trajectory geometry</h3>
+          <p class="body-copy">
+            Long-horizon stability is geometric first. Non-symplectic rollouts distort orbit structure and accumulate
+            directional energy bias, while symplectic rollouts preserve qualitative orbit geometry with bounded
+            oscillatory error consistent with modified-Hamiltonian intuition from backward error analysis.
+          </p>
+          <div class="ham-geo-grid ham-geo-grid-one">
+            {
+              assets.driftGif && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Phase-plane drift + energy trace</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.driftGif}
+                      alt="Long-horizon phase-plane drift comparison for SIGReg and HamJEPA"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                </figure>
+              )
+            }
+            {
+              assets.energyVideo && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Energy surface view</p>
+                  <div class="ham-geo-media-shell">
+                    <video
+                      class="ham-geo-media"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="metadata"
+                      aria-label="Energy surface comparison for SIGReg and HamJEPA"
+                    >
+                      <source src={assets.energyVideo} />
+                    </video>
+                  </div>
+                </figure>
+              )
+            }
+          </div>
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>2. Energy drift across initial conditions</h3>
+          <p class="body-copy">
+            Drift is evaluated over initial states <span class="ham-math-inline">(q0, p0)</span> using stabilized
+            relative energy error <span class="ham-math-inline">ΔH / (H0 + ε)</span>. The sym-log visualization
+            separates near-zero residual structure from broad systematic bias; leapfrog remains balanced and bounded
+            while Euler exhibits coherent directional accumulation.
+          </p>
+          <div class="ham-geo-grid ham-geo-grid-one">
+            {
+              assets.energyDrift && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Nonlinear pendulum drift</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.energyDrift}
+                      alt="Energy drift heatmap across initial conditions"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                </figure>
+              )
+            }
+            {
+              assets.energyDriftCompare && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Alternate drift view</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.energyDriftCompare}
+                      alt="Comparison energy drift heatmap for SIGReg and HamJEPA"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                </figure>
+              )
+            }
+          </div>
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>3. Time reversibility</h3>
+          <p class="body-copy">
+            Reversibility is tested by comparing a forward rollout and the reflected reverse map
+            <span class="ham-math-inline">R(q, p) = (q, -p)</span>. Leapfrog is self-adjoint and therefore supports
+            forward–reverse consistency; Euler is not. This diagnostic tests structural integrity, not only pointwise
+            prediction accuracy.
+          </p>
+          {
+            assets.reversibility && (
+              <figure class="ham-geo-figure lift">
+                <p class="ham-geo-figure-title">Forward–reverse defect map</p>
+                <div class="ham-geo-media-shell">
+                  <img
+                    src={assets.reversibility}
+                    alt="Time reversibility heatmap"
+                    loading="lazy"
+                    decoding="async"
+                    class="ham-geo-media"
+                  />
+                </div>
+              </figure>
+            )
+          }
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>4. Liouville / area preservation</h3>
+          <p class="body-copy">
+            Hamiltonian flow preserves phase-space volume; in two dimensions this is area preservation. The grid-area
+            trajectory is the quantitative diagnostic, while hull-area overlays provide qualitative deformation context.
+            With unwrapped <span class="ham-math-inline">q</span>, leapfrog stays near-area-preserving and Euler drifts.
+          </p>
+          <div class="ham-geo-grid ham-geo-grid-one">
+            {
+              assets.liouvilleArea && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Quantitative area metric</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.liouvilleArea}
+                      alt="Quantitative Liouville area preservation plot"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                </figure>
+              )
+            }
+            {
+              assets.liouvilleBlob && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Blob deformation check</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.liouvilleBlob}
+                      alt="Qualitative Liouville blob deformation figure"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                </figure>
+              )
+            }
+          </div>
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>5. Symplecticity defect</h3>
+          <p class="body-copy">
+            Symplecticity is tested directly through
+            <span class="ham-math-inline">J(x)<sup>T</sup>ΩJ(x)=Ω</span> and defect
+            <span class="ham-math-inline">d(x)=||J<sup>T</sup>ΩJ-Ω||<sub>F</sub></span>. This is stricter than energy
+            drift alone and isolates structural violations; diagnostics use unwrapped coordinates and float64 Jacobians.
+          </p>
+          {
+            assets.symplecticityDefect && (
+              <figure class="ham-geo-figure lift">
+                <p class="ham-geo-figure-title">Defect distribution</p>
+                <div class="ham-geo-media-shell">
+                  <img
+                    src={assets.symplecticityDefect}
+                    alt="Symplecticity defect histogram"
+                    loading="lazy"
+                    decoding="async"
+                    class="ham-geo-media"
+                  />
+                </div>
+              </figure>
+            )
+          }
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>6. Long-horizon energy behavior</h3>
+          <p class="body-copy">
+            Energy error is summarized by median trajectory and IQR band, which is more robust than mean-only views
+            under heavy-tail rollout paths. Symplectic rollout shows bounded oscillatory behavior; non-symplectic
+            rollout shows monotone accumulation.
+          </p>
+          {
+            assets.energyVsTime && (
+              <figure class="ham-geo-figure lift">
+                <p class="ham-geo-figure-title">Median + IQR drift over time</p>
+                <div class="ham-geo-media-shell">
+                  <img
+                    src={assets.energyVsTime}
+                    alt="Long-horizon energy versus time comparison"
+                    loading="lazy"
+                    decoding="async"
+                    class="ham-geo-media"
+                  />
+                </div>
+              </figure>
+            )
+          }
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>7. Covariance stability</h3>
+          <p class="body-copy">
+            Ensemble diagnostics track <span class="ham-math-inline">tr(Cov)</span>,
+            <span class="ham-math-inline">log det(Cov)</span>, and
+            <span class="ham-math-inline">λ<sub>min</sub>(Cov)</span>. These are not invariants of general nonlinear
+            Hamiltonian flow, but they remain useful comparative indicators of rollout health and degeneration risk.
+          </p>
+          {
+            assets.covarianceStability && (
+              <figure class="ham-geo-figure lift">
+                <p class="ham-geo-figure-title">Ensemble covariance diagnostics</p>
+                <div class="ham-geo-media-shell">
+                  <img
+                    src={assets.covarianceStability}
+                    alt="Covariance stability diagnostics over rollout horizon"
+                    loading="lazy"
+                    decoding="async"
+                    class="ham-geo-media"
+                  />
+                </div>
+              </figure>
+            )
+          }
+        </section>
+
+        <section class="ham-appendix-section ham-geo-subsection" data-reveal>
+          <h3>8. Sliced-projection diagnostics</h3>
+          <p class="body-copy">
+            This LeJEPA-inspired sliced-projection diagnostic follows a Cramér–Wold viewpoint: instead of only
+            aggregate distribution checks, compare many 1D projections to expose direction-dependent geometric
+            distortion.
+          </p>
+          <div class="ham-geo-grid ham-geo-grid-one">
+            {
+              assets.projectionCartoon && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Projection cartoon</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.projectionCartoon}
+                      alt="Projection cartoon with reference, Euler, and leapfrog projected densities"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                  <figcaption class="ham-geo-figure-copy">
+                    A 2D slice is projected onto many directions. Black is the reference distribution, green tracks the
+                    symplectic rollout, and orange indicates distorted non-symplectic projections.
+                  </figcaption>
+                </figure>
+              )
+            }
+            {
+              assets.projectionSketch && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Projection sketch</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.projectionSketch}
+                      alt="Projection sketch showing initial state and whitened final distributions"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                  <figcaption class="ham-geo-figure-copy">
+                    Initial phase-space cloud and whitened final distributions: leapfrog remains close to the
+                    reference shape while Euler introduces directional mismatch after transport.
+                  </figcaption>
+                </figure>
+              )
+            }
+            {
+              assets.directionalDiscrepancy && (
+                <figure class="ham-geo-figure lift">
+                  <p class="ham-geo-figure-title">Directional discrepancy</p>
+                  <div class="ham-geo-media-shell">
+                    <img
+                      src={assets.directionalDiscrepancy}
+                      alt="Directional discrepancy curve g(theta) for projection-wise Wasserstein mismatch"
+                      loading="lazy"
+                      decoding="async"
+                      class="ham-geo-media"
+                    />
+                  </div>
+                  <figcaption class="ham-geo-figure-copy">
+                    Direction-dependent mismatch is summarized by
+                    <span class="ham-math-inline"
+                      >g(θ)=W<sub>1</sub>(⟨u(θ), Z<sub>model</sub>⟩,⟨u(θ), Z<sub>ref</sub>⟩)</span
+                    >. Broad peaks reveal
+                    anisotropic rollout distortion hidden by aggregate-only metrics.
+                  </figcaption>
+                </figure>
+              )
+            }
+          </div>
+        </section>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ham-appendix-band {
+    padding-block: clamp(2rem, 4.2vw, 3.35rem);
+  }
+
+  .ham-appendix-shell {
+    margin-inline: auto;
+    max-width: min(900px, 100%);
+  }
+
+  .ham-appendix-header {
+    display: grid;
+    gap: 0.72rem;
+  }
+
+  .ham-appendix-title {
+    margin: 0;
+    font-size: clamp(1.78rem, 3.45vw, 2.58rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    max-width: 24ch;
+  }
+
+  .ham-appendix-intro {
+    max-width: 76ch;
+  }
+
+  .ham-appendix-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.42rem;
+  }
+
+  .ham-action-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6rem;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 45%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 93%, white 7%);
+    padding: 0.32rem 0.64rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-transform: none;
+    color: var(--fg);
+    transition: border-color 180ms ease;
+  }
+
+  .ham-action-link:hover {
+    border-color: color-mix(in oklab, var(--fg) 42%, transparent);
+  }
+
+  .ham-action-disabled {
+    opacity: 0.62;
+    pointer-events: none;
+  }
+
+  .ham-appendix-content {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .ham-appendix-section {
+    display: grid;
+    gap: 0.68rem;
+  }
+
+  .ham-appendix-section + .ham-appendix-section {
+    margin-top: 0.72rem;
+    padding-top: 0.84rem;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+  }
+
+  .ham-appendix-section h2 {
+    margin: 0;
+    font-size: clamp(1.12rem, 2.2vw, 1.45rem);
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .ham-appendix-section h3 {
+    margin: 0;
+    font-size: clamp(1.02rem, 2vw, 1.25rem);
+    font-family: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+
+  .ham-regularizer-sequence {
+    display: grid;
+    gap: 1.15rem;
+  }
+
+  .ham-regularizer-block {
+    display: grid;
+    gap: 0.62rem;
+  }
+
+  .ham-regularizer-block h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .ham-appendix-secondary {
+    opacity: 0.95;
+  }
+
+  .ham-geo-subsection {
+    gap: 0.72rem;
+  }
+
+  .ham-geo-grid {
+    display: grid;
+    gap: 0.82rem;
+  }
+
+  .ham-geo-grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .ham-geo-grid-one {
+    grid-template-columns: 1fr;
+  }
+
+  .ham-geo-figure {
+    border: 1px solid color-mix(in oklab, var(--line-strong) 48%, transparent);
+    border-radius: 1.06rem;
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    overflow: hidden;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .ham-geo-figure-title {
+    margin: 0;
+    padding: 0.58rem 0.8rem 0.56rem;
+    font-size: 0.9rem;
+    font-family: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    line-height: 1.3;
+    border-bottom: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 94%, white 6%);
+    color: color-mix(in oklab, var(--fg) 90%, var(--muted));
+  }
+
+  .ham-geo-media-shell {
+    display: block;
+    padding: 0;
+    background: transparent;
+  }
+
+  .ham-geo-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background: transparent;
+  }
+
+  .ham-geo-figure-copy {
+    margin: 0;
+    padding: 0.68rem 0.8rem 0.78rem;
+    font-size: 0.83rem;
+    line-height: 1.54;
+    color: var(--muted);
+    border-top: 1px solid color-mix(in oklab, var(--line) 68%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 94%, white 6%);
+  }
+
+  .ham-further-results {
+    gap: 0.4rem;
+  }
+
+  .ham-further-intro {
+    gap: 0.55rem;
+  }
+
+  .ham-further-block {
+    gap: 0.72rem;
+  }
+
+  .ham-further-stack {
+    display: grid;
+    gap: 0.85rem;
+    grid-template-columns: 1fr;
+  }
+
+  .ham-further-figure {
+    border: 1px solid color-mix(in oklab, var(--line-strong) 48%, transparent);
+    border-radius: 1.05rem;
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    overflow: hidden;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .ham-further-figure-head {
+    margin: 0;
+    padding: 0.58rem 0.78rem 0.56rem;
+    border-bottom: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 94%, white 6%);
+  }
+
+  .ham-further-figure-title {
+    margin: 0;
+    font-size: 0.92rem;
+    font-family: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    line-height: 1.3;
+    letter-spacing: 0.005em;
+    color: color-mix(in oklab, var(--fg) 90%, var(--muted));
+  }
+
+  .ham-further-media-shell {
+    display: block;
+    padding: 0;
+    background: transparent;
+  }
+
+  .ham-further-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    background: transparent;
+  }
+
+  .ham-further-epoch .ham-further-figure {
+    border-radius: 1.12rem;
+  }
+
+  .ham-further-caption {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.56;
+    color: var(--muted);
+  }
+
+  .ham-regime-cards {
+    display: grid;
+    gap: 0.62rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ham-regime-card {
+    border: 1px solid color-mix(in oklab, var(--line-strong) 48%, transparent);
+    border-radius: 0.95rem;
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    padding: 0.68rem 0.74rem 0.74rem;
+    display: grid;
+    gap: 0.36rem;
+  }
+
+  .ham-regime-card h3 {
+    margin: 0;
+    font-size: 0.88rem;
+    font-family: 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--fg) 82%, var(--muted));
+  }
+
+  .ham-regime-card .body-copy {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .ham-math-inline {
+    font-family: 'Newsreader', 'Iowan Old Style', serif;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .ham-missing-note {
+    margin: 0;
+    border: 1px dashed color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 0.9rem;
+    padding: 0.68rem 0.75rem;
+    font-size: 0.84rem;
+    color: var(--muted);
+    background: color-mix(in oklab, var(--bg-elevated) 88%, white 12%);
+  }
+
+  .ham-appendix-shell :global(.lift) {
+    transition: border-color 180ms ease;
+  }
+
+  .ham-appendix-shell :global(.lift::after) {
+    display: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ham-appendix-shell :global(.lift:hover) {
+      transform: none;
+      border-color: color-mix(in oklab, var(--line-strong) 55%, transparent);
+      box-shadow: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .ham-action-link {
+      width: 100%;
+    }
+
+    .ham-regime-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (min-width: 880px) {
+    .ham-geo-grid-two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

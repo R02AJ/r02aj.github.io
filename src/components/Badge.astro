@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string;
+  tone?: 'neutral' | 'accent' | 'warning';
+}
+
+const { label, tone = 'neutral' } = Astro.props;
+
+const toneClass =
+  tone === 'accent'
+    ? 'border-[color:color-mix(in_oklab,var(--accent)_65%,transparent)] bg-[color:var(--accent-soft)] text-[color:var(--accent)]'
+    : tone === 'warning'
+      ? 'border-amber-500/50 bg-amber-500/10 text-amber-700'
+      : 'border-black/15 bg-black/4 text-[color:var(--muted)]';
+---
+
+<span class:list={[
+  'inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.11em]',
+  toneClass
+]}>
+  {label}
+</span>

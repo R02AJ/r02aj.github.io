@@ -1,0 +1,357 @@
+---
+import { copyFileSync, existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig, toAbsoluteUrl, withBase } from '../data/site';
+
+const projectRoot = process.cwd();
+const filesDir = join(projectRoot, 'public', 'files');
+
+mkdirSync(filesDir, { recursive: true });
+
+const IGNORE_DIRS = new Set(['.git', 'node_modules', '.astro', '.tooling', 'dist']);
+
+function findFile(rootDir: string, targetName: string): string | undefined {
+  const stack = [rootDir];
+
+  while (stack.length > 0) {
+    const current = stack.pop();
+
+    if (!current) {
+      continue;
+    }
+
+    const entries = readdirSync(current, { withFileTypes: true });
+
+    for (const entry of entries) {
+      const fullPath = join(current, entry.name);
+
+      if (entry.isDirectory()) {
+        if (!IGNORE_DIRS.has(entry.name)) {
+          stack.push(fullPath);
+        }
+        continue;
+      }
+
+      if (entry.isFile() && entry.name === targetName) {
+        return fullPath;
+      }
+    }
+  }
+
+  return undefined;
+}
+
+const quantSource = findFile(projectRoot, 'RJenAlv_cv.pdf');
+const researchSource = findFile(projectRoot, 'RobJenAlv_cv.pdf');
+
+const quantTarget = join(filesDir, 'robert-jenkinson-alvarez-quant-cv.pdf');
+const researchTarget = join(filesDir, 'robert-jenkinson-alvarez-research-cv.pdf');
+
+if (quantSource) {
+  copyFileSync(quantSource, quantTarget);
+}
+
+if (researchSource) {
+  copyFileSync(researchSource, researchTarget);
+}
+
+const quantAvailable = existsSync(quantTarget);
+const researchAvailable = existsSync(researchTarget);
+const quantCvHref = withBase('/files/robert-jenkinson-alvarez-quant-cv.pdf');
+const researchCvHref = withBase('/files/robert-jenkinson-alvarez-research-cv.pdf');
+
+const primaryLinks = [
+  { label: 'GitHub', href: siteConfig.links.github },
+  { label: 'LinkedIn', href: siteConfig.links.linkedin },
+  { label: 'arXiv Author', href: siteConfig.links.arxivAuthor },
+  { label: 'Chebyshev arXiv', href: siteConfig.links.chebyshevPaper },
+  { label: 'HamJEPA Zenodo', href: siteConfig.links.zenodo },
+  { label: 'Email', href: siteConfig.links.email }
+] as const;
+
+const selectedEvidence = [
+  {
+    title: 'HamJEPA',
+    description:
+      'A phase-space JEPA that replaces isotropic latent regularization with Hamiltonian predictive structure, using symplectic rollout and non-isotropic anti-collapse controls to align representation geometry with task structure.',
+    evidence:
+      'Improves frozen-feature performance over SIGReg: CIFAR-100 gains of +3.75 / +4.89 at 30 epochs and ≈+10.6 / ≈+6.5 at 80 epochs (linear / kNN@20), plus +6.54 linear and +4.26 kNN best-over-k on ImageNet-100 at 45 epochs.'
+  },
+  {
+    title: 'Arbitrage-free option surfaces',
+    description:
+      'A convex, arbitrage-aware surface architecture in forward-discounted price space using warped Chebyshev tensor bases, sparse operator constraints, and a local Hamiltonian fog post-fit for inconsistent quote regions.',
+    evidence: '98–99% inside-spread coverage in calm regimes with <1% static no-arbitrage violations.'
+  },
+  {
+    title: 'Geometric stochastic modelling',
+    description:
+      'A structure-preserving state-space framework for joint spot, curve, and surface dynamics, designed to encode no-arbitrage, transport geometry, and hedge-consistent evolution directly into the model architecture.',
+    evidence: 'Focused on geometry, invariants, and cross-asset state design rather than generic latent-factor fitting.'
+  },
+  {
+    title: 'Optiver / market making',
+    description:
+      'Quant trading and market-making training focused on options quoting, inventory risk, hedge execution, and latency-aware decision-making under live exchange simulation.',
+    evidence:
+      'Reduced daily PnL variance by 30%, 95% VaR by 25%, and order-placement latency by 40% during the program.'
+  }
+] as const;
+
+const currentDirections = [
+  {
+    title: 'Financial Hamiltonian Theory & Computational Aspects',
+    description:
+      'An infinite-dimensional Hamiltonian state-space for joint option sheets, forward curves, spots, and volatility factors, with canonical structure, structure-preserving time stepping, and desk-data integration.'
+  },
+  {
+    title: 'Continuous Hamiltonian fog',
+    description:
+      'A continuous variational formulation for arbitrage-constrained surface calibration, jointly optimizing a surface and a fog density over (m, τ, u) under convex band-aware penalties and Hamiltonian regularization.'
+  },
+  {
+    title: 'Geometric analysis',
+    description:
+      'Current work on symmetry and rigidity in mixed-boundary semilinear elliptic PDE, with a platform problem in sub-spherical-sector symmetry and a longer-run bridge toward quantitative symplectic geometry.'
+  }
+] as const;
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  description: siteConfig.shortBio,
+  url: toAbsoluteUrl('/about'),
+  email: siteConfig.email.replace('mailto:', ''),
+  sameAs: [siteConfig.links.github, siteConfig.links.arxivAuthor, siteConfig.links.zenodo],
+  knowsAbout: [
+    'Geometric deep learning',
+    'Quantitative finance',
+    'Geometric analysis',
+    'Hamiltonian geometry',
+    'No-arbitrage option-surface modelling'
+  ]
+};
+---
+
+<BaseLayout title="About / CV | Robert Jenkinson Alvarez" description={siteConfig.shortBio} jsonLd={personJsonLd}>
+  <section class="section-tight about-hero-surface">
+    <div class="page-shell about-hero-stack" data-reveal>
+      <h1 class="display-title max-w-5xl">About / CV</h1>
+      <p class="lede max-w-3xl">
+        I work across geometric deep learning, quantitative finance, and geometric analysis, with emphasis on
+        structure-preserving models, arbitrage-aware surface construction, and mathematically transparent diagnostics.
+      </p>
+    </div>
+  </section>
+
+  <section class="surface-light section-tight section-divider">
+    <div class="page-shell" data-reveal>
+      <div class="grid gap-5 lg:grid-cols-2">
+        <article class="card lift space-y-4">
+          <h2 class="section-title">CV downloads</h2>
+          <div class="flex flex-wrap gap-3">
+            {
+              quantAvailable ? (
+                <a href={quantCvHref} class="site-nav-top-cta">
+                  Quant CV (PDF)
+                </a>
+              ) : (
+                <button type="button" disabled class="button-disabled">
+                  Quant CV unavailable
+                </button>
+              )
+            }
+
+            {
+              researchAvailable ? (
+                <a href={researchCvHref} class="site-nav-top-cta">
+                  Research CV (PDF)
+                </a>
+              ) : (
+                <button type="button" disabled class="button-disabled">
+                  Research CV unavailable
+                </button>
+              )
+            }
+          </div>
+        </article>
+
+        <article class="card lift space-y-4">
+          <h2 class="section-title">Links &amp; contact</h2>
+          <ul class="about-link-grid" aria-label="About page external links">
+            {
+              primaryLinks.map((item) => (
+                <li>
+                  <a
+                    href={item.href}
+                    class="about-link-pill"
+                    target={item.href.startsWith('http') ? '_blank' : undefined}
+                    rel={item.href.startsWith('http') ? 'noreferrer noopener' : undefined}
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight section-divider">
+    <div class="page-shell" data-reveal>
+      <article class="card space-y-5">
+        <h2 class="section-title">Education</h2>
+        <div class="grid gap-4 md:grid-cols-2">
+          <section class="about-panel">
+            <p class="about-degree">MSc Financial Mathematics (Distinction)</p>
+            <p class="about-meta">London School of Economics and Political Science</p>
+            <p class="about-meta">2023-2024</p>
+          </section>
+
+          <section class="about-panel">
+            <p class="about-degree">BSc Mathematics (First-Class Honours)</p>
+            <p class="about-meta">University of Bath</p>
+            <p class="about-meta">2020-2023</p>
+          </section>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="surface-light section-tight section-divider">
+    <div class="page-shell" data-reveal>
+      <article class="space-y-5">
+        <h2 class="section-title">Selected evidence</h2>
+
+        <div class="grid gap-4 lg:grid-cols-2">
+          {
+            selectedEvidence.map((item) => (
+              <section class="card lift about-evidence-card">
+                <h3 class="text-[clamp(1.2rem,2.1vw,1.55rem)] leading-tight">{item.title}</h3>
+                <p class="body-copy text-sm">{item.description}</p>
+                <p class="about-evidence-line">{item.evidence}</p>
+              </section>
+            ))
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-tight section-divider">
+    <div class="page-shell" data-reveal>
+      <article class="space-y-5">
+        <h2 class="section-title">Current directions</h2>
+        <div class="grid gap-4 md:grid-cols-3">
+          {
+            currentDirections.map((item) => (
+              <section class="card lift about-direction-card">
+                <h3 class="text-[clamp(1.05rem,1.95vw,1.28rem)] leading-tight">{item.title}</h3>
+                <p class="body-copy text-sm">{item.description}</p>
+              </section>
+            ))
+          }
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="surface-light section-tight section-divider">
+    <div class="page-shell" data-reveal>
+      <p class="about-closing-note body-copy text-sm">
+        Best reached by email with the technical context, constraints, and question.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero-surface {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(42, 100, 214, 0.06), transparent 42%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.78) 100%);
+  }
+
+  .about-hero-stack {
+    display: grid;
+    gap: 0.95rem;
+  }
+
+  .about-link-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.58rem;
+  }
+
+  .about-link-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in oklab, var(--line-strong) 56%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 88%, white 12%);
+    color: var(--fg);
+    padding: 0.42rem 0.78rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .about-link-pill:hover {
+    border-color: color-mix(in oklab, var(--accent) 56%, transparent);
+    background: color-mix(in oklab, var(--accent-soft) 76%, white 24%);
+    transform: translateY(-1px);
+  }
+
+  .about-panel {
+    border: 1px solid color-mix(in oklab, var(--line) 86%, transparent);
+    border-radius: 1rem;
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    padding: 1rem;
+  }
+
+  .about-degree {
+    margin: 0;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+
+  .about-meta {
+    margin: 0.12rem 0 0;
+    font-size: 0.84rem;
+    color: var(--muted);
+  }
+
+  .about-evidence-card,
+  .about-direction-card {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .about-evidence-line {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: color-mix(in oklab, var(--fg) 86%, var(--muted) 14%);
+    border-top: 1px solid color-mix(in oklab, var(--line) 86%, transparent);
+    padding-top: 0.62rem;
+  }
+
+  .about-closing-note {
+    margin: 0;
+    max-width: 52rem;
+  }
+</style>

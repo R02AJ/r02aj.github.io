@@ -1,0 +1,33 @@
+---
+interface Props {
+  title: string;
+  copy: string;
+  primary: { label: string; href: string };
+  secondary?: { label: string; href: string };
+}
+
+const { title, copy, primary, secondary } = Astro.props;
+---
+
+<section class="card section-space surface-light">
+  <div class="mx-auto max-w-4xl space-y-7 px-5 text-center">
+    <h2 class="section-title">{title}</h2>
+    <p class="mx-auto max-w-2xl text-[color:var(--muted)]">{copy}</p>
+    <div class="flex flex-wrap justify-center gap-3">
+      <a
+        href={primary.href}
+        class="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
+      >
+        {primary.label}
+      </a>
+      {secondary && (
+        <a
+          href={secondary.href}
+          class="rounded-full border border-black/20 px-6 py-3 text-sm font-semibold transition-colors hover:border-black/45"
+        >
+          {secondary.label}
+        </a>
+      )}
+    </div>
+  </div>
+</section>

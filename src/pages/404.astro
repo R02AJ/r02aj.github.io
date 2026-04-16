@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../data/site';
+
+const homeHref = withBase('/');
+const researchHref = withBase('/research');
+const hamjepaSummaryHref = withBase('/research/hamjepa/summary');
+const aboutHref = withBase('/about');
+---
+
+<BaseLayout
+  title="404 | Page Not Found"
+  description="The requested page could not be found."
+  noindex
+>
+  <section class="surface-dark section-space">
+    <div class="page-shell grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-end">
+      <article class="space-y-6" data-reveal>
+        <h1 class="display-title">Page not found.</h1>
+        <p class="lede">
+          This route does not exist or has moved. Use one of the curated entry points below.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a href={homeHref} class="site-nav-cta px-6 py-3 text-sm">
+            Return home
+          </a>
+          <a
+            href={researchHref}
+            class="inline-flex items-center justify-center rounded-full border border-white/35 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white/65"
+          >
+            Browse research
+          </a>
+        </div>
+      </article>
+
+      <aside class="card space-y-4" data-reveal>
+        <p class="meta-label">Quick links</p>
+        <ul class="bullet-list text-sm">
+          <li><a href={researchHref} class="transition-colors hover:text-white">Research library</a></li>
+          <li>
+            <a href={hamjepaSummaryHref} class="transition-colors hover:text-white">
+              Technical summaries
+            </a>
+          </li>
+          <li><a href={aboutHref} class="transition-colors hover:text-white">About / CV</a></li>
+          <li><a href={aboutHref} class="transition-colors hover:text-white">Contact and links</a></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

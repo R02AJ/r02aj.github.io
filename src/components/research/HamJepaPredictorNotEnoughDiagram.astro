@@ -1,0 +1,202 @@
+<figure
+  class="hamjepa-concept-diagram"
+  aria-labelledby="hamjepa-predictor-gap-title"
+  aria-describedby="hamjepa-predictor-gap-caption"
+>
+  <div class="hamjepa-concept-scroll" tabindex="0" aria-label="Scrollable predictor-versus-collapse diagram">
+    <svg
+      class="hamjepa-concept-svg"
+      viewBox="0 0 1080 720"
+      role="img"
+      aria-labelledby="hamjepa-predictor-gap-title hamjepa-predictor-gap-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-predictor-gap-title">Why the predictor alone is not enough</title>
+      <desc id="hamjepa-predictor-gap-desc">
+        Stacked causal flow: many different views go through E-theta, collapse into a low-volume state cloud, then
+        pass through a symplectic predictor and remain low-volume.
+      </desc>
+
+      <defs>
+        <marker id="ham-gap-arrow" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4d5866" />
+        </marker>
+      </defs>
+
+      <text x="230" y="62" class="t-head" text-anchor="middle">many different views</text>
+      <rect x="70" y="94" width="320" height="158" rx="14" class="panel panel-a" />
+      <rect x="102" y="126" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="154" y="112" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="208" y="132" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="262" y="116" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="126" y="178" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="182" y="172" width="58" height="42" rx="7" class="tiny-view" />
+      <rect x="238" y="186" width="58" height="42" rx="7" class="tiny-view" />
+
+      <text x="822" y="62" class="t-head" text-anchor="middle">shared encoder</text>
+      <rect x="684" y="98" width="276" height="126" rx="14" class="encoder-box" />
+      <text x="822" y="174" class="t-math" text-anchor="middle">E<tspan baseline-shift="sub" font-size="70%">θ</tspan></text>
+
+      <text x="540" y="314" class="t-head" text-anchor="middle">collapsed states</text>
+      <rect x="360" y="344" width="360" height="150" rx="14" class="panel panel-b" />
+      <ellipse cx="540" cy="420" rx="60" ry="14" class="collapsed-shape" />
+      <circle cx="524" cy="414" r="11" class="collapsed-dot" />
+      <circle cx="540" cy="420" r="11" class="collapsed-dot" />
+      <circle cx="556" cy="416" r="11" class="collapsed-dot" />
+      <circle cx="550" cy="428" r="10" class="collapsed-dot" />
+      <circle cx="532" cy="426" r="10" class="collapsed-dot" />
+
+      <text x="822" y="522" class="t-head" text-anchor="middle">symplectic predictor</text>
+      <rect x="684" y="548" width="276" height="92" rx="12" class="predictor-box" />
+      <text x="822" y="604" class="t-math-pred" text-anchor="middle">
+        Φ<tspan baseline-shift="sub" font-size="70%">φ</tspan><tspan baseline-shift="super" font-size="70%">(K)</tspan>
+      </text>
+
+      <text x="244" y="522" class="t-head" text-anchor="middle">still low-volume</text>
+      <rect x="84" y="548" width="320" height="92" rx="12" class="panel panel-c" />
+      <ellipse cx="244" cy="594" rx="110" ry="16" class="low-volume-shape" />
+
+      <line x1="390" y1="172" x2="684" y2="172" class="a-main" marker-end="url(#ham-gap-arrow)" />
+      <line x1="822" y1="224" x2="600" y2="344" class="a-main" marker-end="url(#ham-gap-arrow)" />
+      <line x1="624" y1="494" x2="762" y2="548" class="a-main" marker-end="url(#ham-gap-arrow)" />
+      <line x1="684" y1="594" x2="404" y2="594" class="a-main" marker-end="url(#ham-gap-arrow)" />
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-predictor-gap-caption" class="hamjepa-concept-caption">
+    <strong>Why the predictor alone is not enough.</strong> Even if the predictor is perfectly symplectic, the encoder
+    could still map many different views to nearly the same latent state. In that situation the rollout acts on an
+    already-collapsed representation. This is why HamJEPA needs a second component beyond the predictor: encoder-side
+    anti-collapse regularization.
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-concept-diagram {
+    margin: 1.15rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.15rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 10px 24px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-concept-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-concept-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-concept-svg {
+    display: block;
+    width: 100%;
+    min-width: 900px;
+    height: auto;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(42, 100, 214, 0.09), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22));
+  }
+
+  .panel {
+    fill: rgba(255, 255, 255, 0.72);
+    stroke-width: 1.4;
+  }
+
+  .panel-a {
+    stroke: #7f8a97;
+  }
+
+  .panel-b {
+    stroke: #66717d;
+  }
+
+  .panel-c {
+    stroke: #7d8894;
+  }
+
+  .tiny-view {
+    fill: rgba(238, 243, 247, 0.8);
+    stroke: #6f8496;
+    stroke-width: 1.1;
+  }
+
+  .encoder-box {
+    fill: rgba(244, 247, 249, 0.92);
+    stroke: #6d7784;
+    stroke-width: 1.4;
+  }
+
+  .predictor-box {
+    fill: rgba(238, 243, 247, 0.92);
+    stroke: #708696;
+    stroke-width: 1.4;
+  }
+
+  .collapsed-shape {
+    fill: rgba(207, 163, 126, 0.42);
+    stroke: #9d764b;
+    stroke-width: 1.2;
+  }
+
+  .collapsed-dot {
+    fill: rgba(198, 155, 118, 0.62);
+    stroke: #9b7348;
+    stroke-width: 1.2;
+  }
+
+  .low-volume-shape {
+    fill: rgba(200, 160, 125, 0.5);
+    stroke: #9f7a4b;
+    stroke-width: 1.2;
+  }
+
+  .a-main {
+    fill: none;
+    stroke: #4d5866;
+    stroke-width: 1.9;
+  }
+
+  .t-head {
+    font: 600 25px 'Newsreader', 'Iowan Old Style', serif;
+    letter-spacing: -0.01em;
+    fill: #1f2630;
+  }
+
+  .t-main {
+    font: 500 20px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #20262f;
+  }
+
+  .t-math {
+    font: 600 34px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .t-math-pred {
+    font: 600 34px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .hamjepa-concept-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.74rem 0.9rem 0.9rem;
+    font-size: 0.84rem;
+    line-height: 1.52;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .hamjepa-concept-svg {
+      min-width: 860px;
+    }
+
+    .t-head {
+      font-size: 23px;
+    }
+  }
+</style>

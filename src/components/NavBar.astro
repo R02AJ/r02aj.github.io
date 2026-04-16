@@ -1,0 +1,181 @@
+---
+import { siteConfig, withBase } from '../data/site';
+
+const pathname = Astro.url.pathname;
+const aboutHref = withBase('/about');
+const cvHref = withBase('/cv');
+const primaryCtaHref = withBase(siteConfig.primaryNavCta.href);
+const navItems = siteConfig.nav.map((item) => ({
+  ...item,
+  href: withBase(item.href)
+}));
+---
+
+<header class="site-nav" data-navbar data-scrolled="false" data-menu-open="false">
+  <div class="page-shell flex min-h-[4.25rem] items-center justify-between gap-4 py-3" data-nav-row>
+    <a href={withBase('/')} class="site-nav-brand" aria-label="Robert Jenkinson Alvarez home">
+      Robert Jenkinson Alvarez
+    </a>
+
+    <div class="hidden items-center gap-2 lg:flex">
+      <nav aria-label="Primary" class="flex items-center gap-1">
+        {
+          navItems.map((item) => {
+            const isCurrent =
+              pathname === item.href ||
+              pathname.startsWith(`${item.href}/`) ||
+              (item.href === aboutHref && (pathname === cvHref || pathname.startsWith(`${cvHref}/`)));
+
+            return (
+              <a
+                href={item.href}
+                class="site-nav-link"
+                data-current={isCurrent ? 'true' : 'false'}
+                aria-current={isCurrent ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            );
+          })
+        }
+      </nav>
+      <a href={primaryCtaHref} class="site-nav-top-cta">
+        {siteConfig.primaryNavCta.label}
+      </a>
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex h-10 items-center justify-center rounded-full border border-black/15 bg-white/70 px-4 text-sm font-medium backdrop-blur lg:hidden"
+      aria-expanded="false"
+      aria-label="Toggle navigation menu"
+      aria-haspopup="true"
+      aria-controls="mobile-menu"
+      data-menu-toggle
+    >
+      <span data-menu-label>Menu</span>
+    </button>
+  </div>
+
+  <div class="site-nav-scrim lg:hidden" hidden data-nav-scrim data-open="false"></div>
+
+  <div id="mobile-menu" hidden class="mobile-menu-panel lg:hidden" data-menu-panel>
+    <div class="page-shell py-3">
+      <nav aria-label="Mobile primary" class="grid gap-1">
+        {
+          navItems.map((item) => {
+            const isCurrent =
+              pathname === item.href ||
+              pathname.startsWith(`${item.href}/`) ||
+              (item.href === aboutHref && (pathname === cvHref || pathname.startsWith(`${cvHref}/`)));
+
+            return (
+              <a
+                href={item.href}
+                class="site-nav-link"
+                data-current={isCurrent ? 'true' : 'false'}
+                aria-current={isCurrent ? 'page' : undefined}
+                data-mobile-link
+              >
+                {item.label}
+              </a>
+            );
+          })
+        }
+        <a href={primaryCtaHref} class="site-nav-top-cta mt-2 w-full" data-mobile-link>
+          {siteConfig.primaryNavCta.label}
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script is:inline>
+  const navEl = document.querySelector('[data-navbar]');
+  const toggleEl = document.querySelector('[data-menu-toggle]');
+  const panelEl = document.querySelector('[data-menu-panel]');
+  const scrimEl = document.querySelector('[data-nav-scrim]');
+  const labelEl = toggleEl instanceof HTMLElement ? toggleEl.querySelector('[data-menu-label]') : null;
+
+  if (navEl) {
+    const updateScrollState = () => {
+      navEl.dataset.scrolled = window.scrollY > 6 ? 'true' : 'false';
+    };
+
+    updateScrollState();
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+  }
+
+  if (toggleEl instanceof HTMLButtonElement && panelEl instanceof HTMLElement) {
+    const mobileLinks = Array.from(panelEl.querySelectorAll('[data-mobile-link]'));
+    const firstFocusableEl = panelEl.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
+
+    const closeMenu = (restoreFocus = false) => {
+      toggleEl.setAttribute('aria-expanded', 'false');
+      if (navEl instanceof HTMLElement) navEl.dataset.menuOpen = 'false';
+      panelEl.hidden = true;
+      if (labelEl instanceof HTMLElement) labelEl.textContent = 'Menu';
+      if (scrimEl instanceof HTMLElement) {
+        scrimEl.hidden = true;
+        scrimEl.dataset.open = 'false';
+      }
+      document.body.style.overflow = '';
+      if (restoreFocus) {
+        toggleEl.focus();
+      }
+    };
+
+    const openMenu = () => {
+      toggleEl.setAttribute('aria-expanded', 'true');
+      if (navEl instanceof HTMLElement) navEl.dataset.menuOpen = 'true';
+      panelEl.hidden = false;
+      if (labelEl instanceof HTMLElement) labelEl.textContent = 'Close';
+      if (scrimEl instanceof HTMLElement) {
+        scrimEl.hidden = false;
+        scrimEl.dataset.open = 'true';
+      }
+      document.body.style.overflow = 'hidden';
+      if (firstFocusableEl instanceof HTMLElement) {
+        window.requestAnimationFrame(() => {
+          firstFocusableEl.focus();
+        });
+      }
+    };
+
+    toggleEl.addEventListener('click', () => {
+      const isExpanded = toggleEl.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        closeMenu(true);
+      } else {
+        openMenu();
+      }
+    });
+
+    mobileLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        closeMenu();
+      });
+    });
+
+    if (scrimEl instanceof HTMLElement) {
+      scrimEl.addEventListener('click', () => {
+        closeMenu();
+      });
+    }
+
+    window.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggleEl.getAttribute('aria-expanded') === 'true') {
+        closeMenu(true);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 1024) {
+        closeMenu();
+      }
+    });
+
+    closeMenu();
+  }
+</script>

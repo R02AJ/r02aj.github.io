@@ -1,0 +1,43 @@
+---
+import ExternalLinkBadge from './ExternalLinkBadge.astro';
+import { isPlaceholderLink } from '../data/site';
+
+type LinkItem = {
+  label: string;
+  href?: string;
+};
+
+interface Props {
+  links: LinkItem[];
+  tone?: 'light' | 'dark';
+  size?: 'sm' | 'md';
+  ariaLabel?: string;
+  showUnavailable?: boolean;
+}
+
+const {
+  links,
+  tone = 'light',
+  size = 'md',
+  ariaLabel = 'External links',
+  showUnavailable = false
+} = Astro.props;
+
+const visibleLinks = showUnavailable
+  ? links
+  : links.filter((item) => item.href && !isPlaceholderLink(item.href));
+---
+
+{
+  visibleLinks.length > 0 && (
+    <nav aria-label={ariaLabel}>
+      <ul class="external-pills">
+        {visibleLinks.map((item) => (
+          <li>
+            <ExternalLinkBadge label={item.label} href={item.href} tone={tone} size={size} />
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

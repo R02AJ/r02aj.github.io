@@ -1,0 +1,373 @@
+---
+import { existsSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+import HomeDiagnosticsSlideshow from '../components/HomeDiagnosticsSlideshow.astro';
+import OngoingPreviewCard from '../components/OngoingPreviewCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { ongoingWorkItems } from '../data/ongoingWork';
+import { siteConfig, toAbsoluteUrl, withBase } from '../data/site';
+import { entrySlug, projectHref, readableAssetLabel, sortByOrder, summaryHref } from '../utils/content';
+
+const projects = (await getCollection('projects')).sort(sortByOrder);
+const summaries = (await getCollection('summaries')).sort(sortByOrder);
+
+const summaryByProjectSlug = new Map(
+  summaries.map((summary) => [summary.data.projectSlug, summaryHref(summary)])
+);
+
+const calloutsBySlug: Record<string, string[]> = {
+  hamjepa: [
+    '+7.52 delta at epoch 45 over SIGReg (q linear probe)',
+    'ImageNet-100 q linear probe: 31.92 vs 24.40'
+  ],
+  'chebyshev-option-surfaces': ['98-99% inside-spread coverage', '<1% static no-arb violations']
+};
+
+const featuredProjects = siteConfig.projectOrder
+  .map((slug) => projects.find((project) => entrySlug(project.id) === slug))
+  .filter((project): project is (typeof projects)[number] => Boolean(project))
+  .filter((project) => project.data.status !== 'Ongoing');
+
+const projectRoot = process.cwd();
+const hamjepaImagesDir = join(projectRoot, 'public', 'images', 'hamjepa');
+const heroVideoFile = 'energy_surface_sigreg_vs_hamjepa.mp4';
+const heroVideoPath = withBase('/images/hamjepa/energy_surface_sigreg_vs_hamjepa.mp4');
+const heroVideoAvailable = existsSync(join(hamjepaImagesDir, heroVideoFile));
+const heroVideoWidth = 2160;
+const heroVideoHeight = 972;
+
+const slideshowImageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
+
+const slideshowSources = [
+  {
+    folder: 'hamjepa',
+    dir: join(projectRoot, 'public', 'images', 'hamjepa')
+  },
+  {
+    folder: 'chebyshev',
+    dir: join(projectRoot, 'public', 'images', 'chebyshev')
+  }
+] as const;
+
+const slideshowItems = slideshowSources.flatMap((source) => {
+  if (!existsSync(source.dir)) {
+    return [];
+  }
+
+  return readdirSync(source.dir)
+    .filter((name) => {
+      const dotIndex = name.lastIndexOf('.');
+      return dotIndex > 0 && slideshowImageExtensions.has(name.slice(dotIndex).toLowerCase());
+    })
+    .sort((a, b) => a.localeCompare(b))
+    .map((name) => {
+      const label = readableAssetLabel(name);
+      const sourceLabel = source.folder === 'hamjepa' ? 'HamJEPA' : 'Chebyshev';
+
+      return {
+        src: withBase(`/images/${source.folder}/${name}`),
+        alt: `${sourceLabel} diagnostic: ${label}`,
+        label
+      };
+    });
+});
+
+const quantCvFile = join(projectRoot, 'public', 'files', 'robert-jenkinson-alvarez-quant-cv.pdf');
+const researchCvFile = join(
+  projectRoot,
+  'public',
+  'files',
+  'robert-jenkinson-alvarez-research-cv.pdf'
+);
+
+const quantCvAvailable = existsSync(quantCvFile);
+const researchCvAvailable = existsSync(researchCvFile);
+
+const quantCvHref = withBase('/files/robert-jenkinson-alvarez-quant-cv.pdf');
+const researchCvHref = withBase('/files/robert-jenkinson-alvarez-research-cv.pdf');
+const aboutHref = withBase('/about');
+const chebyshevPaperPdfHref = withBase('/files/Arbitrage_Free_Option_Price_Surfaces.pdf');
+
+const quickScan = [
+  {
+    degree: 'MSc Financial Mathematics (Distinction)',
+    institution: 'London School of Economics and Political Science'
+  },
+  {
+    degree: 'BSc Mathematics (First-Class Honours)',
+    institution: 'University of Bath'
+  }
+] as const;
+
+const externalLinks = [
+  { label: 'GitHub', href: siteConfig.links.github },
+  { label: 'LinkedIn', href: siteConfig.links.linkedin },
+  { label: 'arXiv Author', href: siteConfig.links.arxivAuthor },
+  { label: 'HamJEPA Zenodo', href: siteConfig.links.zenodo },
+  { label: 'Chebyshev arXiv', href: siteConfig.links.chebyshevPaper },
+  { label: 'Chebyshev Paper', href: chebyshevPaperPdfHref },
+  { label: 'HamJEPA Paper', href: withBase(siteConfig.links.hamjepaPaper) }
+];
+
+const personJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  description: siteConfig.shortBio,
+  url: toAbsoluteUrl('/'),
+  email: siteConfig.email.replace('mailto:', ''),
+  affiliation: [
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'London School of Economics and Political Science'
+    },
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'University of Bath'
+    }
+  ],
+  sameAs: [siteConfig.links.github, siteConfig.links.arxivAuthor, siteConfig.links.zenodo]
+};
+---
+
+<BaseLayout
+  title="Robert Jenkinson Alvarez | Research"
+  description={siteConfig.shortBio}
+  jsonLd={personJsonLd}
+>
+  <section class="surface-dark section-space">
+    <div class="page-shell hero-grid" data-reveal>
+      <div class="space-y-7">
+        <h1 class="display-title home-hero-title reveal-up reveal-delay-1">
+          Geometric deep learning and quantitative finance
+        </h1>
+        <p class="lede reveal-up reveal-delay-2">
+          Research across representation geometry, arbitrage-aware option surfaces, and symmetry-driven analysis.
+        </p>
+        <div class="reveal-up reveal-delay-3 flex flex-wrap gap-3">
+          <a href={quantCvHref} class="site-nav-cta px-6 py-3 text-sm">
+            Quant CV
+          </a>
+          <a href={researchCvHref} class="site-nav-cta px-6 py-3 text-sm">
+            Research CV
+          </a>
+        </div>
+
+        <div class="hero-quick-scan reveal-up reveal-delay-3" aria-label="Education">
+          {quickScan.map((item) => (
+            <div class="hero-quick-item">
+              <p class="hero-quick-degree">{item.degree}</p>
+              <p class="hero-quick-institution">{item.institution}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="hero-visual hero-visual-media reveal-up reveal-delay-2">
+        <figure
+          class="hero-video-frame"
+          aria-label="Energy surface diagnostics video"
+          style={`--hero-video-ratio:${heroVideoWidth} / ${heroVideoHeight};`}
+        >
+          {
+            heroVideoAvailable ? (
+              <video
+                class="hero-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              >
+                <source src={heroVideoPath} type="video/mp4" />
+              </video>
+            ) : (
+              <div class="hero-video-fallback">
+                Video asset unavailable
+              </div>
+            )
+          }
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-space surface-light section-divider">
+    <div class="page-shell space-y-9" data-reveal>
+      <div class="section-header">
+        <h2 class="section-title">Research tracks and ongoing directions</h2>
+        <p class="lede">
+          A fast map of current visual guides plus compact ongoing previews, so active directions stay visible without
+          forcing unfinished work into full project cards.
+        </p>
+      </div>
+
+      <div class="grid gap-6 lg:grid-cols-2">
+        {
+          featuredProjects.map((project) => {
+            const slug = entrySlug(project.id);
+            return (
+              <ProjectCard
+                projectHref={projectHref(project)}
+                summaryHref={summaryByProjectSlug.get(slug)}
+                title={project.data.title}
+                category={project.data.category}
+                status={project.data.status}
+                thesis={project.data.thesis}
+                callouts={calloutsBySlug[slug] ?? project.data.headlineMetrics.slice(0, 2)}
+              />
+            );
+          })
+        }
+      </div>
+
+      <div class="space-y-4 pt-1">
+        <h3 class="text-[clamp(1.35rem,2.6vw,1.8rem)]">Ongoing work previews</h3>
+        <p class="body-copy max-w-3xl text-sm">
+          Lightweight snapshots of current in-progress directions. No performance claims or navigation actions are
+          surfaced here.
+        </p>
+
+        <div class="grid gap-4 lg:grid-cols-3">
+          {
+            ongoingWorkItems.map((item) => (
+              <OngoingPreviewCard
+                title={item.title}
+                category={item.category}
+                status={item.status}
+                description={item.description}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface-dark section-space section-divider">
+    <div class="page-shell space-y-8" data-reveal>
+      <div class="section-header section-header-tight">
+        <h2 class="section-title">Geometric deep learning, quantitative finance, and geometric analysis</h2>
+      </div>
+
+      <div class="grid gap-5 md:grid-cols-3">
+        {siteConfig.focusAreas.map((area) => (
+          <article class="card lift">
+            <p class="meta-label mb-4">Focus Area</p>
+            <h3 class="mb-3 text-3xl">{area.title}</h3>
+            <p class="text-[color:var(--dark-muted)]">{area.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight section-divider">
+    <div class="page-shell space-y-7" data-reveal>
+      <div class="section-header section-header-tight">
+        <h2 class="section-title">Visual diagnostics and model geometry</h2>
+      </div>
+
+      <HomeDiagnosticsSlideshow slides={slideshowItems} />
+    </div>
+  </section>
+
+  <section class="surface-light section-space section-divider">
+    <div class="page-shell grid gap-6 xl:grid-cols-[1.1fr_1fr]" data-reveal>
+      <article class="card lift space-y-6">
+        <div class="space-y-3">
+          <p class="home-card-kicker">CV downloads</p>
+          <h2 class="section-title">Download CV variants</h2>
+          <p class="body-copy">
+            Two focused profiles: one optimized for quant/finance discussions and one for machine-learning research.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+          <a
+            href={quantCvAvailable ? quantCvHref : aboutHref}
+            class="site-nav-top-cta"
+          >
+            {quantCvAvailable ? 'Download Quant CV' : 'Open About / CV'}
+          </a>
+          <a
+            href={researchCvAvailable ? researchCvHref : aboutHref}
+            class="site-nav-top-cta"
+          >
+            {researchCvAvailable ? 'Download Research CV' : 'Open About / CV'}
+          </a>
+        </div>
+      </article>
+
+      <article class="card lift space-y-4">
+        <p class="home-card-kicker">Papers, code, and profiles</p>
+        <p class="body-copy text-sm">Direct links to paper PDFs, publication profiles, and project repositories.</p>
+        <ul class="home-link-grid" aria-label="Homepage external links">
+          {
+            externalLinks.map((link) =>
+              link.href ? (
+                <li>
+                  <a
+                    href={link.href}
+                    class="home-link-pill"
+                    target={link.href.startsWith('http') ? '_blank' : undefined}
+                    rel={link.href.startsWith('http') ? 'noreferrer noopener' : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ) : null
+            )
+          }
+        </ul>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-card-kicker {
+    margin: 0;
+    font-size: 0.77rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    text-transform: none;
+  }
+
+  .home-link-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.58rem;
+  }
+
+  .home-link-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid color-mix(in oklab, var(--line-strong) 56%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 88%, white 12%);
+    color: var(--fg);
+    padding: 0.42rem 0.78rem;
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition:
+      border-color 180ms ease,
+      background-color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .home-link-pill:hover {
+    border-color: color-mix(in oklab, var(--accent) 56%, transparent);
+    background: color-mix(in oklab, var(--accent-soft) 76%, white 24%);
+    transform: translateY(-1px);
+  }
+</style>

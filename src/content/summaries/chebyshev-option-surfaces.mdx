@@ -1,0 +1,228 @@
+---
+title: Arbitrage-Free Option Price Surfaces via Chebyshev Tensor Bases and a Hamiltonian Fog Post-Fit
+projectSlug: chebyshev-option-surfaces
+standfirst: Full technical web rendering of the Chebyshev option-surface summary with equations and operator-level details preserved.
+updated: '2026-04-07'
+readingMins: 18
+pdfPath: /files/summaries/chebyshev-technical-summary.pdf
+keyTakeaways:
+  - Fit the arbitrage-carrying object directly in forward-discounted price space.
+  - Compile static no-arbitrage into sparse linear operators acting on one coefficient vector.
+  - Use Hamiltonian fog only as a local post-fit mechanism for inconsistent patches.
+order: 2
+---
+
+import SummaryKeyBox from '../../components/summary/SummaryKeyBox.astro';
+import SummaryFogBox from '../../components/summary/SummaryFogBox.astro';
+import SummaryTakeBox from '../../components/summary/SummaryTakeBox.astro';
+
+<SummaryKeyBox title="Overview">
+The paper recasts the surface problem in the forward-discounted call sheet $C^f(m,\tau)$ that actually carries static arbitrage and then chooses a warped tensor Chebyshev basis whose derivative algebra closes. Once this representation is fixed, prices, strike slope, strike convexity, calendar slope at fixed strike, bounds, and regularisers are all linear or quadratic forms of one coefficient vector. Hamiltonian fog is then treated as a local post-fit for inconsistent quote regions, not as the main architecture.
+</SummaryKeyBox>
+
+<section id="put-state-variable">
+
+## 1. Put the state variable in price space
+
+The fitted object is the forward-discounted call surface:
+
+$$
+C^f(K,\tau)=e^{r(\tau)\tau}C(K,\tau), \qquad m=\log\!\frac{K}{F_t(\tau)}.
+$$
+
+Static no-arbitrage is imposed directly on this object:
+
+$$
+\partial_m C^f\le 0,
+\qquad
+\partial_{mm}C^f\ge 0,
+\qquad
+\left.\partial_\tau C^f\right|_K\ge 0,
+\qquad
+0\le C^f\le F_t(\tau).
+$$
+
+Because the basis is defined in $(m,\tau)$ rather than $(K,\tau)$, the calendar derivative at fixed strike is implemented exactly as
+
+$$
+\left.\partial_\tau C^f\right|_K
+=\partial_\tau C^f-\partial_m C^f\bigl(r_{cc}(\tau)+\tau r'_{cc}(\tau)\bigr).
+$$
+
+The central move is to fit the arbitrage-carrying sheet itself instead of interpolating a proxy and repairing arbitrage after the fact.
+
+</section>
+
+<section id="warps-approximation-strategy">
+
+## 2. The warps are the approximation strategy
+
+Each axis is mapped to $[-1,1]$ before spectral expansion:
+
+$$
+\Phi_m(m)=\frac{2}{W_m}\Bigl(\operatorname{asinh}(\lambda_m(m-c_m))-\phi_{m,-}\Bigr)-1,
+$$
+
+$$
+\Phi_\tau(\tau)=2\sqrt{\frac{\tau-\tau_{\min}}{\tau_{\max}-\tau_{\min}}}-1.
+$$
+
+The asinh warp concentrates resolution near ATM and compresses deep wings; the square-root warp allocates resolution near short maturities, where curvature is typically strongest. Their derivatives remain explicit:
+
+$$
+\Phi'_m(m)=\frac{2\lambda_m}{W_m\sqrt{1+\lambda_m^2(m-c_m)^2}},
+\qquad
+\Phi'_\tau(\tau)=\frac{1}{\sqrt{(\tau_{\max}-\tau_{\min})(\tau-\tau_{\min})}}.
+$$
+
+So the approximation is geometry-aware while retaining analytic control of derivative operators.
+
+</section>
+
+<section id="chebyshev">
+
+## 3. Chebyshev
+
+With $T_k(x)=\cos(k\arccos x)$ and $T'_k(x)=kU_{k-1}(x)$, the surface expansion is
+
+$$
+C^f(m,\tau)=\sum_{k=0}^{K}\sum_{\ell=0}^{L}a_{k\ell}
+\,T_k\!\bigl(\Phi_m(m)\bigr)T_\ell\!\bigl(\Phi_\tau(\tau)\bigr).
+$$
+
+At data points $(m_i,\tau_i)$, the design structure is
+
+$$
+A_{i,(k,\ell)}=T_k(x_i)T_\ell(y_i),
+\qquad
+A=\Phi_K\odot\Phi_L.
+$$
+
+One coefficient vector drives the full sheet, and the matrix structure inherits row-wise Khatri-Rao / gridwise Kronecker structure. The key gain is that derivative identities remain explicit enough to compile no-arbitrage geometry into sparse operators.
+
+</section>
+
+<section id="matrix-operator-problem">
+
+## 4. No-arbitrage becomes a matrix operator problem
+
+Because basis and warps differentiate in closed form, physical derivative blocks are linear in the same coefficients:
+
+$$
+A_m=\operatorname{diag}(\Phi'_m)\,\partial_xA,
+\qquad
+A_{mm}=\operatorname{diag}\!\bigl((\Phi'_m)^2\bigr)\partial_{xx}A+\operatorname{diag}(\Phi''_m)\partial_xA,
+$$
+
+$$
+A_\tau=\operatorname{diag}(\Phi'_\tau)\,\partial_yA,
+\qquad
+A_{\tau|K}=A_\tau-D_FA_m,
+$$
+
+with
+
+$$
+D_F=\operatorname{diag}\bigl(r_{cc}(\tau)+\tau r'_{cc}(\tau)\bigr).
+$$
+
+Static constraints become sparse linear inequalities:
+
+$$
+A_Ka\le 0,
+\qquad
+-A_{KK}a\le 0,
+\qquad
+-A_{\tau|K}a\le 0,
+\qquad
+0\le Aa\le F.
+$$
+
+In this framing, butterfly and calendar arbitrage are not emergent interpolant side-effects; they are explicit operator rows acting on modal coefficients.
+
+</section>
+
+<section id="global-qp">
+
+## 5. The global QP is a projection in a tailored metric
+
+The data term is aligned to executable bid-ask bands:
+
+$$
+\frac12\|W^{1/2}(Aa-y)\|_2^2
++\mu\sum_i \tfrac12\,\operatorname{dist}\bigl((Aa)_i,[b_i,a_i]\bigr)^2.
+$$
+
+This rewards fits that land inside spreads, not only near mids. Quadratic stabilisers include spectral ridge:
+
+$$
+R_{\mathrm{ridge}}(a)=\frac{\lambda_{\mathrm{ridge}}}{2}\sum_{k,\ell}(1+\alpha k^2+\beta \ell^2)^s a_{k\ell}^2,
+$$
+
+price-invariant reparameterisation $\tilde a=U^{-1}a$ with $A\mapsto AU$ and $A_\bullet\mapsto A_\bullet U$, and blockwise whitening:
+
+$$
+W^{1/2}A_{[:,G_\ell]}=Q_\ell R_\ell,
+\qquad
+U_{G_\ell,G_\ell}=R_\ell^{-1},
+\qquad
+(AU)_{[:,G_\ell]}^\top W(AU)_{[:,G_\ell]}=I.
+$$
+
+The transport-style density smoother is
+
+$$
+R_{DW}(a)=\frac{\lambda_{DW}}{2}a^\top E^\top L^+Ea.
+$$
+
+The memorable interpretation is projection in coefficient space:
+
+$$
+a^\star=\arg\min_{a\in C_h}\frac12\|a-\hat a\|_{M_h}^2,
+\qquad
+\hat a=M_h^{-1}b.
+$$
+
+So the baseline surface is the metric projection of an unconstrained spectral fit onto the arbitrage-free polyhedron.
+
+</section>
+
+<section id="fog-secondary-idea">
+
+## 6. The fog is the right secondary idea
+
+<SummaryFogBox title="Hamiltonian fog as local post-fit">
+Only after the global Chebyshev/QP backbone is fixed does the method introduce patch-wise post-fit on inconsistent regions $\Omega$. On each patch, only interior nodal prices move,
+
+$$
+u(u_I)=P_\Omega u_I+u^{0,\mathrm{off}},
+$$
+
+and a discrete fog $\pi_{i,j,k}\ge 0$ is placed on a lattice $(m,\tau,u)$ with Hamiltonian
+
+$$
+H_\pi=L_\pi+\operatorname{diag}(V),
+\qquad
+E_{\mathrm{Ham}}(\pi)=\tfrac12\pi^\top H_\pi\pi.
+$$
+
+Residual band misfit is given a local noise budget by
+
+$$
+\phi_q(u_I,\pi)=\frac{d_q(u)^2}{\varepsilon+M_q(\pi)}+\lambda_{\mathrm{noise}}\bigl(\varepsilon+M_q(\pi)\bigr).
+$$
+
+This does not relax global static no-arbitrage; it provides a convex, local mechanism to pay explicitly for noisy patches while keeping the rest of the sheet rigid.
+</SummaryFogBox>
+
+</section>
+
+<section id="bottom-line">
+
+## 7. Bottom line
+
+<SummaryTakeBox title="Bottom line">
+The core achievement is structural: choose coordinates and warps that match market geometry, choose a tensor basis whose derivatives close, convert every static restriction into sparse operators, and solve one convex projection problem in coefficient space. With that backbone in place, Hamiltonian fog is exactly the right add-on: local, noise-aware, and subordinate to the global arbitrage-free surface.
+</SummaryTakeBox>
+
+</section>

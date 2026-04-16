@@ -1,0 +1,50 @@
+---
+interface Props {
+  columns: string[];
+  rows: Array<Array<string | number>>;
+  title?: string;
+  caption?: string;
+  align?: Array<'left' | 'center' | 'right'>;
+}
+
+const {
+  columns,
+  rows,
+  title,
+  caption,
+  align = []
+} = Astro.props;
+
+function alignmentClass(index: number): string {
+  const mode = align[index] ?? 'left';
+
+  if (mode === 'right') return 'summary-table-cell-right';
+  if (mode === 'center') return 'summary-table-cell-center';
+  return 'summary-table-cell-left';
+}
+---
+
+<div class="summary-table-block">
+  <div class="summary-table-wrap" tabindex="0" aria-label={title ? `Table: ${title}` : 'Summary table'}>
+    <table class="summary-table">
+      {title && <caption class="summary-table-caption-head">{title}</caption>}
+      <thead>
+        <tr>
+          {columns.map((column, index) => (
+            <th class={alignmentClass(index)}>{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            {row.map((value, index) => (
+              <td class={alignmentClass(index)}>{value}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  {caption && <p class="summary-table-caption">{caption}</p>}
+</div>

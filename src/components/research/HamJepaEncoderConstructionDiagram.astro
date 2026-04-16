@@ -1,0 +1,291 @@
+---
+const tokenCells = Array.from({ length: 4 }, (_, row) =>
+  Array.from({ length: 4 }, (_, col) => ({
+    x: 748 + col * 48,
+    y: 84 + row * 48
+  }))
+).flat();
+---
+
+<figure
+  class="hamjepa-encoder-diagram"
+  aria-labelledby="hamjepa-encoder-title"
+  aria-describedby="hamjepa-encoder-caption"
+>
+  <div class="hamjepa-encoder-scroll" tabindex="0" aria-label="Scrollable encoder construction diagram">
+    <svg
+      class="hamjepa-encoder-svg"
+      viewBox="0 0 1280 760"
+      role="img"
+      aria-labelledby="hamjepa-encoder-title hamjepa-encoder-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-encoder-title">
+        Encoder token-split construction of the HamJEPA phase-space state
+      </title>
+      <desc id="hamjepa-encoder-desc">
+        View v flows through ResNet token mode and layer3 feature map into a token grid. A selected token is zoomed
+        downward to one-token channel stack, split into q and p halves, then mapped leftward to q in R^d and p in
+        R^d, concatenated into s=[q;p] in R^2d, with identity projector preserving the split.
+      </desc>
+
+      <defs>
+        <marker id="ham-enc-arrow" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4d5866" />
+        </marker>
+        <marker id="ham-enc-soft" markerWidth="8" markerHeight="8" refX="6.6" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 z" fill="#758695" />
+        </marker>
+      </defs>
+
+      <rect x="60" y="84" width="112" height="108" rx="10" class="box box-base" />
+      <text x="116" y="120" class="t-main" text-anchor="middle">view</text>
+      <text x="116" y="154" class="t-math" text-anchor="middle">v</text>
+
+      <rect x="220" y="94" width="210" height="90" rx="10" class="box box-soft" />
+      <text x="325" y="126" class="t-main" text-anchor="middle">ResNet-18</text>
+      <text x="325" y="156" class="t-main" text-anchor="middle">token mode</text>
+
+      <rect x="472" y="94" width="198" height="90" rx="10" class="box box-soft" />
+      <text x="571" y="126" class="t-main" text-anchor="middle">layer3</text>
+      <text x="571" y="156" class="t-main" text-anchor="middle">feature map</text>
+
+      <rect x="706" y="42" width="286" height="286" rx="12" class="group-box" />
+      {
+        tokenCells.map((cell) => (
+          <rect
+            x={cell.x}
+            y={cell.y}
+            width="36"
+            height="36"
+            rx="3"
+            class={cell.x === 844 && cell.y === 180 ? 'token token-active' : 'token'}
+          />
+        ))
+      }
+      <text x="849" y="28" class="t-small" text-anchor="middle">token grid</text>
+
+      <rect x="688" y="370" width="348" height="320" rx="12" class="group-box" />
+      <text x="862" y="406" class="t-small" text-anchor="middle">one token</text>
+
+      <rect x="796" y="438" width="108" height="220" rx="10" class="stack-outline" />
+      <rect x="796" y="630" width="108" height="22" class="slice-p" />
+      <rect x="796" y="604" width="108" height="22" class="slice-p" />
+      <rect x="796" y="578" width="108" height="22" class="slice-p" />
+      <rect x="796" y="552" width="108" height="22" class="slice-p" />
+      <rect x="796" y="526" width="108" height="22" class="slice-q" />
+      <rect x="796" y="500" width="108" height="22" class="slice-q" />
+      <rect x="796" y="474" width="108" height="22" class="slice-q" />
+      <rect x="796" y="448" width="108" height="22" class="slice-q" />
+
+      <path d="M938,452 C954,452 954,548 938,548" class="brace" />
+      <text x="992" y="504" class="t-small" text-anchor="middle">q half</text>
+      <path d="M938,554 C954,554 954,652 938,652" class="brace" />
+      <text x="992" y="610" class="t-small" text-anchor="middle">p half</text>
+
+      <text x="850" y="678" class="t-small" text-anchor="middle">
+        d<tspan baseline-shift="sub" font-size="70%">f</tspan> channels
+      </text>
+
+      <rect x="384" y="452" width="192" height="84" rx="10" class="box box-q" />
+      <text x="480" y="500" class="t-math" text-anchor="middle">
+        q ∈ R<tspan baseline-shift="super" font-size="70%">d</tspan>
+      </text>
+
+      <rect x="384" y="564" width="192" height="84" rx="10" class="box box-p" />
+      <text x="480" y="612" class="t-math" text-anchor="middle">
+        p ∈ R<tspan baseline-shift="super" font-size="70%">d</tspan>
+      </text>
+
+      <rect x="156" y="496" width="186" height="122" rx="10" class="box box-soft" />
+      <text x="249" y="546" class="t-math" text-anchor="middle">s=[q;p]</text>
+      <text x="249" y="582" class="t-math" text-anchor="middle">
+        ∈ R<tspan baseline-shift="super" font-size="70%">2d</tspan>
+      </text>
+
+      <rect x="56" y="654" width="372" height="56" rx="8" class="box box-base" />
+      <text x="242" y="688" class="t-small-tight" text-anchor="middle">identity projector preserves the q/p split</text>
+
+      <line x1="172" y1="138" x2="220" y2="138" class="a-main" />
+      <line x1="430" y1="138" x2="472" y2="138" class="a-main" />
+      <line x1="670" y1="138" x2="706" y2="138" class="a-main" />
+
+      <line x1="862" y1="198" x2="862" y2="370" class="a-soft" />
+
+      <line x1="796" y1="500" x2="576" y2="494" class="a-soft" />
+      <line x1="796" y1="606" x2="576" y2="606" class="a-soft" />
+
+      <line x1="384" y1="494" x2="342" y2="540" class="a-main" />
+      <line x1="384" y1="606" x2="342" y2="566" class="a-main" />
+      <line x1="249" y1="618" x2="249" y2="656" class="a-soft" />
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-encoder-caption" class="hamjepa-encoder-caption">
+    <strong>How the encoder constructs the phase-space state.</strong>
+    HamJEPA is not just taking an arbitrary vector and renaming its halves as q and p. In the implementation, the
+    encoder runs in token mode: an intermediate ResNet feature map is converted into a token grid, the channel stack
+    of each token is split into a q half and a p half, and those halves are flattened across the spatial grid to form
+    q∈R<sup>d</sup> and p∈R<sup>d</sup>. These are then concatenated into s=[q;p]∈R<sup>2d</sup>. This is why HamJEPA
+    uses an identity projector: a learned MLP after the encoder would remix the coordinates and destroy the intended
+    q/p semantics.
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-encoder-diagram {
+    margin: 1.2rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 12px 26px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-encoder-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-encoder-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-encoder-svg {
+    display: block;
+    width: 100%;
+    min-width: 1060px;
+    height: auto;
+    background:
+      radial-gradient(circle at 20% 14%, rgba(42, 100, 214, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.24));
+  }
+
+  .box {
+    stroke-width: 1.35;
+  }
+
+  .box-base {
+    fill: #ffffff;
+    stroke: #5f6873;
+  }
+
+  .box-soft {
+    fill: #f4f7f9;
+    stroke: #66717d;
+  }
+
+  .box-q {
+    fill: #eef3f7;
+    stroke: #7f96a6;
+  }
+
+  .box-p {
+    fill: #f4f0ec;
+    stroke: #ad8f7b;
+  }
+
+  .group-box {
+    fill: rgba(255, 255, 255, 0.64);
+    stroke: #6d7784;
+    stroke-width: 1.25;
+  }
+
+  .token {
+    fill: #ffffff;
+    stroke: #596675;
+    stroke-width: 0.95;
+  }
+
+  .token-active {
+    fill: #dfeaf3;
+    stroke: #3f6e93;
+    stroke-width: 1.45;
+  }
+
+  .stack-outline {
+    fill: #ffffff;
+    stroke: #607083;
+    stroke-width: 1.3;
+  }
+
+  .slice-q {
+    fill: rgba(190, 213, 231, 0.82);
+    stroke: #6f92ac;
+    stroke-width: 0.8;
+  }
+
+  .slice-p {
+    fill: rgba(230, 205, 184, 0.78);
+    stroke: #9e7c64;
+    stroke-width: 0.8;
+  }
+
+  .brace {
+    fill: none;
+    stroke: #5c6775;
+    stroke-width: 1.3;
+  }
+
+  .a-main {
+    fill: none;
+    stroke: #4d5866;
+    stroke-width: 2;
+    marker-end: url(#ham-enc-arrow);
+  }
+
+  .a-soft {
+    fill: none;
+    stroke: #758695;
+    stroke-width: 1.7;
+    marker-end: url(#ham-enc-soft);
+  }
+
+  .t-main {
+    font: 500 24px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #20262f;
+  }
+
+  .t-small {
+    font: 600 20px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #4a5563;
+  }
+
+  .t-small-tight {
+    font: 600 17px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #4a5563;
+  }
+
+  .t-math {
+    font: 600 27px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .hamjepa-encoder-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.78rem 0.95rem 0.96rem;
+    font-size: 0.84rem;
+    line-height: 1.52;
+    color: var(--muted);
+  }
+
+  @media (max-width: 920px) {
+    .hamjepa-encoder-svg {
+      min-width: 980px;
+    }
+
+    .t-main {
+      font-size: 22px;
+    }
+
+    .t-small {
+      font-size: 18px;
+    }
+
+    .t-math {
+      font-size: 24px;
+    }
+  }
+</style>

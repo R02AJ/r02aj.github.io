@@ -1,0 +1,25 @@
+---
+interface GlossaryItem {
+  term: string;
+  definition: string;
+}
+
+interface Props {
+  title?: string;
+  items: GlossaryItem[];
+}
+
+const { title = 'Mini glossary', items } = Astro.props;
+---
+
+<section class="card my-7 border-dashed">
+  <p class="meta-label mb-3">{title}</p>
+  <dl class="grid gap-3">
+    {items.map((item) => (
+      <div>
+        <dt class="font-semibold">{item.term}</dt>
+        <dd class="text-sm text-[color:var(--muted)]">{item.definition}</dd>
+      </div>
+    ))}
+  </dl>
+</section>

@@ -1,0 +1,39 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  cta?: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+}
+
+const { title, subtitle, cta, secondaryCta } = Astro.props;
+---
+
+<section class="surface-dark section-space overflow-hidden border-b border-white/15">
+  <div class="page-shell">
+    <div class="mx-auto max-w-5xl space-y-9">
+      <h1 class="display-title">{title}</h1>
+      {subtitle && <p class="lede">{subtitle}</p>}
+      {(cta || secondaryCta) && (
+        <div class="flex flex-wrap items-center gap-4">
+          {cta && (
+            <a
+              href={cta.href}
+              class="rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition-transform hover:-translate-y-0.5"
+            >
+              {cta.label}
+            </a>
+          )}
+          {secondaryCta && (
+            <a
+              href={secondaryCta.href}
+              class="rounded-full border border-white/35 px-6 py-3 text-sm font-semibold text-white transition-colors hover:border-white/70"
+            >
+              {secondaryCta.label}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

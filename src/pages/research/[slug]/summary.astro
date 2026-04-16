@@ -1,0 +1,228 @@
+---
+import { getCollection, getEntry, render, type CollectionEntry } from 'astro:content';
+import ResearchPageShell from '../../../components/research/ResearchPageShell.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { isPlaceholderLink, siteConfig, withBase } from '../../../data/site';
+import { entrySlug, sortByOrder } from '../../../utils/content';
+
+interface Props {
+  summary: CollectionEntry<'summaries'>;
+}
+
+const DEFAULT_TOC = [
+  { id: 'one-sentence-takeaway', label: 'One-sentence takeaway' },
+  { id: 'why-this-matters', label: 'Why this matters' },
+  { id: 'core-idea', label: 'Core idea' },
+  { id: 'intuition', label: 'Intuition' },
+  { id: 'method-breakdown', label: 'Method breakdown' },
+  { id: 'results-evidence', label: 'Results / evidence' },
+  { id: 'figure-notice', label: 'Figure guidance' },
+  { id: 'limits-next', label: 'Limitations / next steps' },
+  { id: 'links', label: 'Links' }
+];
+
+const CHEBYSHEV_TOC = [
+  { id: 'put-state-variable', label: '1. Put the state variable in price space' },
+  { id: 'warps-approximation-strategy', label: '2. The warps are the approximation strategy' },
+  { id: 'chebyshev', label: '3. Chebyshev' },
+  { id: 'matrix-operator-problem', label: '4. No-arbitrage becomes a matrix operator problem' },
+  { id: 'global-qp', label: '5. The global QP is a projection in a tailored metric' },
+  { id: 'fog-secondary-idea', label: '6. The fog is the right secondary idea' },
+  { id: 'bottom-line', label: '7. Bottom line' }
+];
+
+const HAMJEPA_TOC = [
+  { id: 'main-theoretical-move', label: '1. The main theoretical move' },
+  { id: 'price-of-isotropy', label: '2. The price of using the wrong sphere' },
+  { id: 'what-hamjepa-changes', label: '3. What HamJEPA actually changes' },
+  { id: 'symplecticity-vs-anticollapse', label: '4. Symplecticity is not anti-collapse' },
+  { id: 'what-is-held-fixed', label: '5. What is held fixed, and why that matters' },
+  { id: 'how-to-read-qp', label: '6. How to read the q/p results' },
+  { id: 'what-the-numbers-imply', label: '7. What the numbers imply' },
+  { id: 'why-80-epoch-ablation', label: '8. Why the 80-epoch ablation matters' },
+  { id: 'bottom-line', label: 'Bottom line' }
+];
+
+export async function getStaticPaths() {
+  const summaries = (await getCollection('summaries')).sort(sortByOrder);
+
+  return summaries.map((summary) => ({
+    params: { slug: summary.data.projectSlug || entrySlug(summary.id) },
+    props: { summary }
+  }));
+}
+
+const { summary } = Astro.props as Props;
+const { Content } = await render(summary);
+const relatedProject = await getEntry('projects', summary.data.projectSlug);
+
+const slug = summary.data.projectSlug || entrySlug(summary.id);
+const projectHref = relatedProject ? withBase(`/research/${entrySlug(relatedProject.id)}`) : withBase('/research');
+const toc =
+  slug === 'chebyshev-option-surfaces'
+    ? CHEBYSHEV_TOC
+    : slug === 'hamjepa'
+      ? HAMJEPA_TOC
+      : DEFAULT_TOC;
+const fallbackPdfBySlug: Record<string, string> = {
+  hamjepa: withBase('/files/summary_hamjepa.pdf'),
+  'chebyshev-option-surfaces': withBase('/files/summaries/chebyshev-technical-summary.pdf')
+};
+const pdfHref = normalizeLink(summary.data.pdfPath) ?? fallbackPdfBySlug[slug];
+
+const externalMap = new Map(
+  (relatedProject?.data.externalLinks ?? []).map((link) => [link.label.toLowerCase(), link.href])
+);
+
+function findLinkByKeyword(keywords: string[]): string | undefined {
+  for (const [label, href] of externalMap) {
+    if (keywords.some((keyword) => label.includes(keyword))) {
+      return href;
+    }
+  }
+
+  return undefined;
+}
+
+function normalizeLink(href?: string): string | undefined {
+  if (!href || isPlaceholderLink(href)) {
+    return undefined;
+  }
+
+  return withBase(href);
+}
+
+const paperLink =
+  normalizeLink(findLinkByKeyword(['paper'])) ??
+  normalizeLink(
+    slug === 'hamjepa'
+      ? siteConfig.links.hamjepaPaper
+      : slug === 'chebyshev-option-surfaces'
+        ? siteConfig.links.chebyshevPaper
+        : undefined
+  );
+
+const arxivLink =
+  normalizeLink(findLinkByKeyword(['arxiv'])) ??
+  normalizeLink(
+    slug === 'chebyshev-option-surfaces'
+      ? siteConfig.links.chebyshevPaper
+      : paperLink?.includes('arxiv.org')
+        ? paperLink
+        : siteConfig.links.arxivAuthor
+  );
+
+const paperPdfLink =
+  slug === 'chebyshev-option-surfaces' ? withBase('/files/Arbitrage_Free_Option_Price_Surfaces.pdf') : paperLink;
+
+const summaryShellActions = [
+  ...(slug === 'chebyshev-option-surfaces'
+    ? [
+        {
+          label: 'Summary PDF',
+          href: pdfHref,
+          external: Boolean(pdfHref),
+          ariaLabel: 'Summary PDF',
+          title: 'Summary PDF'
+        },
+        { label: 'Visual guide', href: projectHref },
+        {
+          label: 'Paper PDF',
+          href: paperPdfLink,
+          external: Boolean(paperPdfLink),
+          ariaLabel: 'Paper PDF',
+          title: 'Paper PDF'
+        },
+        {
+          label: 'arXiv',
+          href: arxivLink,
+          external: Boolean(arxivLink),
+          ariaLabel: 'arXiv',
+          title: 'arXiv'
+        }
+      ]
+    : [
+        {
+          label: 'Summary PDF',
+          href: pdfHref,
+          external: Boolean(pdfHref),
+          ariaLabel: 'Summary PDF',
+          title: 'Summary PDF'
+        },
+        { label: 'Visual guide', href: projectHref },
+        {
+          label: 'Paper PDF',
+          href: paperPdfLink,
+          external: Boolean(paperPdfLink),
+          ariaLabel: 'Paper PDF',
+          title: 'Paper PDF'
+        },
+        {
+          label: 'Zenodo',
+          href: siteConfig.links.zenodo,
+          external: true
+        }
+      ])
+];
+
+const summaryShellTags = [
+  { label: relatedProject?.data.category ?? 'Research' },
+  { label: 'Technical summary', tone: 'accent' as const }
+];
+---
+
+<BaseLayout
+  title={`${summary.data.title} | Technical Summary`}
+  description={summary.data.standfirst}
+>
+  <ResearchPageShell
+    title={summary.data.title}
+    description={summary.data.standfirst}
+    tags={summaryShellTags}
+    actions={summaryShellActions}
+    actionsAriaLabel={`${summary.data.title} summary actions`}
+  />
+
+  <section class="section-space section-divider summary-content-shell">
+    <div class="page-shell grid gap-8 lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start">
+      <aside class="hidden lg:block lg:sticky lg:top-28">
+        <nav aria-label="Summary sections" class="card space-y-2 p-4">
+          <p class="meta-label mb-2">On this page</p>
+          <ul class="toc-list text-sm">
+            {toc.map((entry) => (
+              <li>
+                <a href={`#${entry.id}`} class="toc-link">
+                  {entry.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="space-y-6">
+        {/* Keep long-form summary bodies always visible; do not gate with data-reveal. */}
+        <article class="card prose-panel summary-prose">
+          <Content />
+        </article>
+
+        {relatedProject && (
+          <article class="card" data-reveal>
+            <p class="meta-label mb-2">Linked visual guide</p>
+            <h2 class="mb-3 text-3xl">{relatedProject.data.title}</h2>
+            <p class="body-copy mb-5">{relatedProject.data.thesis}</p>
+            <a href={projectHref} class="subtle-link text-sm">
+              Open visual guide <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        )}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .summary-content-shell {
+    padding-top: clamp(1.2rem, 2.4vw, 2rem);
+  }
+</style>

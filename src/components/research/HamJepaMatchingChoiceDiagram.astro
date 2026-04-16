@@ -1,0 +1,211 @@
+<figure
+  class="hamjepa-matching-figure"
+  aria-labelledby="hamjepa-matching-title"
+  aria-describedby="hamjepa-matching-caption"
+>
+  <div class="hamjepa-matching-scroll" tabindex="0" aria-label="Scrollable CIFAR and ImageNet matching-choice diagram">
+    <svg
+      class="hamjepa-matching-svg"
+      viewBox="0 0 1220 480"
+      role="img"
+      aria-labelledby="hamjepa-matching-title hamjepa-matching-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-matching-title">CIFAR-100 and ImageNet-100 matching-choice comparison</title>
+      <desc id="hamjepa-matching-desc">
+        Left panel CIFAR-100 emphasizes matching mainly q while p remains auxiliary. Right panel ImageNet-100 matches
+        full [q;p], directly constraining both coordinates.
+      </desc>
+
+      <defs>
+        <marker id="ham-match-blue" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#2f6f9d" />
+        </marker>
+        <marker id="ham-match-orange" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#b67a2e" />
+        </marker>
+        <marker id="ham-match-soft" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#7f8d99" />
+        </marker>
+      </defs>
+
+      <rect x="36" y="66" width="560" height="360" rx="14" class="panel" />
+      <text x="316" y="44" class="t-head" text-anchor="middle">CIFAR-100</text>
+
+      <rect x="90" y="142" width="126" height="66" rx="8" class="state-q-strong" />
+      <rect x="90" y="214" width="126" height="66" rx="8" class="state-p-weak" />
+      <text x="153" y="184" class="t-state" text-anchor="middle">q̂<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+      <text x="153" y="254" class="t-state" text-anchor="middle">p̂<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+
+      <rect x="416" y="142" width="126" height="66" rx="8" class="state-q-strong" />
+      <rect x="416" y="214" width="126" height="66" rx="8" class="state-p-weak" />
+      <text x="479" y="184" class="t-state" text-anchor="middle">q<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+      <text x="479" y="254" class="t-state" text-anchor="middle">p<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+
+      <rect x="246" y="284" width="140" height="78" rx="10" class="match-box" />
+      <text x="316" y="316" class="t-match" text-anchor="middle">match mainly</text>
+      <text x="316" y="346" class="t-match-math" text-anchor="middle">q</text>
+      <line x1="216" y1="176" x2="246" y2="304" class="a-blue" marker-end="url(#ham-match-blue)" />
+      <line x1="416" y1="176" x2="386" y2="304" class="a-blue" marker-end="url(#ham-match-blue)" />
+      <line x1="216" y1="248" x2="274" y2="248" class="a-soft" marker-end="url(#ham-match-soft)" />
+      <line x1="416" y1="248" x2="356" y2="248" class="a-soft" marker-end="url(#ham-match-soft)" />
+      <text x="316" y="396" class="t-note" text-anchor="middle">q is the main content coordinate; p is more auxiliary</text>
+
+      <rect x="624" y="66" width="560" height="360" rx="14" class="panel" />
+      <text x="904" y="44" class="t-head" text-anchor="middle">ImageNet-100</text>
+
+      <rect x="678" y="142" width="126" height="66" rx="8" class="state-q-strong" />
+      <rect x="678" y="214" width="126" height="66" rx="8" class="state-p-strong" />
+      <text x="741" y="184" class="t-state" text-anchor="middle">q̂<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+      <text x="741" y="254" class="t-state" text-anchor="middle">p̂<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+
+      <rect x="1004" y="142" width="126" height="66" rx="8" class="state-q-strong" />
+      <rect x="1004" y="214" width="126" height="66" rx="8" class="state-p-strong" />
+      <text x="1067" y="184" class="t-state" text-anchor="middle">q<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+      <text x="1067" y="254" class="t-state" text-anchor="middle">p<tspan baseline-shift="sub" font-size="70%">b</tspan></text>
+
+      <rect x="834" y="284" width="140" height="78" rx="10" class="match-box" />
+      <text x="904" y="316" class="t-match" text-anchor="middle">match full</text>
+      <text x="904" y="346" class="t-match-math" text-anchor="middle">[q; p]</text>
+
+      <line x1="804" y1="176" x2="834" y2="304" class="a-blue" marker-end="url(#ham-match-blue)" />
+      <line x1="1004" y1="176" x2="974" y2="304" class="a-blue" marker-end="url(#ham-match-blue)" />
+      <line x1="804" y1="248" x2="834" y2="336" class="a-orange" marker-end="url(#ham-match-orange)" />
+      <line x1="1004" y1="248" x2="974" y2="336" class="a-orange" marker-end="url(#ham-match-orange)" />
+
+      <text x="904" y="396" class="t-note" text-anchor="middle">both coordinates are directly constrained</text>
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-matching-caption" class="hamjepa-matching-caption">
+    <strong>Why CIFAR-100 and ImageNet-100 use different matching choices.</strong> On CIFAR-100 the training
+    objective emphasizes the content coordinate q, so q is the cleanest downstream readout and p mainly supports the
+    dynamics. On ImageNet-100 the stable regime was to match the full state [q;p], which directly constrains both
+    coordinates and makes p much more informative.
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-matching-figure {
+    margin: 1.15rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.15rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 10px 24px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-matching-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-matching-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-matching-svg {
+    display: block;
+    width: 100%;
+    min-width: 980px;
+    height: auto;
+    background:
+      radial-gradient(circle at 18% 10%, rgba(42, 100, 214, 0.09), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22));
+  }
+
+  .panel {
+    fill: rgba(255, 255, 255, 0.72);
+    stroke: #6f7b88;
+    stroke-width: 1.3;
+  }
+
+  .state-q-strong {
+    fill: #e9f1f7;
+    stroke: #6e8fa8;
+    stroke-width: 1.2;
+  }
+
+  .state-p-strong {
+    fill: #f3eee8;
+    stroke: #a88870;
+    stroke-width: 1.2;
+  }
+
+  .state-p-weak {
+    fill: color-mix(in oklab, #f3eee8 58%, #ffffff 42%);
+    stroke: color-mix(in oklab, #a88870 55%, #ffffff 45%);
+    stroke-width: 1;
+  }
+
+  .match-box {
+    fill: rgba(255, 255, 255, 0.92);
+    stroke: #6f7a86;
+    stroke-width: 1.2;
+  }
+
+  .a-blue {
+    fill: none;
+    stroke: #2f6f9d;
+    stroke-width: 1.8;
+  }
+
+  .a-orange {
+    fill: none;
+    stroke: #b67a2e;
+    stroke-width: 1.8;
+  }
+
+  .a-soft {
+    fill: none;
+    stroke: #7f8d99;
+    stroke-width: 1.4;
+    stroke-dasharray: 5 4;
+  }
+
+  .t-head {
+    font: 600 27px 'Newsreader', 'Iowan Old Style', serif;
+    letter-spacing: -0.01em;
+    fill: #1f2630;
+  }
+
+  .t-state {
+    font: 600 24px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .t-match {
+    font: 600 18px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #2f3944;
+  }
+
+  .t-match-math {
+    font: 600 26px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .t-note {
+    font: 500 16px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #44505f;
+  }
+
+  .hamjepa-matching-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.74rem 0.9rem 0.9rem;
+    font-size: 0.84rem;
+    line-height: 1.52;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .hamjepa-matching-svg {
+      min-width: 940px;
+    }
+
+    .t-head {
+      font-size: 25px;
+    }
+  }
+</style>

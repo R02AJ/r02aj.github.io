@@ -1,0 +1,55 @@
+---
+title: 'Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction'
+category: Geometric ML
+status: Research
+thesis: Euclidean isotropy is not a neutral prior when downstream geometry is structured; HamJEPA replaces isotropic regularization with a phase-space predictive prior built from Hamiltonian geometry and symplectic dynamics.
+problem: 'The Euclidean-isotropic prior used by common anti-collapse schemes can impose a geometric mismatch when representation dynamics are inherently structured. In practice, this can be interpreted as a price of isotropy: stability and invariance are encouraged in directions that may be irrelevant to the task geometry.'
+coreIdea: Model each view as a phase-space state `s = (q, p)` and predict with a structure-preserving map. The key shift is to treat geometry as first-class, replacing isotropic latent assumptions with a Hamiltonian phase-space prior.
+method: Use an H-energy budget and a symplectic leapfrog/velocity-Verlet predictor so the map is volume-aware and time-reversible in the intended sense. Anti-collapse constraints are enforced at the encoder level without forcing isotropic Gaussian geometry in latent space.
+results: On ImageNet-100 and CIFAR-100, HamJEPA improves q-side linear-probe and kNN behavior over isotropy-centered baselines under comparable training budgets, while exposing diagnostics such as energy drift and reversibility.
+keyPoints:
+  - Under an H-energy budget, the canonical structured law is proportional to H^{-1}, not the identity.
+  - The method represents each view as a phase-space state s = (q, p).
+  - Prediction is done through a symplectic leapfrog / velocity-Verlet style map.
+  - The predictor is volume-preserving and time-reversible in the intended sense.
+  - Encoder-side anti-collapse is handled without imposing Euclidean isotropy.
+headlineMetrics:
+  - 'ImageNet-100, 45 epochs: HamJEPA q linear probe 31.92 vs SIGReg q 24.40'
+  - 'ImageNet-100, 45 epochs: HamJEPA q kNN 24.92 vs SIGReg q 20.10'
+  - 'CIFAR-100 gains are larger at 30 and 80 epochs'
+assets:
+  - fig_imagenet_qp_decomposition_MV_HJEPA.png
+  - fig_imagenet_epoch_dynamics.png
+  - symplecticity_defect_hist.png
+  - liouville_blob_area.png
+  - liouville_area_preservation.png
+  - time_reversibility_heatmap.png
+  - energy_vs_time.png
+  - energy_drift_heatmap.png
+  - energy_drift_heatmap_sigreg_vs_hamjepa.png
+  - covariance_stability.png
+  - visualizing_drift_sigreg_vs_hamjepa.gif
+externalLinks:
+  - label: HamJEPA paper
+    href: "[PASTE_HAMJEPA_PAPER_URL_IF_AVAILABLE]"
+  - label: HamJEPA code
+    href: "[PASTE_HAMJEPA_GITHUB_URL_IF_AVAILABLE]"
+order: 1
+---
+
+## Research Context
+
+The objective is not only better self-supervised representation quality, but a better structural prior for the prediction operator itself. In this framing, isotropy is treated as a special case, not a default geometric truth.
+
+## Practical Interpretation
+
+HamJEPA treats the predictor as a structure-preserving map in phase space. This gives a route to better stability diagnostics (energy drift, reversibility, and volume preservation) while maintaining competitive learning dynamics.
+
+## Release Status
+
+Public paper and code links will be wired into the link badges as soon as the release URLs are finalized.
+
+## Technical Notes
+
+- The predictor is designed to preserve geometric structure rather than merely regularize covariance.
+- Diagnostics such as symplecticity defect, reversibility, and drift are treated as model health signals.

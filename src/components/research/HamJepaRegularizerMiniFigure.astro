@@ -1,0 +1,193 @@
+---
+interface Props {
+  variant: 'energy' | 'variance' | 'logdet' | 'participation' | 'mean';
+  title: string;
+}
+
+const { variant, title } = Astro.props;
+---
+
+<div class="hamjepa-regularizer-figure" role="img" aria-label={title}>
+  <svg class="hamjepa-regularizer-svg" viewBox="0 0 420 220" preserveAspectRatio="xMidYMid meet">
+    <rect x="14" y="16" width="392" height="188" rx="14" class="frame" />
+
+    {
+      variant === 'energy' && (
+        <>
+          <ellipse cx="130" cy="111" rx="64" ry="42" class="shape shape-a" />
+          <ellipse cx="285" cy="111" rx="62" ry="38" class="shape shape-b" />
+          <path d="M178 111 L222 111" class="line" />
+          <path d="M222 111 L210 102 M222 111 L210 120" class="line" />
+          <path d="M98 62 Q130 42 162 62" class="budget" />
+          <path d="M253 62 Q285 42 317 62" class="budget" />
+        </>
+      )
+    }
+
+    {
+      variant === 'variance' && (
+        <>
+          <line x1="68" y1="160" x2="356" y2="160" class="axis" />
+          <line x1="68" y1="74" x2="356" y2="74" class="threshold" />
+          <rect x="86" y="112" width="26" height="48" class="bar" />
+          <rect x="128" y="92" width="26" height="68" class="bar" />
+          <rect x="170" y="80" width="26" height="80" class="bar" />
+          <rect x="212" y="102" width="26" height="58" class="bar" />
+          <rect x="254" y="88" width="26" height="72" class="bar" />
+          <rect x="296" y="96" width="26" height="64" class="bar" />
+        </>
+      )
+    }
+
+    {
+      variant === 'logdet' && (
+        <>
+          <ellipse cx="132" cy="114" rx="58" ry="36" class="shape shape-a" />
+          <ellipse cx="286" cy="114" rx="74" ry="46" class="shape shape-b" />
+          <rect x="78" y="78" width="108" height="72" class="ghost" />
+          <rect x="220" y="66" width="132" height="96" class="ghost" />
+          <path d="M186 114 L220 114" class="line" />
+          <path d="M220 114 L210 104 M220 114 L210 124" class="line" />
+        </>
+      )
+    }
+
+    {
+      variant === 'participation' && (
+        <>
+          <line x1="68" y1="162" x2="356" y2="162" class="axis" />
+          <line x1="68" y1="78" x2="356" y2="78" class="threshold" />
+          <line x1="68" y1="52" x2="356" y2="52" class="cap" />
+          <rect x="88" y="56" width="20" height="106" class="bar bar-strong" />
+          <rect x="124" y="74" width="20" height="88" class="bar" />
+          <rect x="160" y="88" width="20" height="74" class="bar" />
+          <rect x="196" y="100" width="20" height="62" class="bar" />
+          <rect x="232" y="112" width="20" height="50" class="bar" />
+          <rect x="268" y="122" width="20" height="40" class="bar" />
+          <rect x="304" y="132" width="20" height="30" class="bar" />
+        </>
+      )
+    }
+
+    {
+      variant === 'mean' && (
+        <>
+          <circle cx="212" cy="112" r="8" class="origin" />
+          <circle cx="152" cy="90" r="7" class="point" />
+          <circle cx="176" cy="136" r="6" class="point" />
+          <circle cx="244" cy="78" r="7" class="point" />
+          <circle cx="274" cy="132" r="7" class="point" />
+          <circle cx="226" cy="148" r="6" class="point" />
+          <line x1="152" y1="90" x2="212" y2="112" class="line-soft" />
+          <line x1="176" y1="136" x2="212" y2="112" class="line-soft" />
+          <line x1="244" y1="78" x2="212" y2="112" class="line-soft" />
+          <line x1="274" y1="132" x2="212" y2="112" class="line-soft" />
+          <line x1="226" y1="148" x2="212" y2="112" class="line-soft" />
+        </>
+      )
+    }
+  </svg>
+</div>
+
+<style>
+  .hamjepa-regularizer-figure {
+    border: 1px solid color-mix(in oklab, var(--line) 68%, transparent);
+    border-radius: 0.95rem;
+    background: color-mix(in oklab, var(--bg-elevated) 90%, white 10%);
+    overflow: hidden;
+  }
+
+  .hamjepa-regularizer-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background:
+      radial-gradient(circle at 18% 16%, rgba(42, 100, 214, 0.1), transparent 33%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.56), rgba(255, 255, 255, 0.24));
+  }
+
+  .frame {
+    fill: rgba(255, 255, 255, 0.66);
+    stroke: #7c8894;
+    stroke-width: 1.2;
+  }
+
+  .shape {
+    stroke-width: 1.4;
+  }
+
+  .shape-a {
+    fill: rgba(173, 205, 228, 0.55);
+    stroke: #6f8ea7;
+  }
+
+  .shape-b {
+    fill: rgba(197, 222, 240, 0.55);
+    stroke: #6d8aa0;
+  }
+
+  .line {
+    fill: none;
+    stroke: #495362;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .line-soft {
+    fill: none;
+    stroke: #748392;
+    stroke-width: 1.5;
+  }
+
+  .budget {
+    fill: none;
+    stroke: #9f7d31;
+    stroke-width: 1.8;
+  }
+
+  .axis {
+    stroke: #687381;
+    stroke-width: 1.5;
+  }
+
+  .threshold {
+    stroke: #2f7d57;
+    stroke-width: 1.7;
+    stroke-dasharray: 5 4;
+  }
+
+  .cap {
+    stroke: #9f7d31;
+    stroke-width: 1.7;
+    stroke-dasharray: 5 4;
+  }
+
+  .bar {
+    fill: rgba(151, 182, 207, 0.7);
+    stroke: #70879a;
+    stroke-width: 1.1;
+  }
+
+  .bar-strong {
+    fill: rgba(117, 161, 193, 0.8);
+    stroke: #597b96;
+  }
+
+  .ghost {
+    fill: rgba(255, 255, 255, 0.24);
+    stroke: #7d8894;
+    stroke-width: 1.1;
+    stroke-dasharray: 5 4;
+  }
+
+  .origin {
+    fill: rgba(42, 100, 214, 0.9);
+  }
+
+  .point {
+    fill: rgba(114, 160, 194, 0.78);
+    stroke: #6e8ba1;
+    stroke-width: 1.1;
+  }
+</style>

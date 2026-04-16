@@ -1,0 +1,378 @@
+---
+interface Props {
+  variant: 'energy' | 'variance' | 'logdet' | 'participation' | 'mean';
+}
+
+const { variant } = Astro.props;
+
+const meta = {
+  energy: {
+    title: 'Energy budget',
+    caption:
+      'The energy budget keeps the average per-dimension scale of q and p near a target range. It penalizes both under-scaled states (which risk collapse toward zero) and over-scaled states (which can destabilize dynamics), so the latent cloud stays at a controlled overall radius.'
+  },
+  variance: {
+    title: 'Variance floor',
+    caption:
+      'The variance floor prevents individual coordinates from becoming nearly constant across the batch. Visually, it revives dead axes: instead of allowing the latent cloud to collapse onto a lower-dimensional direction, it forces each coordinate to retain a minimum amount of variation.'
+  },
+  logdet: {
+    title: 'Projected log-det floor',
+    caption:
+      'The projected log-det floor prevents the batch representation from flattening into a very low-volume set. It does not require isotropy, but it does force the projected covariance to retain nontrivial volume, ruling out extreme degeneracies such as line-like or sheet-like collapse.'
+  },
+  participation: {
+    title: 'Participation-ratio floor and top-eigenvalue control',
+    caption:
+      'These penalties prevent the representation from surviving only through one huge dominant direction. The participation-ratio floor encourages variance to remain spread across multiple modes, while the top-eigenvalue ceiling prevents a single spike from taking over the spectrum.'
+  },
+  mean: {
+    title: 'Mean penalty',
+    caption:
+      'A large global mean can create a dominant offset direction that makes random-pair cosine similarities look artificially cone-like. The mean penalty discourages this by keeping the batch mean closer to zero, so the geometry is not dominated by a single global shift.'
+  }
+} as const;
+
+const details = meta[variant];
+---
+
+<figure
+  class="hamjepa-regularizer-diagram"
+  aria-labelledby={`hamjepa-reg-${variant}-title`}
+  aria-describedby={`hamjepa-reg-${variant}-caption`}
+>
+  <div class="hamjepa-regularizer-scroll" tabindex="0" aria-label={`Scrollable ${details.title} figure`}>
+    {
+      variant === 'energy' && (
+        <svg
+          class="hamjepa-regularizer-svg"
+          viewBox="0 0 1080 360"
+          role="img"
+          aria-labelledby={`hamjepa-reg-${variant}-title`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform="translate(180,170)">
+            <rect x="-146" y="-120" width="292" height="240" rx="12" class="group" />
+            <circle cx="0" cy="0" r="82" class="target-circle" />
+            <g transform="scale(0.44)">
+              <circle cx="18" cy="10" r="12" class="dot" />
+              <circle cx="34" cy="42" r="11" class="dot" />
+              <circle cx="-24" cy="24" r="11" class="dot" />
+              <circle cx="-38" cy="-16" r="10" class="dot" />
+              <circle cx="2" cy="-32" r="11" class="dot" />
+              <circle cx="46" cy="-12" r="10" class="dot" />
+            </g>
+            <text x="0" y="145" class="panel-label" text-anchor="middle">under-scale</text>
+          </g>
+
+          <g transform="translate(540,170)">
+            <rect x="-146" y="-120" width="292" height="240" rx="12" class="group" />
+            <circle cx="0" cy="0" r="82" class="target-circle" />
+            <g transform="scale(0.8)">
+              <circle cx="18" cy="10" r="12" class="dot-good" />
+              <circle cx="34" cy="42" r="11" class="dot-good" />
+              <circle cx="-24" cy="24" r="11" class="dot-good" />
+              <circle cx="-38" cy="-16" r="10" class="dot-good" />
+              <circle cx="2" cy="-32" r="11" class="dot-good" />
+              <circle cx="46" cy="-12" r="10" class="dot-good" />
+            </g>
+            <text x="0" y="145" class="panel-label" text-anchor="middle">target</text>
+          </g>
+
+          <g transform="translate(900,170)">
+            <rect x="-146" y="-120" width="292" height="240" rx="12" class="group" />
+            <circle cx="0" cy="0" r="82" class="target-circle" />
+            <g transform="scale(1.16)">
+              <circle cx="18" cy="10" r="12" class="dot-warn" />
+              <circle cx="34" cy="42" r="11" class="dot-warn" />
+              <circle cx="-24" cy="24" r="11" class="dot-warn" />
+              <circle cx="-38" cy="-16" r="10" class="dot-warn" />
+              <circle cx="2" cy="-32" r="11" class="dot-warn" />
+              <circle cx="46" cy="-12" r="10" class="dot-warn" />
+            </g>
+            <text x="0" y="145" class="panel-label" text-anchor="middle">over-scale</text>
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'variance' && (
+        <svg
+          class="hamjepa-regularizer-svg"
+          viewBox="0 0 900 360"
+          role="img"
+          aria-labelledby={`hamjepa-reg-${variant}-title`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform="translate(240,172)">
+            <rect x="-170" y="-126" width="340" height="252" rx="12" class="group" />
+            <line x1="-116" y1="72" x2="112" y2="72" class="axis" />
+            <line x1="-116" y1="72" x2="-116" y2="-66" class="axis" />
+            <circle cx="-12" cy="-56" r="8" class="dot-warn" />
+            <circle cx="-12" cy="-30" r="8" class="dot-warn" />
+            <circle cx="-12" cy="-5" r="8" class="dot-warn" />
+            <circle cx="-12" cy="20" r="8" class="dot-warn" />
+            <circle cx="-12" cy="45" r="8" class="dot-warn" />
+            <text x="0" y="166" class="panel-label" text-anchor="middle">dead coordinate</text>
+          </g>
+
+          <g transform="translate(660,172)">
+            <rect x="-170" y="-126" width="340" height="252" rx="12" class="group" />
+            <line x1="-116" y1="72" x2="112" y2="72" class="axis" />
+            <line x1="-116" y1="72" x2="-116" y2="-66" class="axis" />
+            <circle cx="-48" cy="-42" r="8" class="dot-good" />
+            <circle cx="-16" cy="-12" r="8" class="dot-good" />
+            <circle cx="24" cy="-26" r="8" class="dot-good" />
+            <circle cx="-30" cy="18" r="8" class="dot-good" />
+            <circle cx="36" cy="12" r="8" class="dot-good" />
+            <circle cx="62" cy="-54" r="8" class="dot-good" />
+            <text x="0" y="166" class="panel-label" text-anchor="middle">all coordinates active</text>
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'logdet' && (
+        <svg
+          class="hamjepa-regularizer-svg"
+          viewBox="0 0 1160 360"
+          role="img"
+          aria-labelledby={`hamjepa-reg-${variant}-title`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform="translate(190,170)">
+            <rect x="-160" y="-120" width="320" height="240" rx="12" class="group" />
+            <circle cx="-56" cy="-24" r="8" class="dot-good" />
+            <circle cx="-18" cy="16" r="8" class="dot-good" />
+            <circle cx="20" cy="-12" r="8" class="dot-good" />
+            <circle cx="48" cy="26" r="8" class="dot-good" />
+            <circle cx="74" cy="-22" r="8" class="dot-good" />
+            <circle cx="2" cy="42" r="8" class="dot-good" />
+            <text x="0" y="146" class="panel-label" text-anchor="middle">healthy volume</text>
+          </g>
+
+          <g transform="translate(580,170)">
+            <rect x="-160" y="-120" width="320" height="240" rx="12" class="group" />
+            <circle cx="-88" cy="-12" r="8" class="dot-warn" />
+            <circle cx="-52" cy="-8" r="8" class="dot-warn" />
+            <circle cx="-20" cy="-4" r="8" class="dot-warn" />
+            <circle cx="18" cy="0" r="8" class="dot-warn" />
+            <circle cx="54" cy="8" r="8" class="dot-warn" />
+            <circle cx="88" cy="14" r="8" class="dot-warn" />
+            <text x="0" y="146" class="panel-label" text-anchor="middle">thin sheet</text>
+          </g>
+
+          <g transform="translate(970,170)">
+            <rect x="-160" y="-120" width="320" height="240" rx="12" class="group" />
+            <circle cx="0" cy="-76" r="8" class="dot-warn" />
+            <circle cx="0" cy="-42" r="8" class="dot-warn" />
+            <circle cx="0" cy="-10" r="8" class="dot-warn" />
+            <circle cx="0" cy="20" r="8" class="dot-warn" />
+            <circle cx="0" cy="50" r="8" class="dot-warn" />
+            <circle cx="0" cy="80" r="8" class="dot-warn" />
+            <text x="0" y="146" class="panel-label" text-anchor="middle">line-like collapse</text>
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'participation' && (
+        <svg
+          class="hamjepa-regularizer-svg"
+          viewBox="0 0 900 360"
+          role="img"
+          aria-labelledby={`hamjepa-reg-${variant}-title`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g transform="translate(250,168)">
+            <rect x="-180" y="-122" width="360" height="244" rx="12" class="group" />
+            <line x1="-120" y1="72" x2="126" y2="72" class="axis" />
+            <rect x="-98" y="-80" width="34" height="152" class="bar-warn" />
+            <rect x="-50" y="38" width="34" height="34" class="bar-warn" />
+            <rect x="-2" y="47" width="34" height="25" class="bar-warn" />
+            <rect x="46" y="52" width="34" height="20" class="bar-warn" />
+            <rect x="94" y="56" width="34" height="16" class="bar-warn" />
+            <text x="0" y="150" class="panel-label" text-anchor="middle">one dominant spike</text>
+          </g>
+
+          <g transform="translate(650,168)">
+            <rect x="-180" y="-122" width="360" height="244" rx="12" class="group" />
+            <line x1="-120" y1="72" x2="126" y2="72" class="axis" />
+            <rect x="-98" y="-32" width="34" height="104" class="bar-good" />
+            <rect x="-50" y="-20" width="34" height="92" class="bar-good" />
+            <rect x="-2" y="-2" width="34" height="74" class="bar-good" />
+            <rect x="46" y="12" width="34" height="60" class="bar-good" />
+            <rect x="94" y="24" width="34" height="48" class="bar-good" />
+            <text x="0" y="150" class="panel-label" text-anchor="middle">variance spread across modes</text>
+          </g>
+        </svg>
+      )
+    }
+
+    {
+      variant === 'mean' && (
+        <svg
+          class="hamjepa-regularizer-svg"
+          viewBox="0 0 900 360"
+          role="img"
+          aria-labelledby={`hamjepa-reg-${variant}-title`}
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <defs>
+            <marker id={`ham-reg-mean-arrow-${variant}`} markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+              <path d="M0,0 L9,4.5 L0,9 z" fill="#9f3842" />
+            </marker>
+          </defs>
+
+          <g transform="translate(248,168)">
+            <rect x="-180" y="-122" width="360" height="244" rx="12" class="group" />
+            <line x1="-120" y1="0" x2="120" y2="0" class="axis" />
+            <line x1="0" y1="-86" x2="0" y2="86" class="axis" />
+            <circle cx="-54" cy="-22" r="8" class="dot-good" />
+            <circle cx="-28" cy="20" r="8" class="dot-good" />
+            <circle cx="10" cy="-10" r="8" class="dot-good" />
+            <circle cx="34" cy="16" r="8" class="dot-good" />
+            <circle cx="64" cy="-24" r="8" class="dot-good" />
+            <circle cx="18" cy="44" r="8" class="dot-good" />
+            <text x="0" y="150" class="panel-label" text-anchor="middle">mean near zero</text>
+          </g>
+
+          <g transform="translate(652,168)">
+            <rect x="-180" y="-122" width="360" height="244" rx="12" class="group" />
+            <line x1="-120" y1="0" x2="120" y2="0" class="axis" />
+            <line x1="0" y1="-86" x2="0" y2="86" class="axis" />
+            <circle cx="38" cy="18" r="8" class="dot-warn" />
+            <circle cx="68" cy="46" r="8" class="dot-warn" />
+            <circle cx="96" cy="16" r="8" class="dot-warn" />
+            <circle cx="112" cy="50" r="8" class="dot-warn" />
+            <circle cx="132" cy="8" r="8" class="dot-warn" />
+            <circle cx="92" cy="70" r="8" class="dot-warn" />
+            <line x1="0" y1="0" x2="98" y2="46" class="mean-arrow" marker-end={`url(#ham-reg-mean-arrow-${variant})`} />
+            <text x="46" y="36" class="t-math">μ</text>
+            <text x="0" y="150" class="panel-label" text-anchor="middle">large offset direction</text>
+          </g>
+        </svg>
+      )
+    }
+  </div>
+
+  <figcaption id={`hamjepa-reg-${variant}-caption`} class="hamjepa-regularizer-caption">
+    <strong>{details.title}.</strong> {details.caption}
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-regularizer-diagram {
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.12rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 10px 24px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-regularizer-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-regularizer-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-regularizer-svg {
+    display: block;
+    width: 100%;
+    min-width: 860px;
+    height: auto;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(42, 100, 214, 0.08), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.54), rgba(255, 255, 255, 0.22));
+  }
+
+  .group {
+    fill: rgba(255, 255, 255, 0.7);
+    stroke: #6c7784;
+    stroke-width: 1.25;
+  }
+
+  .target-circle {
+    fill: none;
+    stroke: #2f7d57;
+    stroke-width: 1.6;
+    stroke-dasharray: 6 5;
+  }
+
+  .dot {
+    fill: #86b3d3;
+    stroke: #6488a3;
+    stroke-width: 1;
+  }
+
+  .dot-good {
+    fill: #4c8f5f;
+    stroke: #2f6f46;
+    stroke-width: 1;
+  }
+
+  .dot-warn {
+    fill: #c86d73;
+    stroke: #8e3e44;
+    stroke-width: 1;
+  }
+
+  .axis {
+    stroke: #5f6874;
+    stroke-width: 1.3;
+  }
+
+  .bar-warn {
+    fill: rgba(200, 109, 115, 0.76);
+    stroke: #8e3e44;
+    stroke-width: 1;
+  }
+
+  .bar-good {
+    fill: rgba(73, 143, 95, 0.78);
+    stroke: #2f6f46;
+    stroke-width: 1;
+  }
+
+  .panel-label {
+    font: 600 20px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #2f3944;
+  }
+
+  .mean-arrow {
+    stroke: #9f3842;
+    stroke-width: 1.8;
+    fill: none;
+  }
+
+  .t-math {
+    font: 600 24px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #7f3338;
+  }
+
+  .hamjepa-regularizer-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.76rem 0.92rem 0.94rem;
+    font-size: 0.84rem;
+    line-height: 1.52;
+    color: var(--muted);
+  }
+
+  @media (max-width: 840px) {
+    .hamjepa-regularizer-svg {
+      min-width: 800px;
+    }
+
+    .panel-label {
+      font-size: 18px;
+    }
+  }
+</style>

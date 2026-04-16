@@ -1,0 +1,208 @@
+---
+title: 'Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction'
+projectSlug: hamjepa
+standfirst: 'Full technical web rendering of the HamJEPA summary, preserving the source mathematics, reported tables, and predictor-structure diagrams.'
+updated: '2026-04-07'
+readingMins: 22
+pdfPath: /files/summary_hamjepa.pdf
+keyTakeaways:
+  - Euclidean isotropy is a metric choice, not a neutral anti-collapse regularizer.
+  - Under an H-energy budget, both minimax and max-entropy structure are proportional to H^{-1}.
+  - HamJEPA places geometry in a symplectic predictive map over phase-space states s = (q, p).
+order: 1
+---
+
+import SummaryKeyBox from '../../components/summary/SummaryKeyBox.astro';
+import SummaryTakeBox from '../../components/summary/SummaryTakeBox.astro';
+import SummaryTable from '../../components/summary/SummaryTable.astro';
+import HamJepaPipelineDiagram from '../../components/summary/HamJepaPipelineDiagram.astro';
+import HamJepaLeapfrogDiagram from '../../components/summary/HamJepaLeapfrogDiagram.astro';
+
+<SummaryKeyBox title="Overview">
+The paper's central reframing is that Euclidean isotropy is not a neutral regularizer. It is already a metric choice. If downstream tasks live in a structured geometry encoded by an SPD operator $H\succ0$, then the canonical representation is not round in ambient coordinates but round only after whitening by $H^{1/2}$. Under an $H$-energy budget, both the minimax covariance and the maximum-entropy law are proportional to $H^{-1}$, and forcing $\Sigma\propto I$ incurs a closed-form price of isotropy.
+</SummaryKeyBox>
+
+<section id="main-theoretical-move">
+
+## 1. The main theoretical move
+
+A common JEPA instinct is to regularize toward an isotropic Gaussian because isotropy appears generic. The summary's claim is that this already imposes the ambient Euclidean metric as the symmetry reference. If downstream tasks have structure, that reference frame can be wrong.
+
+The formal setup introduces a structured SPD operator $H\succ0$, downstream task family
+
+$$
+y=w^\top \tilde z,
+\qquad
+\mathcal W_H=\{w:w^\top H^{-1}w\le 1\},
+$$
+
+and an $H$-energy budget
+
+$$
+\operatorname{tr}(H\Sigma)=c,
+\qquad
+\Sigma=\operatorname{Cov}(\tilde z).
+$$
+
+Under this geometry, the unique minimax covariance is
+
+$$
+\Sigma^\star=\frac{c}{d}H^{-1},
+$$
+
+and the unique maximum-entropy law under the same budget is
+
+$$
+\tilde z\sim \mathcal N\!\left(0,\frac{c}{d}H^{-1}\right).
+$$
+
+So the canonical object is anisotropic in ambient coordinates and isotropic only after whitening by $H^{1/2}$.
+
+</section>
+
+<HamJepaPipelineDiagram />
+
+<SummaryTakeBox title="Reported downstream results (all q / p / (q,p) readouts reported explicitly)">
+<SummaryTable
+  title="CIFAR-100, 30 epochs"
+  columns={['Method', 'kNN@20', 'Linear']}
+  rows={[
+    ['SIGReg', '26.56 ± 0.18', '30.43 ± 0.30'],
+    ['HamJEPA q', '31.45 ± 0.27', '33.95 ± 0.24'],
+    ['HamJEPA p', '29.71 ± 0.25', '33.07 ± 0.36'],
+    ['HamJEPA (q,p)', '30.88 ± 0.39', '34.18 ± 0.17']
+  ]}
+  align={['left', 'center', 'center']}
+/>
+
+<SummaryTable
+  title="ImageNet-100, 45 epochs"
+  columns={['Method', 'kNN@20', 'Linear']}
+  rows={[
+    ['SIGReg q', '20.10', '24.40'],
+    ['SIGReg p', '18.78', '23.86'],
+    ['SIGReg (q,p)', '20.94', '25.54'],
+    ['HamJEPA q', '24.92', '31.92'],
+    ['HamJEPA p', '24.72', '32.08'],
+    ['HamJEPA (q,p)', '24.64', '32.04']
+  ]}
+  align={['left', 'center', 'center']}
+/>
+
+<SummaryTable
+  title="CIFAR-100, 80 epochs: predictor-family ablation"
+  columns={['Method', 'Variant', 'Linear', 'kNN@20', 'kNN best']}
+  rows={[
+    ['SIGReg', 'single', '33.95', '27.98', '28.71 @ k=1'],
+    ['MLP-HJEPA', 'q', '42.26', '28.10', '28.10 @ k=20'],
+    ['MLP-HJEPA', 'p', '41.90', '28.30', '28.30 @ k=20'],
+    ['MLP-HJEPA', '(q,p)', '42.77', '28.15', '28.15 @ k=20'],
+    ['HamJEPA', 'q', '44.59', '34.43', '34.43 @ k=20'],
+    ['HamJEPA', 'p', '44.44', '32.96', '32.96 @ k=20'],
+    ['HamJEPA', '(q,p)', '44.52', '33.66', '33.66 @ k=20']
+  ]}
+  align={['left', 'center', 'center', 'center', 'center']}
+  caption="Note: the 30-epoch CIFAR table reports SIGReg only as a single baseline; explicit q/p/(q,p) decomposition is reported there for HamJEPA, for both methods on ImageNet-100, and for HamJEPA plus non-symplectic MLP-HJEPA at 80 epochs."
+/>
+</SummaryTakeBox>
+
+<section id="price-of-isotropy">
+
+## 2. The price of using the wrong sphere
+
+If Euclidean isotropy is imposed anyway, the feasible isotropic covariance under the same budget is
+
+$$
+\Sigma_{\mathrm{iso}}=\frac{c}{\operatorname{tr}(H)}I,
+$$
+
+and the worst-case variance ratio becomes
+
+$$
+\rho(H)=\frac{V(\Sigma_{\mathrm{iso}})}{V(\Sigma^\star)}
+=\frac{d\,\lambda_{\max}(H)}{\operatorname{tr}(H)},
+\qquad
+1\le \rho(H)\le d.
+$$
+
+This is the summary's clean statement of the price of isotropy: isotropic regularization is only metric-consistent when $H\propto I$.
+
+A phase-space bridge is then introduced via
+
+$$
+\mathcal H_H(q,p)=\tfrac12 q^\top Hq+\tfrac12\|p\|_2^2,
+\qquad
+\pi_H(q,p)\propto \exp\!\Bigl(-\frac{d}{c}\mathcal H_H(q,p)\Bigr),
+$$
+
+whose $q$-marginal is $\mathcal N(0,(c/d)H^{-1})$ and whose $p$-marginal is $\mathcal N(0,(c/d)I)$.
+
+</section>
+
+<section id="what-hamjepa-changes">
+
+## 3. What HamJEPA actually changes
+
+Because the relevant $H$ is unknown in practice, HamJEPA does not hard-code a structured encoder marginal. It places Hamiltonian structure in the predictor. Each view is encoded as a phase-space state $s=(q,p)$, with $q$ as content coordinate and $p$ as momentum-like auxiliary state. Cross-view prediction is performed by a $K$-step leapfrog rollout of
+
+$$
+\mathcal H_\phi(q,p)=\tfrac12\|p\|_2^2+V_\phi(q).
+$$
+
+The predictor map $\hat s_b=\Phi_\phi^K(s_a)$ is symplectic, volume-preserving, and reversible under time-step sign reversal. The key claim is not literal physical dynamics in the encoder; it is that the view-to-view map is no longer an arbitrary geometry-destroying regressor.
+
+</section>
+
+<section id="symplecticity-vs-anticollapse">
+
+## 4. Symplecticity is not the same thing as anti-collapse
+
+The summary is explicit that symplectic structure alone does not guarantee non-collapse at the encoder output. A symplectic predictor cannot locally crush phase-space volume, but the encoder could still produce a degenerate state cloud. HamJEPA therefore adds encoder-side non-collapse terms: fixed-unit energy budgets for $q$ and $p$, a projected log-determinant floor, and a participation-ratio floor. These controls are intentionally weaker and more geometry-aware than forcing $\Sigma\propto I$: they preserve scale and rank without declaring all directions equivalent.
+
+</section>
+
+<HamJepaLeapfrogDiagram />
+
+<section id="what-is-held-fixed">
+
+## 5. What is held fixed, and why that matters
+
+The comparisons are controlled. Across methods, the JEPA backbone, augmentations, optimizer, batch size, and training schedule are held fixed. Both datasets use a headless token regime based on ResNet stage-3 features, and the projector is identity so the $q/p$ split is not remixed by an MLP head. The intended interpretation is geometric: the observed gains are not explained by changing the surrounding recipe.
+
+</section>
+
+<section id="how-to-read-qp">
+
+## 6. How to read the q/p results
+
+At CIFAR-100 30 epochs, $q$ is the strongest HamJEPA readout for kNN while $(q,p)$ gives the best linear probe. The interpretation in the summary is that $q$ carries cleaner metric-consistent neighborhood structure, while $p$ contributes complementary linearly decodable signal. On ImageNet-100, where the stable pretraining regime uses full $(q,p)$ state, HamJEPA $q$, $p$, and $(q,p)$ are all strong and close; for SIGReg, concatenated $(q,p)$ remains better than either half. The summary frames this as complementarity for SIGReg versus greater redundancy and individual informativeness for HamJEPA.
+
+</section>
+
+<section id="what-the-numbers-imply">
+
+## 7. What the numbers imply
+
+The short-budget numbers are already decisive. On CIFAR-100 at 30 epochs, HamJEPA-$q$ moves kNN@20 from $26.56\pm0.18$ to $31.45\pm0.27$ and linear probe from $30.43\pm0.30$ to $33.95\pm0.24$, with $(q,p)$ reaching best linear probe at $34.18\pm0.17$. On ImageNet-100 at 45 epochs, HamJEPA improves all reported readouts over SIGReg; the strict 1024-D comparison $q$ vs $q$ gives $+4.82$ at kNN@20 and $+7.52$ in linear probe. Even the 2048-D comparison is favorable: SIGReg $(q,p)$ at $20.94 / 25.54$ versus HamJEPA $(q,p)$ at $24.64 / 32.04$.
+
+The geometry diagnostics in the source summary support this reading. On CIFAR-100 at 30 epochs, HamJEPA-$q$ raises the top-256 effective-rank proxy from about $109.7$ (SIGReg) to about $125.6$, while HamJEPA-$p$ is more concentrated around $79.5$. On ImageNet-100, SIGReg-$q/p$ are around effective rank $38$-$39$, whereas HamJEPA-$q/p$ are around $95$-$98$. The gains co-move with broader mean-centered covariance rather than low-rank collapse.
+
+</section>
+
+<section id="why-80-epoch-ablation">
+
+## 8. Why the 80-epoch ablation matters
+
+The appendix ablation isolates mechanism: replacing only the symplectic leapfrog predictor with a non-symplectic residual MLP leaves linear probe much improved over SIGReg but barely lifts neighborhood quality. MLP-HJEPA peaks around $28.30$ kNN@20, while symplectic HamJEPA reaches $34.43$. The summary interprets this as direct evidence that symplectic rollout is not decorative. Phase-space parameterization plus non-isotropic spectral control explain much of linear-probe lift; the large jump in local semantic geometry is attributed to the symplectic predictor itself.
+
+</section>
+
+<section id="bottom-line">
+
+## Bottom line
+
+<SummaryTakeBox title="Bottom line">
+The lasting idea is not merely use Hamiltonians in SSL. It is more precise: isotropy should be defined in the metric induced by the problem, not automatically in ambient Euclidean coordinates. Once that is made explicit, the method becomes natural. The oracle geometry is $H^{-1}$; because $H$ is unknown, HamJEPA puts Hamiltonian structure in view-to-view transport, keeps that map symplectic, and prevents encoder degeneracy with non-isotropic spectral floors. The reported empirical pattern matches that thesis: broader useful covariance, stronger frozen features, and, in the clean 80-epoch predictor-family ablation, a specifically symplectic gain in neighborhood quality.
+</SummaryTakeBox>
+
+</section>

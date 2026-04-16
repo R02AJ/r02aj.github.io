@@ -1,0 +1,57 @@
+---
+import CalloutStat from './CalloutStat.astro';
+
+type MetricItem =
+  | string
+  | {
+      value: string;
+      label?: string;
+      detail?: string;
+    };
+
+interface Props {
+  metrics: MetricItem[];
+  tone?: 'light' | 'dark';
+  columns?: 2 | 3 | 4;
+}
+
+const { metrics, tone = 'light', columns = 3 } = Astro.props;
+
+const parsed = metrics.map((metric): { value: string; label?: string; detail?: string } => {
+  if (typeof metric === 'string') {
+    const parts = metric.split(':');
+
+    if (parts.length > 1) {
+      return {
+        label: parts.shift()?.trim(),
+        value: parts.join(':').trim()
+      };
+    }
+
+    return {
+      label: 'Metric',
+      value: metric
+    };
+  }
+
+  return metric;
+});
+---
+
+<section
+  aria-label="Headline metrics"
+  class:list={[
+    'metric-strip',
+    columns === 2 ? 'metric-strip-2' : columns === 4 ? 'metric-strip-4' : 'metric-strip-3'
+  ]}
+>
+  {parsed.map((metric) => (
+    <CalloutStat
+      value={metric.value}
+      label={metric.label}
+      detail={metric.detail}
+      tone={tone}
+      compact
+    />
+  ))}
+</section>

@@ -1,0 +1,24 @@
+---
+import ExternalLinkPills from './ExternalLinkPills.astro';
+
+type LinkItem = {
+  label: string;
+  href?: string;
+};
+
+interface Props {
+  links: LinkItem[];
+  tone?: 'light' | 'dark';
+  size?: 'sm' | 'md';
+  ariaLabel?: string;
+}
+
+const {
+  links,
+  tone = 'light',
+  size = 'md',
+  ariaLabel = 'External links'
+} = Astro.props;
+---
+
+<ExternalLinkPills links={links} tone={tone} size={size} ariaLabel={ariaLabel} />

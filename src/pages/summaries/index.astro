@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../data/site';
+
+const targetHref = withBase('/research');
+const summariesHref = withBase('/summaries');
+---
+
+<BaseLayout
+  title="Summaries Redirect | Robert Jenkinson Alvarez"
+  description="Summaries now live inside the Research library."
+  noindex
+>
+  <Fragment slot="head">
+    <meta http-equiv="refresh" content={`0;url=${targetHref}`} />
+    <link rel="canonical" href={targetHref} />
+  </Fragment>
+
+  <section class="surface-light section-space section-divider">
+    <div class="page-shell max-w-3xl space-y-5 text-center">
+      <h1 class="section-title">Summaries moved into Research</h1>
+      <p class="lede mx-auto">
+        Technical summaries are now nested under each research item as part of one coherent library.
+      </p>
+      <p>
+        <a href={targetHref} class="site-nav-cta">Continue to Research</a>
+      </p>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ targetHref, summariesHref }}>
+    if (window.location.pathname === summariesHref || window.location.pathname === `${summariesHref}/`) {
+      window.location.replace(targetHref);
+    }
+  </script>
+</BaseLayout>

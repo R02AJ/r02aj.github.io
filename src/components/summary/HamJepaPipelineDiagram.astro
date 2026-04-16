@@ -1,0 +1,352 @@
+---
+const SCALE = 64;
+const ORIGIN_X = 80;
+const ORIGIN_Y = 56;
+const Y_MAX = 3.4;
+
+const px = (value: number) => Number(value.toFixed(2));
+const X = (value: number) => px(ORIGIN_X + value * SCALE);
+const Y = (value: number) => px(ORIGIN_Y + (Y_MAX - value) * SCALE);
+const W = (value: number) => px(value * SCALE);
+const H = (value: number) => px(value * SCALE);
+
+function centerRect(cx: number, cy: number, width: number, height: number) {
+  return {
+    x: X(cx - width / 2),
+    y: Y(cy + height / 2),
+    width: W(width),
+    height: H(height)
+  };
+}
+
+function bottomRect(x: number, y: number, width: number, height: number) {
+  return {
+    x: X(x),
+    y: Y(y + height),
+    width: W(width),
+    height: H(height)
+  };
+}
+
+function pts(points: Array<[number, number]>) {
+  return points.map(([x, y]) => `${X(x)},${Y(y)}`).join(' ');
+}
+
+const img = centerRect(0, 0, 1.25, 1.25);
+const taua = centerRect(2.45, 1.0, 1.35, 0.62);
+const taub = centerRect(2.45, -1.0, 1.35, 0.62);
+const va = centerRect(4.55, 1.0, 1.55, 0.88);
+const vb = centerRect(4.55, -1.0, 1.55, 0.88);
+const enc = centerRect(7.15, 0, 1.8, 2.85);
+
+const saQ = bottomRect(9.35, 1.55, 1.55, 0.72);
+const saP = bottomRect(9.35, 0.73, 1.55, 0.72);
+const sbQ = bottomRect(9.35, -0.73, 1.55, 0.72);
+const sbP = bottomRect(9.35, -1.55, 1.55, 0.72);
+
+const flow = centerRect(13.25, 1.45, 3.1, 1.28);
+
+const shatQ = bottomRect(15.75, 1.91, 1.55, 0.72);
+const shatP = bottomRect(15.75, 1.09, 1.55, 0.72);
+
+const loss = centerRect(13.25, -1.15, 2.85, 0.86);
+const regs = centerRect(12.85, -2.95, 5.85, 1.22);
+---
+
+<figure
+  class="hamjepa-diagram"
+  aria-labelledby="hamjepa-pipeline-title"
+  aria-describedby="hamjepa-pipeline-caption"
+>
+  <div class="hamjepa-diagram-scroll" tabindex="0" aria-label="Scrollable HamJEPA pipeline diagram">
+    <svg
+      class="hamjepa-diagram-svg"
+      viewBox="0 0 1280 560"
+      role="img"
+      aria-labelledby="hamjepa-pipeline-title hamjepa-pipeline-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-pipeline-title">
+        HamJEPA pipeline: image, augmentations, shared encoder, phase-space states, symplectic predictor, and losses
+      </title>
+      <desc id="hamjepa-pipeline-desc">
+        Pipeline figure with image x branching to tau_a and tau_b, views v_a and v_b, shared encoder E_theta,
+        phase-space states s_a and s_b with q and p blocks, symplectic flow Phi_phi^K, predicted state s_hat_b,
+        prediction loss, and encoder-side anti-collapse regularizers.
+      </desc>
+
+      <defs>
+        <marker id="ham-pipe-arrow" markerWidth="9" markerHeight="9" refX="7.6" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4d5866" />
+        </marker>
+        <marker
+          id="ham-pipe-arrow-soft"
+          markerWidth="8"
+          markerHeight="8"
+          refX="6.7"
+          refY="4"
+          orient="auto"
+        >
+          <path d="M0,0 L8,4 L0,8 z" fill="#758695" />
+        </marker>
+      </defs>
+
+      <rect x={img.x} y={img.y} width={img.width} height={img.height} rx="10" class="box box-base" />
+      <text x={X(0)} y={Y(0.18)} class="t-main" text-anchor="middle">image</text>
+      <text x={X(0)} y={Y(-0.18)} class="t-main" text-anchor="middle">x</text>
+
+      <rect x={taua.x} y={taua.y} width={taua.width} height={taua.height} rx="8" class="box box-small" />
+      <text x={X(2.45)} y={Y(1.0)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        τ<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+
+      <rect x={taub.x} y={taub.y} width={taub.width} height={taub.height} rx="8" class="box box-small" />
+      <text x={X(2.45)} y={Y(-1.0)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        τ<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+
+      <rect x={va.x} y={va.y} width={va.width} height={va.height} rx="10" class="box box-base" />
+      <text x={X(4.55)} y={Y(1.0)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        view v<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+
+      <rect x={vb.x} y={vb.y} width={vb.width} height={vb.height} rx="10" class="box box-base" />
+      <text x={X(4.55)} y={Y(-1.0)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        view v<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+
+      <rect x={enc.x} y={enc.y} width={enc.width} height={enc.height} rx="12" class="box box-soft" />
+      <text x={X(7.15)} y={Y(0.58)} class="t-main" text-anchor="middle" dominant-baseline="middle">shared</text>
+      <text x={X(7.15)} y={Y(0.16)} class="t-main" text-anchor="middle" dominant-baseline="middle">encoder</text>
+      <text x={X(7.15)} y={Y(-0.32)} class="t-math" text-anchor="middle" dominant-baseline="middle">
+        E<tspan baseline-shift="sub" font-size="68%">θ</tspan>
+      </text>
+
+      <text x={X(10.125)} y={Y(2.62)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        s<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+      <rect x={saQ.x} y={saQ.y} width={saQ.width} height={saQ.height} rx="8" class="box box-q" />
+      <rect x={saP.x} y={saP.y} width={saP.width} height={saP.height} rx="8" class="box box-p" />
+      <text x={X(10.125)} y={Y(1.91)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        q<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+      <text x={X(10.125)} y={Y(1.09)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        p<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+
+      <text x={X(10.125)} y={Y(-1.9)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        s<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <rect x={sbQ.x} y={sbQ.y} width={sbQ.width} height={sbQ.height} rx="8" class="box box-q" />
+      <rect x={sbP.x} y={sbP.y} width={sbP.width} height={sbP.height} rx="8" class="box box-p" />
+      <text x={X(10.125)} y={Y(-0.37)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        q<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <text x={X(10.125)} y={Y(-1.19)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        p<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+
+      <rect x={flow.x} y={flow.y} width={flow.width} height={flow.height} rx="12" class="box box-soft" />
+      <text x={X(13.25)} y={Y(1.66)} class="t-main t-tight" text-anchor="middle" dominant-baseline="middle">
+        symplectic flow
+      </text>
+      <text x={X(13.25)} y={Y(1.22)} class="t-math t-tight-math" text-anchor="middle" dominant-baseline="middle">
+        Φ<tspan baseline-shift="sub" font-size="68%">φ</tspan><tspan baseline-shift="super" font-size="68%">K</tspan>
+      </text>
+
+      <text x={X(16.525)} y={Y(2.98)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        ŝ<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <rect x={shatQ.x} y={shatQ.y} width={shatQ.width} height={shatQ.height} rx="8" class="box box-q" />
+      <rect x={shatP.x} y={shatP.y} width={shatP.width} height={shatP.height} rx="8" class="box box-p" />
+      <text x={X(16.525)} y={Y(2.27)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        q̂<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <text x={X(16.525)} y={Y(1.45)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        p̂<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+
+      <rect x={loss.x} y={loss.y} width={loss.width} height={loss.height} rx="10" class="box box-base" />
+      <text x={X(13.25)} y={Y(-1.15)} class="t-main t-tight" text-anchor="middle" dominant-baseline="middle">
+        prediction loss
+      </text>
+
+      <rect x={regs.x} y={regs.y} width={regs.width} height={regs.height} rx="10" class="box box-reg" />
+      <text x={X(12.85)} y={Y(-2.78)} class="t-main t-reg" text-anchor="middle" dominant-baseline="middle">
+        encoder-side
+      </text>
+      <text x={X(12.85)} y={Y(-3.12)} class="t-main t-reg" text-anchor="middle" dominant-baseline="middle">
+        anti-collapse regularizers
+      </text>
+
+      <line x1={X(0.625)} y1={Y(0)} x2={X(1.15)} y2={Y(0)} class="a-main" />
+      <polyline points={pts([[1.15, 0], [1.775, 1.0]])} class="a-main" />
+      <polyline points={pts([[1.15, 0], [1.775, -1.0]])} class="a-main" />
+
+      <line x1={X(3.125)} y1={Y(1.0)} x2={X(3.775)} y2={Y(1.0)} class="a-main" />
+      <line x1={X(3.125)} y1={Y(-1.0)} x2={X(3.775)} y2={Y(-1.0)} class="a-main" />
+
+      <line x1={X(5.325)} y1={Y(1.0)} x2={X(6.25)} y2={Y(0.58)} class="a-main" />
+      <line x1={X(5.325)} y1={Y(-1.0)} x2={X(6.25)} y2={Y(-0.58)} class="a-main" />
+
+      <line x1={X(8.05)} y1={Y(0.58)} x2={X(9.35)} y2={Y(1.55)} class="a-main" />
+      <line x1={X(8.05)} y1={Y(-0.58)} x2={X(9.35)} y2={Y(-0.73)} class="a-main" />
+
+      <line x1={X(10.9)} y1={Y(1.45)} x2={X(11.7)} y2={Y(1.45)} class="a-main" />
+      <line x1={X(14.8)} y1={Y(1.45)} x2={X(15.75)} y2={Y(1.45)} class="a-main" />
+
+      <line x1={X(10.9)} y1={Y(-1.19)} x2={X(11.825)} y2={Y(-1.15)} class="a-soft" />
+      <polyline points={pts([[16.525, 1.09], [16.525, 0.79], [13.7, 0.79], [13.7, -0.72]])} class="a-soft" />
+
+      <polyline points={pts([[10.125, 0.73], [10.125, 0.31], [11.2, 0.31], [11.2, -2.34]])} class="a-soft" />
+      <polyline points={pts([[10.125, -1.55], [10.125, -1.77], [13.6, -1.77], [13.6, -2.34]])} class="a-soft" />
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-pipeline-caption" class="hamjepa-diagram-caption">
+    <strong>HamJEPA at the highest level.</strong> Two augmented views of the same image are encoded by a shared
+    encoder into phase-space states s<sub>a</sub>=[q<sub>a</sub>;p<sub>a</sub>] and
+    s<sub>b</sub>=[q<sub>b</sub>;p<sub>b</sub>]. The predictor is not an unconstrained regression head: it is a
+    structured Hamiltonian rollout Φ<sub>φ</sub><sup>K</sup> that evolves s<sub>a</sub> into a predicted target state
+    ŝ<sub>b</sub>. Training combines a prediction loss between ŝ<sub>b</sub> and s<sub>b</sub> with separate
+    encoder-side anti-collapse regularizers applied across the batch of states.
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-diagram {
+    margin: 1.25rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 12px 26px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-diagram-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-diagram-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-diagram-svg {
+    display: block;
+    width: 100%;
+    min-width: 980px;
+    height: auto;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(42, 100, 214, 0.08), transparent 35%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.26));
+  }
+
+  .box {
+    stroke-width: 1.4;
+  }
+
+  .box-base {
+    fill: #ffffff;
+    stroke: #5f6873;
+  }
+
+  .box-small {
+    fill: #ffffff;
+    stroke: #73808f;
+  }
+
+  .box-soft {
+    fill: #f4f7f9;
+    stroke: #66717d;
+  }
+
+  .box-q {
+    fill: #eef3f7;
+    stroke: #7f96a6;
+  }
+
+  .box-p {
+    fill: #f4f0ec;
+    stroke: #ad8f7b;
+  }
+
+  .box-reg {
+    fill: #eef6fb;
+    stroke: #9bb9ca;
+  }
+
+  .a-main {
+    fill: none;
+    stroke: #4d5866;
+    stroke-width: 2;
+    marker-end: url(#ham-pipe-arrow);
+  }
+
+  .a-soft {
+    fill: none;
+    stroke: #758695;
+    stroke-width: 1.8;
+    marker-end: url(#ham-pipe-arrow-soft);
+  }
+
+  .t-main {
+    font: 500 22px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #20262f;
+  }
+
+  .t-tight {
+    font-size: 20px;
+  }
+
+  .t-small {
+    font: 600 20px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #4a5563;
+  }
+
+  .t-math {
+    font: 600 23px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .t-tight-math {
+    font-size: 21px;
+  }
+
+  .t-reg {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .hamjepa-diagram-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.76rem 0.92rem 0.92rem;
+    font-size: 0.82rem;
+    line-height: 1.48;
+    color: var(--muted);
+  }
+
+  @media (max-width: 840px) {
+    .hamjepa-diagram-svg {
+      min-width: 930px;
+    }
+
+    .t-main {
+      font-size: 20px;
+    }
+
+    .t-small {
+      font-size: 18px;
+    }
+
+    .t-math {
+      font-size: 20px;
+    }
+
+    .t-reg {
+      font-size: 17px;
+    }
+  }
+</style>

@@ -1,0 +1,67 @@
+---
+interface Props {
+  src?: string;
+  alt: string;
+  title?: string;
+  caption?: string;
+  ratio?: 'wide' | 'landscape' | 'square' | 'portrait';
+}
+
+const {
+  src,
+  alt,
+  title,
+  caption,
+  ratio = 'landscape'
+} = Astro.props;
+
+const ratioClass =
+  ratio === 'wide'
+    ? 'summary-figure-ratio-wide'
+    : ratio === 'square'
+      ? 'summary-figure-ratio-square'
+      : ratio === 'portrait'
+        ? 'summary-figure-ratio-portrait'
+        : 'summary-figure-ratio-landscape';
+
+const isVideo = !!src && /\.(mp4|webm)$/i.test(src);
+---
+
+<figure class="summary-figure">
+  <div class:list={['summary-figure-media-shell', ratioClass]}>
+    {
+      src ? (
+        isVideo ? (
+          <video
+            class="summary-figure-media"
+            controls
+            playsinline
+            preload="metadata"
+            aria-label={alt}
+          >
+            <source src={src} />
+          </video>
+        ) : (
+          <img
+            class="summary-figure-media"
+            src={src}
+            alt={alt}
+            loading="lazy"
+            decoding="async"
+          />
+        )
+      ) : (
+        <div class="summary-figure-placeholder" aria-hidden="true">
+          <span>Figure placeholder</span>
+        </div>
+      )
+    }
+  </div>
+
+  {(title || caption) && (
+    <figcaption class="summary-figure-caption">
+      {title && <p class="summary-figure-title">{title}</p>}
+      {caption && <p class="summary-figure-copy">{caption}</p>}
+    </figcaption>
+  )}
+</figure>

@@ -1,0 +1,85 @@
+---
+interface Props {
+  title: string;
+  caption?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  tone?: 'light' | 'dark';
+  aspect?: 'wide' | 'landscape' | 'square' | 'portrait';
+  tag?: string;
+  eager?: boolean;
+  fit?: 'cover' | 'contain';
+}
+
+const {
+  title,
+  caption,
+  imageSrc,
+  imageAlt,
+  tone = 'light',
+  aspect = 'landscape',
+  tag,
+  eager = false,
+  fit = 'cover'
+} = Astro.props;
+
+const extension = imageSrc?.split('.').pop()?.toLowerCase() ?? '';
+const isVideo = extension === 'mp4' || extension === 'webm';
+---
+
+<figure
+  class:list={[
+    'figure-panel',
+    fit === 'contain' ? 'figure-panel-fit-contain' : undefined,
+    tone === 'dark' ? 'figure-panel-dark' : 'figure-panel-light',
+    'lift'
+  ]}
+  data-reveal
+>
+  <div
+    class:list={[
+      'figure-media-shell',
+      aspect === 'wide'
+        ? 'figure-ratio-wide'
+        : aspect === 'square'
+          ? 'figure-ratio-square'
+          : aspect === 'portrait'
+            ? 'figure-ratio-portrait'
+            : 'figure-ratio-landscape'
+    ]}
+  >
+    {imageSrc ? (
+      isVideo ? (
+        <video
+          class:list={['figure-media', fit === 'contain' ? 'figure-media-contain' : undefined]}
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          aria-label={imageAlt ?? title}
+        >
+          <source src={imageSrc} />
+        </video>
+      ) : (
+        <img
+          src={imageSrc}
+          alt={imageAlt ?? title}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          class:list={['figure-media', fit === 'contain' ? 'figure-media-contain' : undefined]}
+        />
+      )
+    ) : (
+      <div class="figure-media-placeholder" aria-hidden="true">
+        <span class="meta-label">Figure frame</span>
+      </div>
+    )}
+  </div>
+
+  <figcaption class="figure-caption">
+    {tag && <p class="figure-tag">{tag}</p>}
+    <p class="figure-title">{title}</p>
+    {caption && <p class="figure-copy">{caption}</p>}
+  </figcaption>
+</figure>

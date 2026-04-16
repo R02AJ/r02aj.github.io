@@ -1,0 +1,45 @@
+---
+import FigurePanel from './FigurePanel.astro';
+
+type FigureItem = {
+  title: string;
+  caption?: string;
+  src?: string;
+  alt?: string;
+  tag?: string;
+  aspect?: 'wide' | 'landscape' | 'square' | 'portrait';
+  fit?: 'cover' | 'contain';
+};
+
+interface Props {
+  figures: FigureItem[];
+  tone?: 'light' | 'dark';
+  featuredFirst?: boolean;
+}
+
+const { figures, tone = 'light', featuredFirst = false } = Astro.props;
+---
+
+<section
+  aria-label="Figure grid"
+  class:list={[
+    'figure-grid',
+    featuredFirst ? 'figure-grid-featured' : undefined
+  ]}
+>
+  {figures.map((figure, index) => (
+    <div class:list={[featuredFirst && index === 0 ? 'figure-grid-item-featured' : undefined]}>
+      <FigurePanel
+        title={figure.title}
+        caption={figure.caption}
+        imageSrc={figure.src}
+        imageAlt={figure.alt}
+        tag={figure.tag}
+        aspect={figure.aspect ?? (featuredFirst && index === 0 ? 'wide' : 'landscape')}
+        fit={figure.fit}
+        tone={tone}
+        eager={index === 0}
+      />
+    </div>
+  ))}
+</section>

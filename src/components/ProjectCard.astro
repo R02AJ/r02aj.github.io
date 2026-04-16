@@ -1,0 +1,58 @@
+---
+import Badge from './Badge.astro';
+
+interface Props {
+  projectHref: string;
+  summaryHref?: string;
+  title: string;
+  category: string;
+  status: string;
+  thesis: string;
+  callouts?: string[];
+}
+
+const {
+  projectHref,
+  summaryHref,
+  title,
+  category,
+  status,
+  thesis,
+  callouts = []
+} = Astro.props;
+
+const tone = status === 'Ongoing' ? 'warning' : 'accent';
+---
+
+<article class="card lift flex h-full flex-col gap-5">
+  <div class="flex flex-wrap items-center gap-2">
+    <Badge label={category} />
+    <Badge label={status} tone={tone} />
+  </div>
+
+  <div class="space-y-2.5">
+    <h3 class="text-[clamp(1.6rem,3vw,2.25rem)]">{title}</h3>
+    <p class="body-copy text-sm">{thesis}</p>
+  </div>
+
+  {callouts.length > 0 && (
+    <ul class="flex flex-wrap gap-2" aria-label="Project metrics">
+      {callouts.slice(0, 2).map((callout) => (
+        <li>
+          <span class="metric-pill">{callout}</span>
+        </li>
+      ))}
+    </ul>
+  )}
+
+  <div class="mt-auto flex flex-wrap items-center gap-4 pt-3 text-sm">
+    <a href={projectHref} class="subtle-link">
+      Visual guide <span aria-hidden="true">→</span>
+    </a>
+    {summaryHref && (
+      <a href={summaryHref} class="subtle-link text-[color:var(--muted)] hover:text-[color:var(--fg)]">
+        Technical summary <span aria-hidden="true">→</span>
+      </a>
+    )}
+  </div>
+</article>

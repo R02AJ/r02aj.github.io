@@ -1,0 +1,161 @@
+---
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import ExternalLinkCloud from './ExternalLinkCloud.astro';
+import { siteConfig, withBase } from '../data/site';
+
+const year = new Date().getFullYear();
+
+const projectRoot = process.cwd();
+const quantCvPath = join(projectRoot, 'public', 'files', 'robert-jenkinson-alvarez-quant-cv.pdf');
+const researchCvPath = join(
+  projectRoot,
+  'public',
+  'files',
+  'robert-jenkinson-alvarez-research-cv.pdf'
+);
+
+const quantCvAvailable = existsSync(quantCvPath);
+const researchCvAvailable = existsSync(researchCvPath);
+
+const homeHref = withBase('/');
+const researchHref = withBase('/research');
+const aboutHref = withBase('/about');
+const hamjepaHref = withBase('/research/hamjepa');
+const chebyshevHref = withBase('/research/chebyshev-option-surfaces');
+const ongoingHref = withBase('/research#ongoing-work');
+const hamjepaSummaryHref = withBase('/research/hamjepa/summary');
+const chebyshevSummaryHref = withBase('/research/chebyshev-option-surfaces/summary');
+const quantCvHref = withBase('/files/robert-jenkinson-alvarez-quant-cv.pdf');
+const researchCvHref = withBase('/files/robert-jenkinson-alvarez-research-cv.pdf');
+
+const navLinks = siteConfig.nav.map((item) => ({
+  ...item,
+  href: withBase(item.href)
+}));
+
+const externalLinks = [
+  { label: 'GitHub', href: siteConfig.links.github },
+  { label: 'arXiv Author', href: siteConfig.links.arxivAuthor },
+  { label: 'Zenodo', href: siteConfig.links.zenodo },
+  { label: 'Chebyshev Paper', href: siteConfig.links.chebyshevPaper },
+  { label: 'HamJEPA Paper', href: withBase(siteConfig.links.hamjepaPaper) },
+  { label: 'HamJEPA Code', href: siteConfig.links.hamjepaCode }
+];
+---
+
+<footer class="surface-dark mt-24 section-divider">
+  <div class="page-shell section-space space-y-12">
+    <section class="grid gap-8 border-b border-white/16 pb-10 lg:grid-cols-[1.2fr_2fr]">
+      <div class="space-y-5">
+        <h2 class="section-title">{siteConfig.name}</h2>
+        <p class="lede">{siteConfig.identityStatement}</p>
+        <p class="text-sm text-[color:var(--dark-muted)]">
+          Open to research collaboration in geometric ML, structured derivatives modelling, and robust quantitative systems.
+        </p>
+      </div>
+
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <section aria-label="Site">
+          <p class="meta-label mb-4">Site</p>
+          <ul class="space-y-2 text-sm text-[color:var(--dark-fg)]/90">
+            <li><a href={homeHref} class="transition-colors hover:text-white">Home</a></li>
+            {navLinks.map((item) => (
+              <li>
+                <a href={item.href} class="transition-colors hover:text-white">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section aria-label="Research Pages">
+          <p class="meta-label mb-4">Research</p>
+          <ul class="space-y-2 text-sm text-[color:var(--dark-fg)]/90">
+            <li>
+              <a href={hamjepaHref} class="transition-colors hover:text-white">HamJEPA</a>
+            </li>
+            <li>
+              <a href={chebyshevHref} class="transition-colors hover:text-white">
+                Chebyshev Surfaces
+              </a>
+            </li>
+            <li>
+              <a href={ongoingHref} class="transition-colors hover:text-white">
+                Ongoing Work Previews
+              </a>
+            </li>
+            <li>
+              <a href={hamjepaSummaryHref} class="transition-colors hover:text-white">
+                HamJEPA Technical Summary
+              </a>
+            </li>
+            <li>
+              <a
+                href={chebyshevSummaryHref}
+                class="transition-colors hover:text-white"
+              >
+                Chebyshev Technical Summary
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-label="External Links">
+          <p class="meta-label mb-4">Papers / Code / Data</p>
+          <ExternalLinkCloud links={externalLinks} tone="dark" size="sm" ariaLabel="Footer external links" />
+        </section>
+
+        <section aria-label="CV and Contact">
+          <p class="meta-label mb-4">CV / Contact</p>
+          <ul class="space-y-2 text-sm text-[color:var(--dark-fg)]/90">
+            <li>
+              {
+                quantCvAvailable ? (
+                  <a href={quantCvHref} class="hover:text-white">
+                    Quant CV (PDF)
+                  </a>
+                ) : (
+                  <a href={aboutHref} class="hover:text-white">
+                    Quant CV
+                  </a>
+                )
+              }
+            </li>
+            <li>
+              {
+                researchCvAvailable ? (
+                  <a
+                    href={researchCvHref}
+                    class="hover:text-white"
+                  >
+                    Research CV (PDF)
+                  </a>
+                ) : (
+                  <a href={aboutHref} class="hover:text-white">
+                    Research CV
+                  </a>
+                )
+              }
+            </li>
+            <li>
+              <a href={siteConfig.links.email} class="hover:text-white">
+                robert.j.jenkinson.alvarez@bath.edu
+              </a>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <section class="footer-line grid gap-5 pt-8 md:grid-cols-[1fr_auto] md:items-center">
+      <p class="text-sm text-[color:var(--dark-muted)]">
+        © {year} {siteConfig.name}. {siteConfig.tagline}
+      </p>
+      <a href={researchHref} class="site-nav-cta w-fit">
+        Open research library
+      </a>
+    </section>
+  </div>
+</footer>

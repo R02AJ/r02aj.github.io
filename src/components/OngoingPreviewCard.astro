@@ -1,0 +1,20 @@
+---
+interface Props {
+  title: string;
+  category: string;
+  status?: 'Ongoing';
+  description: string;
+}
+
+const { title, category, status = 'Ongoing', description } = Astro.props;
+---
+
+<article class="card ongoing-preview-card">
+  <div class="ongoing-preview-tags">
+    <span class="ongoing-preview-pill ongoing-preview-pill-category">{category}</span>
+    <span class="ongoing-preview-pill ongoing-preview-pill-status">{status}</span>
+  </div>
+
+  <h3 class="ongoing-preview-title">{title}</h3>
+  <p class="body-copy text-sm ongoing-preview-description">{description}</p>
+</article>

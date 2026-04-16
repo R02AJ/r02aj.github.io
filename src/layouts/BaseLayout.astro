@@ -1,0 +1,128 @@
+---
+import NavBar from '../components/NavBar.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { siteConfig, toAbsoluteUrl, withBase } from '../data/site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogType?: 'website' | 'article' | 'profile';
+  ogImage?: string;
+  ogImageAlt?: string;
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+}
+
+const {
+  title = `${siteConfig.name} | Research`,
+  description = siteConfig.shortBio,
+  canonicalPath,
+  ogType = 'website',
+  ogImage = siteConfig.socialPreview.imagePath,
+  ogImageAlt = siteConfig.socialPreview.imageAlt,
+  noindex = false,
+  jsonLd
+} = Astro.props;
+
+const pathname = canonicalPath ?? Astro.url.pathname;
+const canonicalUrl = toAbsoluteUrl(pathname);
+const socialImageUrl = ogImage.startsWith('http') ? ogImage : toAbsoluteUrl(ogImage);
+const jsonLdPayload = Array.isArray(jsonLd)
+  ? jsonLd
+  : jsonLd
+    ? [jsonLd]
+    : [];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content={siteConfig.socialPreview.twitterCard} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase('/favicon.svg')} />
+    <link rel="icon" href={withBase('/favicon.ico')} />
+    <script is:inline>
+      (() => {
+        try {
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.documentElement.dataset.revealInit = 'true';
+          }
+        } catch {
+          // no-op
+        }
+      })();
+    </script>
+    <title>{title}</title>
+    {
+      jsonLdPayload.map((entry) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(entry)} />
+      ))
+    }
+  </head>
+  <body>
+    <a href="#content" class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2">Skip to content</a>
+    <NavBar />
+    <main id="content">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script is:inline>
+      (() => {
+        const revealNodes = Array.from(document.querySelectorAll('[data-reveal]'));
+        if (revealNodes.length === 0) return;
+
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          revealNodes.forEach((node) => {
+            node.classList.add('is-revealed');
+          });
+          return;
+        }
+
+        document.documentElement.dataset.revealInit = 'true';
+
+        revealNodes.forEach((node, index) => {
+          const delay = (index % 4) * 40;
+          node.style.transitionDelay = `${delay}ms`;
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.16,
+            rootMargin: '0px 0px -8% 0px'
+          }
+        );
+
+        revealNodes.forEach((node) => observer.observe(node));
+      })();
+    </script>
+  </body>
+</html>

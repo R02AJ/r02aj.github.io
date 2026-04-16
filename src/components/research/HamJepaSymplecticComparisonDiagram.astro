@@ -1,0 +1,154 @@
+<figure
+  class="hamjepa-concept-diagram"
+  aria-labelledby="hamjepa-symplectic-map-title"
+  aria-describedby="hamjepa-symplectic-map-caption"
+>
+  <div class="hamjepa-concept-scroll" tabindex="0" aria-label="Scrollable symplectic comparison diagram">
+    <svg
+      class="hamjepa-concept-svg"
+      viewBox="0 0 980 760"
+      role="img"
+      aria-labelledby="hamjepa-symplectic-map-title hamjepa-symplectic-map-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-symplectic-map-title">Generic map versus symplectic map geometry</title>
+      <desc id="hamjepa-symplectic-map-desc">
+        Top panel shows generic learned map with strong local-volume collapse into a thin ribbon. Bottom panel shows
+        symplectic map that deforms shape while preserving phase-space volume.
+      </desc>
+
+      <defs>
+        <marker id="ham-sym-arrow" markerWidth="9" markerHeight="9" refX="7.6" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4d5866" />
+        </marker>
+      </defs>
+
+      <text x="490" y="52" class="t-head" text-anchor="middle">generic learned map</text>
+      <rect x="112" y="86" width="312" height="214" rx="14" class="panel panel-generic" />
+      <path
+        d="M176 204 C202 140 282 122 350 146 C394 160 414 204 396 242 C370 286 290 294 226 270 C190 258 162 236 176 204 Z"
+        class="state state-start"
+      />
+      <line x1="434" y1="194" x2="542" y2="194" class="a-main" marker-end="url(#ham-sym-arrow)" />
+      <rect x="552" y="86" width="312" height="214" rx="14" class="panel panel-generic" />
+      <path
+        d="M616 194 C700 186 760 184 826 188 C836 190 838 198 828 200 C760 206 700 206 616 198 C606 196 606 194 616 194 Z"
+        class="state state-collapse"
+      />
+
+      <text x="490" y="404" class="t-head" text-anchor="middle">symplectic map</text>
+      <rect x="112" y="438" width="312" height="214" rx="14" class="panel panel-symplectic" />
+      <path
+        d="M176 556 C202 492 282 474 350 498 C394 512 414 556 396 594 C370 638 290 646 226 622 C190 610 162 588 176 556 Z"
+        class="state state-start"
+      />
+      <line x1="434" y1="546" x2="542" y2="546" class="a-main" marker-end="url(#ham-sym-arrow)" />
+      <rect x="552" y="438" width="312" height="214" rx="14" class="panel panel-symplectic" />
+      <path
+        d="M620 548 C640 492 708 470 772 490 C824 506 844 560 818 606 C784 642 724 642 672 620 C628 602 604 578 620 548 Z"
+        class="state state-symplectic"
+      />
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-symplectic-map-caption" class="hamjepa-concept-caption">
+    <strong>What “symplectic” means geometrically.</strong> A generic learned map can bend, stretch, and arbitrarily
+    collapse local geometry. A symplectic map can still deform the state space, but it preserves total phase-space
+    volume locally, i.e. |det DΦ|=1. This gives the predictor a structured notion of reversibility and ensures that
+    the predictor itself is not the source of volume collapse.
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-concept-diagram {
+    margin: 1.15rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.15rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 10px 24px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-concept-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-concept-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-concept-svg {
+    display: block;
+    width: 100%;
+    min-width: 860px;
+    height: auto;
+    background:
+      radial-gradient(circle at 18% 14%, rgba(42, 100, 214, 0.09), transparent 34%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.22));
+  }
+
+  .panel {
+    fill: rgba(255, 255, 255, 0.72);
+    stroke-width: 1.4;
+  }
+
+  .panel-generic {
+    stroke: #8a7f71;
+  }
+
+  .panel-symplectic {
+    stroke: #61798b;
+  }
+
+  .state {
+    stroke-width: 1.5;
+  }
+
+  .state-start {
+    fill: rgba(238, 243, 247, 0.76);
+    stroke: #7f96a6;
+  }
+
+  .state-symplectic {
+    fill: rgba(200, 224, 239, 0.67);
+    stroke: #60819a;
+  }
+
+  .state-collapse {
+    fill: rgba(214, 160, 117, 0.58);
+    stroke: #9a6e3c;
+  }
+
+  .a-main {
+    fill: none;
+    stroke: #4d5866;
+    stroke-width: 1.9;
+  }
+
+  .t-head {
+    font: 600 27px 'Newsreader', 'Iowan Old Style', serif;
+    letter-spacing: -0.01em;
+    fill: #1f2630;
+  }
+
+  .hamjepa-concept-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.74rem 0.9rem 0.9rem;
+    font-size: 0.84rem;
+    line-height: 1.52;
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .hamjepa-concept-svg {
+      min-width: 820px;
+    }
+
+    .t-head {
+      font-size: 25px;
+    }
+  }
+</style>

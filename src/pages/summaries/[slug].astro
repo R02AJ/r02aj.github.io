@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../data/site';
+import { entrySlug, sortByOrder, summaryProjectSlug } from '../../utils/content';
+
+interface Props {
+  targetHref: string;
+  summaryTitle: string;
+}
+
+export async function getStaticPaths() {
+  const summaries = (await getCollection('summaries')).sort(sortByOrder);
+
+  return summaries.map((summary) => ({
+    params: { slug: entrySlug(summary.id) },
+    props: {
+      targetHref: withBase(`/research/${summaryProjectSlug(summary)}/summary`),
+      summaryTitle: summary.data.title
+    }
+  }));
+}
+
+const { targetHref, summaryTitle } = Astro.props as Props;
+---
+
+<BaseLayout
+  title={`${summaryTitle} | Redirect`}
+  description="This summary now lives inside the Research library."
+  noindex
+>
+  <Fragment slot="head">
+    <meta http-equiv="refresh" content={`0;url=${targetHref}`} />
+    <link rel="canonical" href={targetHref} />
+  </Fragment>
+
+  <section class="surface-light section-space section-divider">
+    <div class="page-shell max-w-3xl space-y-5 text-center">
+      <h1 class="section-title">Summary moved inside Research</h1>
+      <p class="lede mx-auto">This URL remains as a compatibility alias.</p>
+      <p>
+        <a href={targetHref} class="site-nav-cta">
+          Continue to technical summary
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

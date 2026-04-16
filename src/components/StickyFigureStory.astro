@@ -1,0 +1,27 @@
+---
+import StickyFigureStoryIsland from './react/StickyFigureStory';
+
+type StoryItem = {
+  id: string;
+  title: string;
+  caption: string;
+  mediaSrc?: string;
+  tag?: string;
+  metric?: string;
+};
+
+interface Props {
+  items: StoryItem[];
+  heading?: string;
+  intro?: string;
+}
+
+const { items, heading, intro } = Astro.props;
+---
+
+<StickyFigureStoryIsland
+  items={items}
+  heading={heading}
+  intro={intro}
+  client:visible
+/>

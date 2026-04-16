@@ -1,0 +1,170 @@
+---
+import Badge from '../Badge.astro';
+import { withBase } from '../../data/site';
+
+type ShellTag = {
+  label: string;
+  tone?: 'default' | 'accent';
+};
+
+type ShellAction = {
+  label: string;
+  href?: string;
+  external?: boolean;
+  ariaLabel?: string;
+  title?: string;
+};
+
+interface Props {
+  title: string;
+  description: string;
+  tags: ShellTag[];
+  actions?: ShellAction[];
+  actionsAriaLabel?: string;
+  backHref?: string;
+  backLabel?: string;
+  intro?: string;
+}
+
+const {
+  title,
+  description,
+  tags,
+  actions = [],
+  actionsAriaLabel = 'Research page actions',
+  backHref = withBase('/research'),
+  backLabel = 'Back to research index',
+  intro
+} = Astro.props as Props;
+
+const hasDividerSlot = Astro.slots.has('after-divider');
+---
+
+<section class="section-tight research-shell-band">
+  <div class="page-shell">
+    <header class="research-shell-wrap research-shell-header" data-reveal>
+      <a href={backHref} class="subtle-link text-sm">
+        <span aria-hidden="true">←</span> {backLabel}
+      </a>
+
+      <div class="flex flex-wrap gap-2">
+        {tags.map((tag) => (
+          <Badge label={tag.label} tone={tag.tone ?? 'default'} />
+        ))}
+      </div>
+
+      <h1 class="research-shell-title">{title}</h1>
+      <p class="body-copy research-shell-intro">{description}</p>
+
+      {
+        actions.length > 0 && (
+          <nav class="research-shell-actions" aria-label={actionsAriaLabel}>
+            {actions.map((action) =>
+              action.href ? (
+                <a
+                  href={action.href}
+                  class="research-shell-action"
+                  target={action.external ? '_blank' : undefined}
+                  rel={action.external ? 'noreferrer noopener' : undefined}
+                  aria-label={action.ariaLabel}
+                  title={action.title}
+                >
+                  {action.label}
+                </a>
+              ) : (
+                <span class="research-shell-action research-shell-action-disabled" aria-disabled="true">
+                  {action.label}
+                </span>
+              )
+            )}
+          </nav>
+        )
+      }
+    </header>
+  </div>
+</section>
+
+{
+  (intro || hasDividerSlot) && (
+    <section class="section-tight section-divider research-shell-band">
+      <div class="page-shell">
+        <div class="research-shell-wrap research-shell-divider">
+          {intro && <p class="body-copy">{intro}</p>}
+          <slot name="after-divider" />
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .research-shell-band {
+    padding-block: clamp(2rem, 4.2vw, 3.35rem);
+  }
+
+  .research-shell-wrap {
+    margin-inline: auto;
+    max-width: min(900px, 100%);
+  }
+
+  .research-shell-header {
+    display: grid;
+    gap: 0.72rem;
+  }
+
+  .research-shell-title {
+    margin: 0;
+    font-size: clamp(1.78rem, 3.45vw, 2.58rem);
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    max-width: 24ch;
+  }
+
+  .research-shell-intro {
+    max-width: 76ch;
+  }
+
+  .research-shell-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.42rem;
+  }
+
+  .research-shell-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6rem;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 45%, transparent);
+    background: color-mix(in oklab, var(--bg-elevated) 93%, white 7%);
+    padding: 0.32rem 0.64rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--fg);
+    text-decoration: none;
+    transition: border-color 180ms ease;
+  }
+
+  .research-shell-action:hover {
+    border-color: color-mix(in oklab, var(--fg) 42%, transparent);
+  }
+
+  .research-shell-action-disabled {
+    opacity: 0.62;
+    pointer-events: none;
+  }
+
+  .research-shell-divider {
+    display: grid;
+    gap: 0.72rem;
+  }
+
+  @media (max-width: 760px) {
+    .research-shell-action {
+      width: 100%;
+    }
+  }
+</style>

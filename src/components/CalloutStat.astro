@@ -1,0 +1,24 @@
+---
+interface Props {
+  value: string;
+  label?: string;
+  detail?: string;
+  tone?: 'light' | 'dark';
+  compact?: boolean;
+}
+
+const { value, label = 'Metric', detail, tone = 'light', compact = false } = Astro.props;
+---
+
+<article
+  class:list={[
+    'callout-stat',
+    tone === 'dark' ? 'callout-stat-dark' : 'callout-stat-light',
+    compact ? 'callout-stat-compact' : undefined
+  ]}
+  data-reveal
+>
+  <p class="callout-stat-label">{label}</p>
+  <p class="callout-stat-value">{value}</p>
+  {detail && <p class="callout-stat-detail">{detail}</p>}
+</article>

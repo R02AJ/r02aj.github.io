@@ -1,0 +1,380 @@
+---
+const SCALE = 62;
+const ORIGIN_X = 72;
+const ORIGIN_Y = 52;
+const Y_MAX = 4.9;
+
+const px = (value: number) => Number(value.toFixed(2));
+const X = (value: number) => px(ORIGIN_X + value * SCALE);
+const Y = (value: number) => px(ORIGIN_Y + (Y_MAX - value) * SCALE);
+const W = (value: number) => px(value * SCALE);
+const H = (value: number) => px(value * SCALE);
+
+function centerRect(cx: number, cy: number, width: number, height: number) {
+  return {
+    x: X(cx - width / 2),
+    y: Y(cy + height / 2),
+    width: W(width),
+    height: H(height)
+  };
+}
+
+function bottomRect(x: number, y: number, width: number, height: number) {
+  return {
+    x: X(x),
+    y: Y(y + height),
+    width: W(width),
+    height: H(height)
+  };
+}
+
+function cornersRect(x1: number, y1: number, x2: number, y2: number) {
+  const left = Math.min(x1, x2);
+  const right = Math.max(x1, x2);
+  const top = Math.max(y1, y2);
+  const bottom = Math.min(y1, y2);
+
+  return {
+    x: X(left),
+    y: Y(top),
+    width: W(right - left),
+    height: H(top - bottom)
+  };
+}
+
+function pts(points: Array<[number, number]>) {
+  return points.map(([x, y]) => `${X(x)},${Y(y)}`).join(' ');
+}
+
+const inputQ = bottomRect(0.0, 1.0, 1.45, 0.72);
+const inputP = bottomRect(0.0, 0.18, 1.45, 0.72);
+
+const hamGroup = cornersRect(3.0, 1.95, 9.45, 4.35);
+const dyn = centerRect(6.22, 3.72, 4.4, 0.72);
+const tBox = centerRect(4.55, 2.72, 2.4, 0.92);
+const vBox = centerRect(7.75, 2.72, 2.25, 0.92);
+
+const leapGroup = cornersRect(3.0, -1.22, 11.85, 1.45);
+const chip = centerRect(4.45, 1.72, 2.95, 0.58);
+const kick1 = centerRect(4.45, 0.42, 2.05, 0.86);
+const drift = centerRect(7.42, 0.42, 1.9, 0.86);
+const kick2 = centerRect(10.38, 0.42, 2.05, 0.86);
+
+const outputQ = bottomRect(13.45, 1.0, 1.45, 0.72);
+const outputP = bottomRect(13.45, 0.18, 1.45, 0.72);
+---
+
+<figure
+  class="hamjepa-diagram"
+  aria-labelledby="hamjepa-leapfrog-title"
+  aria-describedby="hamjepa-leapfrog-caption"
+>
+  <div class="hamjepa-diagram-scroll" tabindex="0" aria-label="Scrollable HamJEPA leapfrog diagram">
+    <svg
+      class="hamjepa-diagram-svg"
+      viewBox="0 0 1120 560"
+      role="img"
+      aria-labelledby="hamjepa-leapfrog-title hamjepa-leapfrog-desc"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <title id="hamjepa-leapfrog-title">
+        HamJEPA leapfrog predictor: Hamiltonian decomposition and kick-drift-kick rollout
+      </title>
+      <desc id="hamjepa-leapfrog-desc">
+        Diagram showing input state s_a with q and p blocks, Hamiltonian H_phi(q,p)=T(p)+V_phi(q), dynamics,
+        leapfrog half-kick drift half-kick sequence repeated K times, dependency arrows from V_phi to kick updates and
+        from T(p) to drift, then predicted output state s_hat_b.
+      </desc>
+
+      <defs>
+        <marker id="ham-leap-arrow" markerWidth="9" markerHeight="9" refX="7.5" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#4d5866" />
+        </marker>
+        <marker id="ham-leap-soft" markerWidth="8" markerHeight="8" refX="6.6" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 z" fill="#758695" />
+        </marker>
+        <marker id="ham-leap-green" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#2f7d57" />
+        </marker>
+        <marker id="ham-leap-gold" markerWidth="9" markerHeight="9" refX="7.4" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 z" fill="#9f7d31" />
+        </marker>
+      </defs>
+
+      <text x={X(0.725)} y={Y(2.03)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        s<tspan baseline-shift="sub" font-size="68%">a</tspan>
+      </text>
+      <rect x={inputQ.x} y={inputQ.y} width={inputQ.width} height={inputQ.height} rx="8" class="box box-q" />
+      <rect x={inputP.x} y={inputP.y} width={inputP.width} height={inputP.height} rx="8" class="box box-p" />
+      <text x={X(0.725)} y={Y(1.36)} class="t-main" text-anchor="middle" dominant-baseline="middle">q</text>
+      <text x={X(0.725)} y={Y(0.54)} class="t-main" text-anchor="middle" dominant-baseline="middle">p</text>
+
+      <rect
+        x={hamGroup.x}
+        y={hamGroup.y}
+        width={hamGroup.width}
+        height={hamGroup.height}
+        rx="10"
+        class="group-box"
+      />
+      <text x={X(6.22)} y={Y(4.72)} class="t-math" text-anchor="middle" dominant-baseline="middle">
+        H<tspan baseline-shift="sub" font-size="68%">φ</tspan>(q,p)=T(p)+V<tspan baseline-shift="sub" font-size="68%">φ</tspan>(q)
+      </text>
+
+      <rect x={dyn.x} y={dyn.y} width={dyn.width} height={dyn.height} rx="8" class="box box-small" />
+      <text x={X(6.22)} y={Y(3.72)} class="t-small t-equation" text-anchor="middle" dominant-baseline="middle">
+        q̇ = p, ṗ = -∇<tspan baseline-shift="sub" font-size="68%">q</tspan>V<tspan baseline-shift="sub" font-size="68%"
+          >φ</tspan
+        >(q)
+      </text>
+
+      <rect x={tBox.x} y={tBox.y} width={tBox.width} height={tBox.height} rx="10" class="box box-gold" />
+      <text x={X(4.55)} y={Y(2.72)} class="t-main t-compact" text-anchor="middle" dominant-baseline="middle">
+        T(p)=½||p||²
+      </text>
+
+      <rect x={vBox.x} y={vBox.y} width={vBox.width} height={vBox.height} rx="10" class="box box-reg" />
+      <text x={X(7.75)} y={Y(2.72)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        V<tspan baseline-shift="sub" font-size="68%">φ</tspan>(q)
+      </text>
+
+      <rect
+        x={leapGroup.x}
+        y={leapGroup.y}
+        width={leapGroup.width}
+        height={leapGroup.height}
+        rx="10"
+        class="group-box"
+      />
+
+      <rect x={chip.x} y={chip.y} width={chip.width} height={chip.height} rx="8" class="chip" />
+      <text x={X(4.45)} y={Y(1.82)} class="t-chip" text-anchor="middle">
+        <tspan x={X(4.45)}>one leapfrog</tspan>
+        <tspan x={X(4.45)} dy="1.15em">step</tspan>
+      </text>
+
+      <rect x={kick1.x} y={kick1.y} width={kick1.width} height={kick1.height} rx="10" class="box box-base" />
+      <text x={X(4.45)} y={Y(0.42)} class="t-main" text-anchor="middle" dominant-baseline="middle">half-kick</text>
+
+      <rect x={drift.x} y={drift.y} width={drift.width} height={drift.height} rx="10" class="box box-base" />
+      <text x={X(7.42)} y={Y(0.42)} class="t-main" text-anchor="middle" dominant-baseline="middle">drift</text>
+
+      <rect x={kick2.x} y={kick2.y} width={kick2.width} height={kick2.height} rx="10" class="box box-base" />
+      <text x={X(10.38)} y={Y(0.42)} class="t-main" text-anchor="middle" dominant-baseline="middle">half-kick</text>
+
+      <text x={X(4.45)} y={Y(-0.55)} class="t-step" text-anchor="middle" dominant-baseline="middle">
+        p ← p − (Δt/2)∇V(q)
+      </text>
+      <text x={X(7.42)} y={Y(-0.55)} class="t-step" text-anchor="middle" dominant-baseline="middle">
+        q ← q + Δt p
+      </text>
+      <text x={X(10.38)} y={Y(-0.55)} class="t-step" text-anchor="middle" dominant-baseline="middle">
+        p ← p − (Δt/2)∇V(q)
+      </text>
+
+      <text x={X(7.42)} y={Y(-1.82)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        repeat K times
+      </text>
+
+      <text x={X(14.175)} y={Y(2.03)} class="t-small" text-anchor="middle" dominant-baseline="middle">
+        ŝ<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <rect x={outputQ.x} y={outputQ.y} width={outputQ.width} height={outputQ.height} rx="8" class="box box-q" />
+      <rect x={outputP.x} y={outputP.y} width={outputP.width} height={outputP.height} rx="8" class="box box-p" />
+      <text x={X(14.175)} y={Y(1.36)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        q̂<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+      <text x={X(14.175)} y={Y(0.54)} class="t-main" text-anchor="middle" dominant-baseline="middle">
+        p̂<tspan baseline-shift="sub" font-size="68%">b</tspan>
+      </text>
+
+      <polyline points={pts([[1.45, 0.9], [3.35, 0.9], [3.425, 0.42]])} class="a-main" />
+      <line x1={X(5.475)} y1={Y(0.42)} x2={X(6.47)} y2={Y(0.42)} class="a-main" />
+      <line x1={X(8.37)} y1={Y(0.42)} x2={X(9.355)} y2={Y(0.42)} class="a-main" />
+      <polyline points={pts([[11.405, 0.42], [13.45, 0.9]])} class="a-main" />
+
+      <line x1={X(7.75)} y1={Y(2.26)} x2={X(4.45)} y2={Y(0.85)} class="a-green" />
+      <line x1={X(7.75)} y1={Y(2.26)} x2={X(10.38)} y2={Y(0.85)} class="a-green" />
+      <line x1={X(4.55)} y1={Y(2.26)} x2={X(7.42)} y2={Y(0.85)} class="a-gold" />
+
+      <polyline points={pts([[8.42, 3.72], [10.55, 3.72], [10.55, 1.45]])} class="a-soft" />
+    </svg>
+  </div>
+
+  <figcaption id="hamjepa-leapfrog-caption" class="hamjepa-diagram-caption">
+    <strong>What the predictor is doing.</strong> HamJEPA does not use an arbitrary predictor z<sub>a</sub>→ẑ<sub>b</sub>.
+    Instead, it rolls the state forward with a learned separable Hamiltonian H<sub>φ</sub>(q,p)=T(p)+V<sub>φ</sub>(q)
+    and a leapfrog integrator. The potential V<sub>φ</sub>(q) drives the kick updates through ∇<sub>q</sub>V<sub>φ</sub>(q),
+    while the kinetic term T(p)=½||p||² yields the drift update q←q+Δt p. Repeating this structured step K times
+    produces the predicted target state ŝ<sub>b</sub>=Φ<sub>φ</sub><sup>K</sup>(s<sub>a</sub>).
+  </figcaption>
+</figure>
+
+<style>
+  .hamjepa-diagram {
+    margin: 1.25rem 0;
+    border: 1px solid color-mix(in oklab, var(--line-strong) 52%, transparent);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: color-mix(in oklab, var(--bg-elevated) 92%, white 8%);
+    box-shadow: 0 12px 26px rgba(16, 18, 23, 0.06);
+  }
+
+  .hamjepa-diagram-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hamjepa-diagram-scroll:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .hamjepa-diagram-svg {
+    display: block;
+    width: 100%;
+    min-width: 980px;
+    height: auto;
+    background:
+      radial-gradient(circle at 20% 15%, rgba(42, 100, 214, 0.08), transparent 35%),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.26));
+  }
+
+  .box {
+    stroke-width: 1.4;
+  }
+
+  .box-base {
+    fill: #ffffff;
+    stroke: #5f6873;
+  }
+
+  .box-small {
+    fill: #ffffff;
+    stroke: #73808f;
+  }
+
+  .box-q {
+    fill: #eef3f7;
+    stroke: #7f96a6;
+  }
+
+  .box-p {
+    fill: #f4f0ec;
+    stroke: #ad8f7b;
+  }
+
+  .box-gold {
+    fill: #f5f2e8;
+    stroke: #b59a62;
+  }
+
+  .box-reg {
+    fill: #eef6fb;
+    stroke: #9bb9ca;
+  }
+
+  .group-box {
+    fill: none;
+    stroke: #6f7784;
+    stroke-width: 1.5;
+  }
+
+  .chip {
+    fill: #ffffff;
+    stroke: #7a8491;
+    stroke-width: 1.2;
+  }
+
+  .a-main {
+    fill: none;
+    stroke: #4d5866;
+    stroke-width: 2;
+    marker-end: url(#ham-leap-arrow);
+  }
+
+  .a-soft {
+    fill: none;
+    stroke: #758695;
+    stroke-width: 1.8;
+    marker-end: url(#ham-leap-soft);
+  }
+
+  .a-green {
+    fill: none;
+    stroke: #2f7d57;
+    stroke-width: 1.9;
+    marker-end: url(#ham-leap-green);
+  }
+
+  .a-gold {
+    fill: none;
+    stroke: #9f7d31;
+    stroke-width: 1.9;
+    marker-end: url(#ham-leap-gold);
+  }
+
+  .t-main {
+    font: 500 21px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #20262f;
+  }
+
+  .t-small {
+    font: 600 19px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #4a5563;
+  }
+
+  .t-chip {
+    font: 600 15px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #20262f;
+  }
+
+  .t-math {
+    font: 600 22px 'Newsreader', 'Iowan Old Style', serif;
+    fill: #20262f;
+  }
+
+  .t-step {
+    font: 500 15px 'Space Grotesk', 'Avenir Next', 'Helvetica Neue', sans-serif;
+    fill: #3f4853;
+  }
+
+  .t-equation {
+    font-size: 18px;
+  }
+
+  .t-compact {
+    font-size: 19px;
+  }
+
+  .hamjepa-diagram-caption {
+    margin: 0;
+    border-top: 1px solid color-mix(in oklab, var(--line) 70%, transparent);
+    padding: 0.76rem 0.92rem 0.92rem;
+    font-size: 0.82rem;
+    line-height: 1.48;
+    color: var(--muted);
+  }
+
+  @media (max-width: 840px) {
+    .hamjepa-diagram-svg {
+      min-width: 940px;
+    }
+
+    .t-main {
+      font-size: 19px;
+    }
+
+    .t-small {
+      font-size: 17px;
+    }
+
+    .t-math {
+      font-size: 20px;
+    }
+
+    .t-step {
+      font-size: 14px;
+    }
+  }
+</style>

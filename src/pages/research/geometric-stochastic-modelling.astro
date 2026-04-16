@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withBase } from '../../data/site';
+
+const targetHref = withBase('/research#ongoing-work');
+const routeHref = withBase('/research/geometric-stochastic-modelling');
+---
+
+<BaseLayout
+  title="Research Redirect | Robert Jenkinson Alvarez"
+  description="This route now lives as an ongoing-work preview inside the research index."
+  noindex
+>
+  <Fragment slot="head">
+    <meta http-equiv="refresh" content={`0;url=${targetHref}`} />
+    <link rel="canonical" href={targetHref} />
+  </Fragment>
+
+  <section class="surface-light section-space section-divider">
+    <div class="page-shell max-w-3xl space-y-5 text-center">
+      <h1 class="section-title">Moved to ongoing work previews</h1>
+      <p class="lede mx-auto">
+        This topic is currently published as an ongoing-work preview, not a full visual-guide project page.
+      </p>
+      <p>
+        <a href={targetHref} class="site-nav-cta">Continue to Research</a>
+      </p>
+    </div>
+  </section>
+
+  <script is:inline define:vars={{ routeHref, targetHref }}>
+    if (
+      window.location.pathname === routeHref ||
+      window.location.pathname === `${routeHref}/`
+    ) {
+      window.location.replace(targetHref);
+    }
+  </script>
+</BaseLayout>
