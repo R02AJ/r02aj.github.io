@@ -81,14 +81,14 @@ const selectedEvidence = [
   {
     title: 'Arbitrage-free option surfaces',
     description:
-      'Fits forward-discounted call prices with warped Chebyshev tensors, sparse no-arbitrage operators, and a local fog post-fit where quotes are inconsistent.',
+      'Fits forward-discounted call prices with Chebyshev tensors and sparse no-arbitrage operators; local fog handles inconsistent quote patches.',
     evidence: '98–99% inside-spread coverage in calm regimes with <1% static no-arbitrage violations.'
   },
   {
     title: 'Geometric stochastic modelling',
     description:
       'A joint spot–curve–surface model where no-arbitrage and transport structure are built into the state update, not checked after calibration.',
-    evidence: 'Uses joint state variables for spot, curves, and surfaces instead of separate latent-factor fits.'
+    evidence: 'Uses one joint state for spot, curves, and surfaces.'
   },
   {
     title: 'Optiver / market making',
@@ -103,7 +103,7 @@ const currentDirections = [
   {
     title: 'Financial Hamiltonian Theory & Computational Aspects',
     description:
-      'Models option sheets, forward curves, spots, and volatility factors in one Hamiltonian state update.'
+      'Couples option sheets, forward curves, spots, and volatility factors in a Hamiltonian state update.'
   },
   {
     title: 'Continuous Hamiltonian fog',
@@ -141,8 +141,8 @@ const personJsonLd = {
     <div class="page-shell about-hero-stack" data-reveal>
       <h1 class="display-title max-w-5xl">About / CV</h1>
       <p class="lede max-w-3xl">
-        I work on representation learning, option-surface modelling, and geometric analysis. I like models where the
-        state variable, constraints, and diagnostics are part of the construction rather than after-the-fact checks.
+        I work on representation learning, option-surface modelling, structure-preserving financial dynamics, and
+        geometric analysis. I like models where the geometry is something you discover, not something you inherit.
       </p>
     </div>
   </section>
@@ -264,7 +264,7 @@ const personJsonLd = {
   <section class="surface-light section-tight section-divider">
     <div class="page-shell" data-reveal>
       <p class="about-closing-note body-copy text-sm">
-        Best reached by email with the technical context, constraints, and question.
+        Best reached by email for research discussions or opportunities, with context and constraints.
       </p>
     </div>
   </section>

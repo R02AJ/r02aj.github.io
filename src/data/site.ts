@@ -17,12 +17,12 @@ export const siteConfig = {
   identityStatement:
     'Geometric Deep Learning, Quantitative Finance and Geometric Analysis.',
   shortBio:
-    'I work on geometric machine learning, quantitative finance, and geometric analysis. Recent work includes Hamiltonian geometry for JEPA-style representation learning, arbitrage-free option-surface construction with Chebyshev tensor bases and a Hamiltonian fog post-fit, and geometric stochastic modelling for spot, rates, and options.',
+    'I work on representation learning, option surfaces, and geometric analysis. Most of my projects start by choosing the right state variable, then building the constraints into the model rather than checking them afterward.',
   email: 'mailto:robert.j.jenkinson.alvarez@bath.edu',
   socialPreview: {
     imagePath: '/social-preview.svg',
     imageAlt:
-      'Robert Jenkinson Alvarez research website preview: geometric ML, quantitative finance, and structure-preserving models.',
+      'Robert Jenkinson Alvarez research website preview: Representation learning, option surfaces, and geometric analysis.',
     twitterCard: 'summary_large_image'
   },
   links: {
@@ -34,7 +34,7 @@ export const siteConfig = {
     zenodo: 'https://zenodo.org/records/19006204',
     chebyshevPaper: 'https://arxiv.org/abs/2512.01967',
     hamjepaPaper: '/files/beyond_isotropy_in_jepa.pdf',
-    hamjepaCode: '[PASTE_HAMJEPA_GITHUB_URL_IF_AVAILABLE]'
+    hamjepaCode: ''
   },
   education: [
     {

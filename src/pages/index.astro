@@ -112,7 +112,7 @@ const externalLinks = [
 ];
 
 const hamjepaCardThesis =
-  'Joint Embedding Predictive Architectures (JEPAs) usually push embeddings toward an Isotropic Gaussian. We show this is the wrong target when the task geometry is structured, and replace it with a symplectic predictor on phase space.';
+  'JEPAs usually push embeddings toward an isotropic Gaussian. HamJEPA instead predicts between views by rolling a phase-space state through a symplectic map.';
 
 const projectCardThesisBySlug: Record<string, string> = {
   hamjepa: hamjepaCardThesis
@@ -243,28 +243,10 @@ const personJsonLd = {
     </div>
   </section>
 
-  <section class="surface-dark section-space section-divider">
-    <div class="page-shell space-y-8" data-reveal>
-      <div class="section-header section-header-tight">
-        <h2 class="section-title">Current work</h2>
-      </div>
-
-      <div class="grid gap-5 md:grid-cols-3">
-        {siteConfig.focusAreas.map((area) => (
-          <article class="card lift">
-            <p class="meta-label mb-4">Focus Area</p>
-            <h3 class="mb-3 text-3xl">{area.title}</h3>
-            <p class="text-[color:var(--dark-muted)]">{area.description}</p>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
   <section class="section-tight section-divider">
     <div class="page-shell space-y-7" data-reveal>
       <div class="section-header section-header-tight">
-        <h2 class="section-title">Visual diagnostics and model geometry</h2>
+        <h2 class="section-title">Diagnostics</h2>
       </div>
 
       <HomeDiagnosticsSlideshow slides={slideshowItems} />
@@ -296,7 +278,7 @@ const personJsonLd = {
       </article>
 
       <article class="card lift space-y-4">
-        <p class="home-card-kicker">Papers, code, and profiles</p>
+        <p class="home-card-kicker">Links</p>
         <ul class="home-link-grid" aria-label="Homepage external links">
           {
             externalLinks.map((link) =>

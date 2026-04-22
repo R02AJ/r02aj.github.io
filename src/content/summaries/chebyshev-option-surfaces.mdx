@@ -49,7 +49,7 @@ $$
 =\partial_\tau C^f-\partial_m C^f\bigl(r_{cc}(\tau)+\tau r'_{cc}(\tau)\bigr).
 $$
 
-The central move is to fit the arbitrage-carrying sheet itself instead of interpolating a proxy and repairing arbitrage after the fact.
+The fit is done directly on the forward-discounted call sheet.
 
 </section>
 
@@ -175,7 +175,7 @@ $$
 R_{DW}(a)=\frac{\lambda_{DW}}{2}a^\top E^\top L^+Ea.
 $$
 
-The memorable interpretation is projection in coefficient space:
+In coefficient space, the constrained fit is the projection:
 
 $$
 a^\star=\arg\min_{a\in C_h}\frac12\|a-\hat a\|_{M_h}^2,
@@ -189,7 +189,7 @@ So the baseline surface is the metric projection of an unconstrained spectral fi
 
 <section id="fog-secondary-idea">
 
-## 6. The fog is the right secondary idea
+## 6. Local Hamiltonian fog post-fit
 
 <SummaryFogBox title="Hamiltonian fog as local post-fit">
 Only after the global Chebyshev/QP backbone is fixed does the method introduce patch-wise post-fit on inconsistent regions $\Omega$. On each patch, only interior nodal prices move,
@@ -222,7 +222,7 @@ This does not relax global static no-arbitrage; it provides a convex, local mech
 ## 7. Bottom line
 
 <SummaryTakeBox title="Bottom line">
-The core achievement is structural: choose coordinates and warps that match market geometry, choose a tensor basis whose derivatives close, convert every static restriction into sparse operators, and solve one convex projection problem in coefficient space. With that backbone in place, Hamiltonian fog is exactly the right add-on: local, noise-aware, and subordinate to the global arbitrage-free surface.
+The useful move is to make prices, derivatives, constraints, and regularizers act on the same coefficient vector. With that backbone in place, Hamiltonian fog is a local add-on: noise-aware and subordinate to the global arbitrage-free surface.
 </SummaryTakeBox>
 
 </section>

@@ -2,7 +2,7 @@
 title: 'Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction'
 category: Geometric ML
 status: Research
-thesis: Euclidean isotropy is not a neutral prior when downstream geometry is structured; HamJEPA replaces isotropic regularization with a phase-space predictive prior built from Hamiltonian geometry and symplectic dynamics.
+thesis: JEPAs usually target an isotropic latent cloud; HamJEPA instead predicts between views with a symplectic map on phase space.
 problem: 'The Euclidean-isotropic prior used by common anti-collapse schemes can impose a geometric mismatch when representation dynamics are inherently structured. In practice, this can be interpreted as a price of isotropy: stability and invariance are encouraged in directions that may be irrelevant to the task geometry.'
 coreIdea: Model each view as a phase-space state `s = (q, p)` and predict with a structure-preserving map. The key shift is to treat geometry as first-class, replacing isotropic latent assumptions with a Hamiltonian phase-space prior.
 method: Use an H-energy budget and a symplectic leapfrog/velocity-Verlet predictor so the map is volume-aware and time-reversible in the intended sense. Anti-collapse constraints are enforced at the encoder level without forcing isotropic Gaussian geometry in latent space.
@@ -31,25 +31,19 @@ assets:
   - visualizing_drift_sigreg_vs_hamjepa.gif
 externalLinks:
   - label: HamJEPA paper
-    href: "[PASTE_HAMJEPA_PAPER_URL_IF_AVAILABLE]"
-  - label: HamJEPA code
-    href: "[PASTE_HAMJEPA_GITHUB_URL_IF_AVAILABLE]"
+    href: /files/beyond_isotropy_in_jepa.pdf
 order: 1
 ---
 
-## Research Context
+## Problem
 
-The objective is not only better self-supervised representation quality, but a better structural prior for the prediction operator itself. In this framing, isotropy is treated as a special case, not a default geometric truth.
+HamJEPA changes the predictor itself: it rolls a phase-space state forward with a symplectic map. In this framing, isotropy is treated as a special case, not a default geometric truth.
 
-## Practical Interpretation
+## What changes
 
 HamJEPA treats the predictor as a structure-preserving map in phase space. This gives a route to better stability diagnostics (energy drift, reversibility, and volume preservation) while maintaining competitive learning dynamics.
 
-## Release Status
+## Notes
 
-Public paper and code links will be wired into the link badges as soon as the release URLs are finalized.
-
-## Technical Notes
-
-- The predictor is designed to preserve geometric structure rather than merely regularize covariance.
-- Diagnostics such as symplecticity defect, reversibility, and drift are treated as model health signals.
+- The predictor transports a phase-space state instead of only regularizing covariance.
+- Energy drift, reversibility, and symplecticity defect are checked directly.

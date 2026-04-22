@@ -149,7 +149,7 @@ const pageJsonLd = {
   headline: 'Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction',
   alternativeHeadline: 'Visual guide (Appendix-style)',
   description:
-    'Appendix-style visual guide for HamJEPA: conceptual mechanism first, selected geometry diagnostics second.',
+    'Diagrams for phase-space encoding, symplectic prediction, anti-collapse regularizers, and rollout diagnostics.',
   url: canonicalUrl,
   author: {
     '@type': 'Person',
@@ -161,7 +161,7 @@ const pageJsonLd = {
 
 <BaseLayout
   title="Beyond Isotropy in JEPAs | Visual guide"
-  description="Appendix-style visual guide companion to HamJEPA."
+  description="Diagrams for phase-space encoding, symplectic prediction, anti-collapse regularizers, and rollout diagnostics."
   ogType="article"
   jsonLd={pageJsonLd}
 >
@@ -334,10 +334,10 @@ const pageJsonLd = {
         </section>
 
         <section id="how-to-read" class="ham-appendix-section" data-reveal>
-          <h2>8. How to read the sequence</h2>
+          <h2>8. Construction</h2>
           <p class="body-copy">
-            Read the diagrams as a construction: first the phase-space state, then the symplectic transport map, then
-            the regularizers that keep the encoder output non-degenerate.
+            The diagrams move from phase-space encoding to symplectic prediction, then to the regularizers that keep
+            the encoder output non-degenerate.
           </p>
         </section>
       </article>

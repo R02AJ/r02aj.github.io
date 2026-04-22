@@ -112,7 +112,7 @@ price-invariant reparameterisation $\tilde a=U^{-1}a$ with $A\mapsto AU$ and $A_
 \[
 W^{1/2}A_{[:,G_\ell]}=Q_\ell R_\ell,\qquad U_{G_\ell,G_\ell}=R_\ell^{-1},\qquad (AU)_{[:,G_\ell]}^\top W(AU)_{[:,G_\ell]}=I,
 \]
-and the transport-style density smoother $R_{DW}(a)=\frac{\lambda_{DW}}{2}a^\top E^\top L^+Ea$. The memorable interpretation is then
+and the transport-style density smoother $R_{DW}(a)=\frac{\lambda_{DW}}{2}a^\top E^\top L^+Ea$. In coefficient space, the constrained fit is the projection:
 \[
 a^\star=\arg\min_{a\in C_h}\frac12\|a-\hat a\|_{M_h}^2,\qquad \hat a=M_h^{-1}b,
 \]
@@ -131,7 +131,7 @@ So the fog does not weaken global no-arbitrage; it gives the optimiser a convex 
 \end{fogbox}
 
 \begin{takebox}
-\textbf{Bottom line.} The paper's real brilliance is that it makes the surface problem look like it always should have looked: choose coordinates and warps that reflect market geometry, choose a tensor basis whose derivatives close, convert every static restriction into a sparse operator, and solve one convex projection problem in coefficient space. Once that exists, the Hamiltonian fog becomes exactly the right add-on---local, noise-aware, and subordinate to the global arbitrage-free sheet.
+\textbf{Bottom line.} The paper's real brilliance is that it makes the surface problem look like it always should have looked: choose coordinates and warps that reflect market geometry, choose a tensor basis whose derivatives close, convert every static restriction into a sparse operator, and solve one convex projection problem in coefficient space. Once that exists, Hamiltonian fog is a local add-on---noise-aware and subordinate to the global arbitrage-free sheet.
 \end{takebox}
 
 \end{multicols}

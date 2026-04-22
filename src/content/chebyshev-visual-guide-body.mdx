@@ -158,7 +158,7 @@ $$
 u(m,\tau)\approx C^{\mathrm f}(m,\tau),
 $$
 
-not for ad hoc slice parameters. That is exactly why the constraints, the regularizers, and the local fog repair can all be expressed coherently.
+not for ad hoc slice parameters. The constraints, regularizers, and local fog repair all act on the same price-space sheet.
 
 ---
 
@@ -202,7 +202,7 @@ which says: a tight and liquid quote should matter more than a wide and stale on
 
 Quotes cluster near ATM and near the short end. That means a naive Euclidean approximation in raw coordinates will misallocate approximation power. A uniform polynomial basis in raw $m$ and raw $\tau$ will spend too much of its budget in under-sampled regions and too little where the tape is dense and where arbitrage pathologies first appear.
 
-The density figure is therefore not just data visualization. It is the justification for the coordinate charts that come next.
+The density plot motivates the coordinate charts that follow.
 
 ---
 
@@ -474,7 +474,7 @@ $$
 
 The first term is a midpoint anchor. The second term fits inside the band. Inside the bid-ask interval, the band penalty is zero. Outside the interval, the cost grows quadratically with distance to the executable set.
 
-That distinction is central. Midpoints are not tradable objects. They are summary statistics. The executable set is $[b_i,a_i]$. The model therefore uses the midpoint to choose among economically acceptable surfaces, not to define economic acceptability itself.
+The distinction matters for calibration. Midpoints are not tradable objects. They are summary statistics. The executable set is $[b_i,a_i]$. The model therefore uses the midpoint to choose among economically acceptable surfaces, not to define economic acceptability itself.
 
 The blue curve is the surface estimate. The bars are the market’s tradable geometry. The red violations are the economically relevant misses.
 
@@ -737,7 +737,7 @@ $$
 
 This says the model first computes where the data and penalties would like to go if economics did not matter, and then projects that point onto the convex set of economically valid sheets under the metric defined by the objective.
 
-The global stage is not a hand-built arbitrage-free parameterization. It is a projection of the market onto an economically admissible manifold, with the distance measured in a noise-aware objective metric.
+The global stage projects the market onto the no-arbitrage feasible set. It is a projection of the market onto an economically admissible manifold, with the distance measured in a noise-aware objective metric.
 
 ---
 
@@ -852,7 +852,7 @@ $$
 
 The fog is a probability geometry over where the patch is stressed and how thick the local vertical uncertainty must be. It is not a second global price surface. A deterministic local correction is the degenerate case where each conditional distribution collapses to one price level. The fog generalizes that into a local uncertainty cloud.
 
-The figure reinterprets “repair the patch” as “place probability mass on a local lattice in $(m,\tau,u)$.” Once you see the patch this way, the noise-aware penalty in the next figure becomes natural.
+The patch is repaired by placing probability mass on local price levels on a local lattice in $(m,\tau,u)$. The noise-aware penalty then becomes a trade-off between deterministic miss and out-of-band fog mass.
 
 ---
 
@@ -974,8 +974,8 @@ The patch correction is a local perturbation with frozen off-patch geometry. Tha
 # 20. Price-space vs IV-space
 
 <ChebyshevSectionMedia stem="19_price_space_vs_iv_space" alt="19 price-space versus IV-space">
-  Price space is the natural domain of the method: basis maps, no-arbitrage operators, convex band loss, and local
-  fog refinement are all cleaner and more coherent here than in implied-volatility coordinates.
+  Price space keeps the basis map, no-arbitrage operators, band loss, and local fog refinement in linear or convex
+  form.
 </ChebyshevSectionMedia>
 
 The last panel compares two modelling domains: maturity smiles in implied volatility and one arbitrage-constrained sheet in price space.
@@ -998,9 +998,9 @@ $$
 
 and that inversion inherits all the pathologies of vega geometry: deep wings, short maturities, and low-price regions become numerically unstable and economically distorted. The static no-arbitrage system, which is linear in price space, becomes nonlinear and maturity-coupled in IV space.
 
-Price space is not merely one possible coordinate system. It is the native domain in which global arbitrage control, executable-band geometry, spectral regularization, and local uncertainty repair can all be done cleanly and convexly.
+Price space is the domain where arbitrage constraints, executable-band loss, spectral regularization, and local fog repair remain linear or convex.
 
-The right workflow is therefore:
+Workflow:
 
 1. fit in forward-discounted price space,
 2. enforce arbitrage in price space,
@@ -1068,4 +1068,4 @@ What emerges is a two-scale geometry of the option book.
 The global scale is deterministic, convex, operator-driven, and economically disciplined.
 The local scale is probabilistic, patchwise, and explicitly noise-aware.
 
-That separation is what makes the construction interesting. A conventional arbitrage-free interpolator tries to explain the entire market with one smooth deterministic object. A conventional local denoiser gives up the global economics. This architecture does neither. It says: there is a globally meaningful price sheet, and there is locally irreducible market inconsistency. Model the first as a convex geometric projection. Model the second as a local measure-valued fog.
+The global surface remains deterministic. Local inconsistency is handled separately by a patchwise probability fog over price levels.

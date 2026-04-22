@@ -43,9 +43,9 @@ const PROJECT_DETAILS: Record<
 > = {
   hamjepa: {
     heroSupport:
-      'A phase-space alternative to isotropic latent priors in JEPA-style representation learning.',
+      'HamJEPA predicts between views by rolling a q,p state through a symplectic map.',
     tldr:
-      'HamJEPA argues that Euclidean isotropy is not a neutral latent prior once task geometry becomes structured. The framework moves representation prediction into phase space and preserves geometry through a symplectic predictor.',
+      'Euclidean isotropy is not neutral when the task geometry is structured. HamJEPA predicts between views by rolling a q,p state through a symplectic map.',
     problemDeep:
       'The price of isotropy is geometric mismatch: isotropic anti-collapse pressure can stabilize directions that are mathematically convenient but task-irrelevant. In structured settings, that mismatch can reduce representational efficiency and interpretability.',
     coreIdeaDeep:
@@ -57,13 +57,13 @@ const PROJECT_DETAILS: Record<
       'Monitor symplecticity defect, reversibility, and drift as first-class diagnostics.'
     ],
     resultsDeep:
-      'Compared with SIGReg baselines at matched budgets, HamJEPA improves q-side linear-probe and kNN metrics while preserving structure-aware diagnostics. The gains are visible on ImageNet-100 and increase further on CIFAR-100 at longer schedules.',
+      'Against SIGReg at matched budgets, HamJEPA improves linear-probe and kNN readouts while keeping energy drift, reversibility, and symplecticity checks under control. The gains are visible on ImageNet-100 and increase further on CIFAR-100 at longer schedules.',
     highlightResult: {
       title: 'Highlighted result',
       body: 'At 45 epochs on ImageNet-100, q linear probe improves from 24.40 (SIGReg) to 31.92 (HamJEPA), a +7.52 delta under matched training horizon.'
     },
     figureLead:
-      'The visual panel prioritizes q/p decomposition, epoch dynamics, and structural diagnostics for symplecticity, reversibility, and energy behavior.',
+      'The panel shows q/p readouts, epoch dynamics, and rollout checks.',
     nextSteps: [
       'Finalize paper and code release links for reproducibility workflows.',
       'Expand ablations on how isotropy penalties trade off against phase-space constraints.',
@@ -74,7 +74,7 @@ const PROJECT_DETAILS: Record<
     heroSupport:
       'A price-space first calibration pipeline with explicit no-arbitrage structure and local post-fit repair.',
     tldr:
-      'The core principle is to fit the arbitrage-carrying object directly in price space, enforce static no-arbitrage via sparse linear inequalities, and reserve Hamiltonian fog for local cleanup only.',
+      'The Chebyshev fit works directly on the forward-discounted call sheet.',
     problemDeep:
       'Option quote surfaces can be sparse, noisy, and internally inconsistent. If no-arbitrage structure is not encoded at the right stage, calibration can look smooth but fail static checks under stress.',
     coreIdeaDeep:
@@ -92,7 +92,7 @@ const PROJECT_DETAILS: Record<
       body: 'Calm-regime calibration reaches 98-99% inside-spread coverage with below 1% static no-arbitrage violations.'
     },
     figureLead:
-      'Visual sections focus on surface projections, constraint geometry, and post-fit fog patches where local repair is activated.',
+      'The visual guide shows the price sheet, the no-arbitrage operators, and the local fog patch.',
     nextSteps: [
       'Broaden regime-conditioned diagnostics across stressed days and sparse strikes.',
       'Benchmark solver/constraint tradeoffs at larger universes and finer collocation grids.',
@@ -204,7 +204,7 @@ function visualCaption(assetLabel: string): string {
     return 'Surface geometry and local post-fit behavior.';
   }
 
-  return 'Diagnostic figure frame aligned with the current research section.';
+  return 'Diagnostic figure.';
 }
 
 function visualTag(assetName: string): string {
@@ -368,7 +368,7 @@ const hamjepaStoryItems =
           id: 'symplecticity-reversibility',
           title: 'Symplecticity and reversibility checks',
           caption:
-            'The predictor is monitored for structure-preserving behavior under rollout, treating reversibility and symplecticity defect as model-health signals.',
+            'The predictor is checked with energy drift, reversibility, and symplecticity diagnostics.',
           mediaSrc: findMediaByKeywords(['symplectic', 'reversibility', 'liouville']),
           tag: 'Structure check'
         },
@@ -476,7 +476,7 @@ const researchJsonLd =
         tags={visualShellTags}
         actions={visualShellActions}
         actionsAriaLabel={`${project.data.title} visual guide actions`}
-        intro="This visual guide walks through the Chebyshev option-surface pipeline from price-space setup and warped tensor basis construction to sparse no-arbitrage operators and local Hamiltonian fog post-fit."
+        intro="The page shows the Chebyshev price-space fit, the sparse no-arbitrage operators, and the local fog post-fit."
       />
     ) : (
       <>
@@ -592,7 +592,7 @@ const researchJsonLd =
           <section class="space-y-4" data-reveal>
             <StickyFigureStory
               heading="Visual walkthrough"
-              intro="A guided sequence through decomposition, training dynamics, and structure diagnostics."
+              intro="q/p readouts, training checkpoints, and rollout diagnostics."
               items={hamjepaStoryItems}
             />
           </section>

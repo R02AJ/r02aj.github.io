@@ -2,11 +2,11 @@
 title: 'Arbitrage-Free Option Price Surfaces via Chebyshev Tensor Bases and a Hamiltonian Fog Post-Fit'
 category: Quantitative Finance
 status: Research
-thesis: An arbitrage-carrying forward-discounted call surface is fitted directly in price space, enforcing static no-arbitrage through sparse linear operators, and a local fog layer is used where quotes are inconsistent.
+thesis: We fit an arbitrage-carrying forward-discounted call surface directly in price space, enforcing static no-arbitrage through sparse linear operators, and a local fog layer is used where quotes are inconsistent.
 problem: Quoted option surfaces are noisy and can violate monotonicity, convexity, and calendar consistency. If the fitted object is not the arbitrage-carrying quantity itself, violations can be hidden until late in the pipeline.
 coreIdea: Fit the forward-discounted call object `C_f(m, tau)` directly in price space. Use endpoint-preserving warps on moneyness and maturity so polynomial approximation behaves better near boundaries and sparse data regions.
 method: Expand the warped surface in a tensor Chebyshev basis, impose static no-arbitrage as sparse linear inequalities on a collocation grid, and solve a convex quadratic program as the global backbone. Apply the Hamiltonian fog only as a local post-fit patch in inconsistent regions.
-results: In calm regimes, the calibrated surface reaches 98-99% inside-spread coverage with below 1% static no-arbitrage violations, while preserving a globally coherent and auditable fit.
+results: In calm regimes, the calibrated surface reaches 98-99% inside-spread coverage with below 1% static no-arbitrage violations, while preserving an auditable fit.
 keyPoints:
   - Work in forward-discounted call price space C_f(m, tau).
   - Use endpoint-preserving warps and a tensor Chebyshev basis on a normalized rectangle.
@@ -26,17 +26,13 @@ externalLinks:
 order: 2
 ---
 
-## Research Context
+## Problem
 
-The pipeline keeps the global fit convex and structurally constrained, while isolating non-smooth market inconsistencies to patch-level post-processing.
+The global fit stays convex: prices, derivatives, constraints, and regularizers all act on the coefficient vector.
 
-## Practical Interpretation
+## What changes
 
-The method is designed for production-minded calibration where no-arbitrage integrity, numerical robustness, and explainability matter at least as much as pointwise fit error.
-
-## Figure Integration Status
-
-Where specific figure files are not yet available, this page keeps a stable visual frame so assets can be added without layout redesign.
+The fit is built for surfaces that must stay no-arbitrage under calibration, not just pass through mids.
 
 ## Technical Notes
 
