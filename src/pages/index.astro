@@ -111,6 +111,13 @@ const externalLinks = [
   { label: 'HamJEPA Paper', href: withBase(siteConfig.links.hamjepaPaper) }
 ];
 
+const hamjepaCardThesis =
+  'Joint Embedding Predictive Architectures (JEPAs) usually push embeddings toward an Isotropic Gaussian. We show this is the wrong target when the task geometry is structured, and replace it with a symplectic predictor on phase space.';
+
+const projectCardThesisBySlug: Record<string, string> = {
+  hamjepa: hamjepaCardThesis
+};
+
 const personJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -144,9 +151,6 @@ const personJsonLd = {
         <h1 class="display-title home-hero-title reveal-up reveal-delay-1">
           Geometric deep learning and quantitative finance
         </h1>
-        <p class="lede reveal-up reveal-delay-2">
-          Research across representation geometry, arbitrage-aware option surfaces, and symmetry-driven analysis.
-        </p>
         <div class="reveal-up reveal-delay-3 flex flex-wrap gap-3">
           <a href={quantCvHref} class="site-nav-cta px-6 py-3 text-sm">
             Quant CV
@@ -198,11 +202,7 @@ const personJsonLd = {
   <section class="section-space surface-light section-divider">
     <div class="page-shell space-y-9" data-reveal>
       <div class="section-header">
-        <h2 class="section-title">Research tracks and ongoing directions</h2>
-        <p class="lede">
-          A fast map of current visual guides plus compact ongoing previews, so active directions stay visible without
-          forcing unfinished work into full project cards.
-        </p>
+        <h2 class="section-title">Research</h2>
       </div>
 
       <div class="grid gap-6 lg:grid-cols-2">
@@ -216,7 +216,7 @@ const personJsonLd = {
                 title={project.data.title}
                 category={project.data.category}
                 status={project.data.status}
-                thesis={project.data.thesis}
+                thesis={projectCardThesisBySlug[slug] ?? project.data.thesis}
                 callouts={calloutsBySlug[slug] ?? project.data.headlineMetrics.slice(0, 2)}
               />
             );
@@ -225,13 +225,9 @@ const personJsonLd = {
       </div>
 
       <div class="space-y-4 pt-1">
-        <h3 class="text-[clamp(1.35rem,2.6vw,1.8rem)]">Ongoing work previews</h3>
-        <p class="body-copy max-w-3xl text-sm">
-          Lightweight snapshots of current in-progress directions. No performance claims or navigation actions are
-          surfaced here.
-        </p>
+        <h3 class="text-[clamp(1.35rem,2.6vw,1.8rem)]">Ongoing work</h3>
 
-        <div class="grid gap-4 lg:grid-cols-3">
+        <div class="mt-2 grid gap-4 lg:grid-cols-3">
           {
             ongoingWorkItems.map((item) => (
               <OngoingPreviewCard
@@ -250,7 +246,7 @@ const personJsonLd = {
   <section class="surface-dark section-space section-divider">
     <div class="page-shell space-y-8" data-reveal>
       <div class="section-header section-header-tight">
-        <h2 class="section-title">Geometric deep learning, quantitative finance, and geometric analysis</h2>
+        <h2 class="section-title">Current work</h2>
       </div>
 
       <div class="grid gap-5 md:grid-cols-3">
@@ -281,9 +277,6 @@ const personJsonLd = {
         <div class="space-y-3">
           <p class="home-card-kicker">CV downloads</p>
           <h2 class="section-title">Download CV variants</h2>
-          <p class="body-copy">
-            Two focused profiles: one optimized for quant/finance discussions and one for machine-learning research.
-          </p>
         </div>
 
         <div class="flex flex-wrap gap-3">
@@ -304,7 +297,6 @@ const personJsonLd = {
 
       <article class="card lift space-y-4">
         <p class="home-card-kicker">Papers, code, and profiles</p>
-        <p class="body-copy text-sm">Direct links to paper PDFs, publication profiles, and project repositories.</p>
         <ul class="home-link-grid" aria-label="Homepage external links">
           {
             externalLinks.map((link) =>

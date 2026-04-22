@@ -2,7 +2,7 @@
 title: 'Arbitrage-Free Option Price Surfaces via Chebyshev Tensor Bases and a Hamiltonian Fog Post-Fit'
 category: Quantitative Finance
 status: Research
-thesis: Fit the arbitrage-carrying forward-discounted call surface directly in price space, enforce static no-arbitrage through sparse linear operators, and use a local Hamiltonian fog only as a patch-wise post-fit where quotes are inconsistent.
+thesis: An arbitrage-carrying forward-discounted call surface is fitted directly in price space, enforcing static no-arbitrage through sparse linear operators, and a local fog layer is used where quotes are inconsistent.
 problem: Quoted option surfaces are noisy and can violate monotonicity, convexity, and calendar consistency. If the fitted object is not the arbitrage-carrying quantity itself, violations can be hidden until late in the pipeline.
 coreIdea: Fit the forward-discounted call object `C_f(m, tau)` directly in price space. Use endpoint-preserving warps on moneyness and maturity so polynomial approximation behaves better near boundaries and sparse data regions.
 method: Expand the warped surface in a tensor Chebyshev basis, impose static no-arbitrage as sparse linear inequalities on a collocation grid, and solve a convex quadratic program as the global backbone. Apply the Hamiltonian fog only as a local post-fit patch in inconsistent regions.

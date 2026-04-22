@@ -74,21 +74,21 @@ const selectedEvidence = [
   {
     title: 'HamJEPA',
     description:
-      'A phase-space JEPA that replaces isotropic latent regularization with Hamiltonian predictive structure, using symplectic rollout and non-isotropic anti-collapse controls to align representation geometry with task structure.',
+      'A JEPA variant that predicts between views by rolling a q,p state through a symplectic Hamiltonian map instead of forcing the latent cloud toward an isotropic Gaussian.',
     evidence:
       'Improves frozen-feature performance over SIGReg: CIFAR-100 gains of +3.75 / +4.89 at 30 epochs and ≈+10.6 / ≈+6.5 at 80 epochs (linear / kNN@20), plus +6.54 linear and +4.26 kNN best-over-k on ImageNet-100 at 45 epochs.'
   },
   {
     title: 'Arbitrage-free option surfaces',
     description:
-      'A convex, arbitrage-aware surface architecture in forward-discounted price space using warped Chebyshev tensor bases, sparse operator constraints, and a local Hamiltonian fog post-fit for inconsistent quote regions.',
+      'Fits forward-discounted call prices with warped Chebyshev tensors, sparse no-arbitrage operators, and a local fog post-fit where quotes are inconsistent.',
     evidence: '98–99% inside-spread coverage in calm regimes with <1% static no-arbitrage violations.'
   },
   {
     title: 'Geometric stochastic modelling',
     description:
-      'A structure-preserving state-space framework for joint spot, curve, and surface dynamics, designed to encode no-arbitrage, transport geometry, and hedge-consistent evolution directly into the model architecture.',
-    evidence: 'Focused on geometry, invariants, and cross-asset state design rather than generic latent-factor fitting.'
+      'A joint spot–curve–surface model where no-arbitrage and transport structure are built into the state update, not checked after calibration.',
+    evidence: 'Uses joint state variables for spot, curves, and surfaces instead of separate latent-factor fits.'
   },
   {
     title: 'Optiver / market making',
@@ -103,17 +103,17 @@ const currentDirections = [
   {
     title: 'Financial Hamiltonian Theory & Computational Aspects',
     description:
-      'An infinite-dimensional Hamiltonian state-space for joint option sheets, forward curves, spots, and volatility factors, with canonical structure, structure-preserving time stepping, and desk-data integration.'
+      'Models option sheets, forward curves, spots, and volatility factors in one Hamiltonian state update.'
   },
   {
     title: 'Continuous Hamiltonian fog',
     description:
-      'A continuous variational formulation for arbitrage-constrained surface calibration, jointly optimizing a surface and a fog density over (m, τ, u) under convex band-aware penalties and Hamiltonian regularization.'
+      'A local post-fit for inconsistent option quotes: optimize the price surface and a fog density over (m, τ, u) with convex band penalties.'
   },
   {
     title: 'Geometric analysis',
     description:
-      'Current work on symmetry and rigidity in mixed-boundary semilinear elliptic PDE, with a platform problem in sub-spherical-sector symmetry and a longer-run bridge toward quantitative symplectic geometry.'
+      'Self-Minkowski billiard rigidity: does total integrability of the billiard in K = {N ≤ 1} force K to be an ellipse? Current work isolates a reversible Hopf/Pestov positivity gap and a non-reversible odd-cocycle rigidity gap.'
   }
 ] as const;
 
@@ -141,8 +141,8 @@ const personJsonLd = {
     <div class="page-shell about-hero-stack" data-reveal>
       <h1 class="display-title max-w-5xl">About / CV</h1>
       <p class="lede max-w-3xl">
-        I work across geometric deep learning, quantitative finance, and geometric analysis, with emphasis on
-        structure-preserving models, arbitrage-aware surface construction, and mathematically transparent diagnostics.
+        I work on representation learning, option-surface modelling, and geometric analysis. I like models where the
+        state variable, constraints, and diagnostics are part of the construction rather than after-the-fact checks.
       </p>
     </div>
   </section>

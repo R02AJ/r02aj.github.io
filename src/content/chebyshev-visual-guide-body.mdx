@@ -2,7 +2,7 @@ import ChebyshevSectionMedia from '../components/research/ChebyshevSectionMedia.
 
 # Overview
 
-This project starts from a very specific claim: the right primitive object is not an implied-volatility smile, nor a family of maturity-by-maturity slices, but the full **forward-discounted call price surface**.
+This paper studies the full forward-discounted call price surface, rather than implied-volatility smiles or families of maturity-by-maturity slices (SVI / eSSVI).
 
 Let $C(K,\tau)$ denote the market call price at strike $K$ and maturity $\tau$, and let $D(0,\tau)$ be the discount factor from maturity back to today. Define the forward-discounted call by
 
@@ -24,7 +24,7 @@ $$
 (m,\tau)\longmapsto C^{\mathrm f}(m,\tau),
 $$
 
-and the static no-arbitrage conditions become transparent.
+and the static no-arbitrage conditions become the following.
 
 The economically exact inequalities are
 
@@ -48,7 +48,7 @@ $$
 C^{\mathrm f}(K,0+) \;=\; (S_0-K)^+.
 $$
 
-Once the surface is written in $m$-coordinates, these constraints are not guessed numerically; they are pushed through the chain rule exactly. Since
+Once the surface is written in $m$-coordinates, these constraints are pushed through the chain rule exactly. Since
 
 $$
 \partial_K
@@ -84,7 +84,7 @@ $$
 =\partial_\tau \log F(\tau).
 $$
 
-This is the heart of the construction. The paper is not “fit a smooth surface and then check arbitrage later.” It is: choose the right state variable, choose the right coordinates, represent the entire sheet in a basis adapted to the observed geometry, compile economic shape restrictions into linear operators, and solve a convex projection problem directly in price space.
+The method chooses the state variable and coordinates first, represents the whole sheet in a basis adapted to observed quote geometry, compiles economic shape restrictions into linear operators, and solves the convex projection problem directly in price space.
 
 At the global stage, the coefficient vector $a$ is obtained from a constrained convex program of the schematic form
 
@@ -119,7 +119,7 @@ Here $A_q$ is the basis evaluated at quote locations, $A$ is the surface evaluat
 
 The second stage is deliberately local. The global fit is used to build a **badness map**. Only activated patches are refined. Those patches are then lifted into a local measure-valued state over a discrete lattice in $(m,\tau,u)$, where $u$ denotes discrete local price levels. That local probability geometry is the **fog**. The fog is not a replacement for the global surface. It is a local uncertainty thickness sitting on top of the globally disciplined backbone.
 
-That separation of scales is the conceptual novelty. The global stage enforces the economic invariants of the entire sheet. The local stage absorbs the irreducible inconsistency of actual market quotes. The result is a surface that is globally arbitrage-aware and locally noise-aware.
+The global stage enforces the economic invariants of the entire sheet. The local stage absorbs the irreducible inconsistency of actual market quotes. The result is a surface that is globally arbitrage-aware and locally noise-aware.
 
 ---
 
@@ -131,7 +131,7 @@ That separation of scales is the conceptual novelty. The global stage enforces t
   implied volatility.
 </ChebyshevSectionMedia>
 
-The opening figure is the thesis of the paper in one image. The object is the entire forward-discounted price sheet, not a collection of separate smiles.
+The video shows the forward-discounted price sheet $C^{\mathrm f}(m,\tau)$. The object is the entire forward-discounted price sheet, not a collection of separate smiles.
 
 The definition is
 
@@ -152,7 +152,7 @@ The display is therefore a surface in the variables $(m,\tau)$, with vertical ax
 * the sheet should weaken as strike rises,
 * and the sheet should grow with maturity at fixed strike.
 
-The point of the hero image is not aesthetic. It is ontological. The estimator is solving for one surface-valued object,
+The estimator is solving for one surface-valued object,
 
 $$
 u(m,\tau)\approx C^{\mathrm f}(m,\tau),
@@ -200,7 +200,7 @@ $$
 
 which says: a tight and liquid quote should matter more than a wide and stale one.
 
-But the figure is making a deeper point than “use weights.” Quotes cluster near ATM and near the short end. That means a naive Euclidean approximation in raw coordinates will misallocate approximation power. A uniform polynomial basis in raw $m$ and raw $\tau$ will spend too much of its budget in under-sampled regions and too little where the tape is dense and where arbitrage pathologies first appear.
+Quotes cluster near ATM and near the short end. That means a naive Euclidean approximation in raw coordinates will misallocate approximation power. A uniform polynomial basis in raw $m$ and raw $\tau$ will spend too much of its budget in under-sampled regions and too little where the tape is dense and where arbitrage pathologies first appear.
 
 The density figure is therefore not just data visualization. It is the justification for the coordinate charts that come next.
 
@@ -261,7 +261,7 @@ $$
 {W_m\bigl(1+\lambda_m^2(m-c_m)^2\bigr)^{3/2}}.
 $$
 
-This chart has a precise job. It stretches the dense central region around the forward and compresses the far wings. In $x$-space the basis is uniform; in raw $m$-space it becomes intentionally nonuniform. The map is therefore not an aesthetic preprocessing step. It is a representational prior: most of the economically relevant variation in the observed book lives near the center, and the chart allocates basis resolution accordingly.
+The wrap stretches the dense central region around the forward and compresses the far wings. In $x$-space the basis is uniform; in raw $m$-space it becomes intentionally nonuniform. The map is a representational prior: most of the economically relevant variation in the observed book lives near the center, and the chart allocates basis resolution accordingly.
 
 Because the derivatives are analytic, the strike-operator matrices can be written exactly after the change of variables.
 
@@ -290,7 +290,7 @@ $$
 \frac{1}{\sqrt{(\tau_{\max}-\tau_{\min})(\tau-\tau_{\min})}}.
 $$
 
-The singular-looking growth of $\Phi_\tau'(\tau)$ near $\tau_{\min}$ is a feature, not a bug. The short end is exactly where the surface is hardest to fit, exactly where calendar violations first emerge, and exactly where the intrinsic-value boundary sits. The square-root chart allocates more resolution there.
+The singular-looking growth of $\Phi_\tau'(\tau)$ near $\tau_{\min}$ is intentional. The short end is exactly where the surface is hardest to fit, exactly where calendar violations first emerge, and exactly where the intrinsic-value boundary sits. The square-root chart allocates more resolution there.
 
 This is one of the main advantages of working in price space rather than in implied volatility. In price space, the short end is not a nuisance to be hidden; it is a boundary layer to be resolved.
 
@@ -326,7 +326,7 @@ $$
 u = Aa.
 $$
 
-This is the central state of the global stage. The coefficient tensor is not an implementation detail; it is the object on which the geometry is done. Prices are linear in $a$. Derivatives are linear in $a$. Arbitrage diagnostics are linear in $a$. Regularization is quadratic in $a$. Whitening is a linear reparameterization of $a$. The entire architecture is built around the fact that, once the basis is chosen, the option surface becomes a convex geometry in coefficient space.
+The coefficient tensor is the object on which the geometry is done. Prices are linear in $a$. Derivatives are linear in $a$. Arbitrage diagnostics are linear in $a$. Regularization is quadratic in $a$. Whitening is a linear reparameterization of $a$. The entire architecture is built around the fact that, once the basis is chosen, the option surface becomes a convex geometry in coefficient space.
 
 Low modes carry the global economics of the sheet: level, forward-relative skew, maturity slope, broad curvature. High modes carry local detail. The regularization architecture is about letting the low modes speak while preventing the high modes from manufacturing fake arbitrage-free precision out of microstructure noise.
 
@@ -334,7 +334,7 @@ Low modes carry the global economics of the sheet: level, forward-relative skew,
 
 ## Global convex stage: from basis coefficients to an arbitrage-feasible price sheet
 
-Sections 6 to 11 are the algebraic core of the method. This is where the representation becomes an optimization problem rather than a descriptive fit.
+The representation now becomes an optimization problem: coefficients map to prices, derivatives, constraints, and regularizers.
 
 ---
 
@@ -345,7 +345,7 @@ Sections 6 to 11 are the algebraic core of the method. This is where the represe
   through linear operator families $A$, $A_K$, $A_{KK}$, and $A_{\tau\mid K}$.
 </ChebyshevSectionMedia>
 
-This is the most important figure in the set. It shows that the same coefficient vector $a$ simultaneously determines the price sheet and all of its economic diagnostics.
+The same coefficient vector $a$ simultaneously determines the price sheet and all of its economic diagnostics.
 
 At any evaluation set $g=1,\dots,G$,
 
@@ -393,11 +393,9 @@ A_K a \le 0,
 0 \le Aa \le F.
 $$
 
-This is the algebraic center of the paper. The surface is not fitted first and diagnosed later. The fit and the diagnosis are the same object viewed through different linear maps.
+The surface is not fitted first and diagnosed later. Fit and diagnosis are the same object viewed through different linear maps.
 
-That is why the figure should be read as one commutative diagram: coefficient tensor $\to$ price field $\to$ strike monotonicity, strike convexity, and calendar monotonicity operators. Every panel is a different shadow of the same state.
-
-The method is not another smooth interpolator. It is a linear-operator compilation of static no-arbitrage into coefficient space.
+The method is a linear-operator compilation of static no-arbitrage into coefficient space rather than another smooth interpolator.
 
 ---
 
@@ -407,8 +405,6 @@ The method is not another smooth interpolator. It is a linear-operator compilati
   Fixed-maturity sections must be decreasing and convex in strike, while fixed-strike sections must be increasing in
   maturity; these slice views make the operator constraints economically visible.
 </ChebyshevSectionMedia>
-
-The operator inequalities are global statements. The slice figure exists to make them intuitive.
 
 At fixed maturity, the strike section must satisfy
 
@@ -442,7 +438,7 @@ $$
 \ge 0.
 $$
 
-This figure matters because it prevents a common conceptual mistake. Calendar monotonicity is not a fixed-moneyness statement. It is a fixed-strike statement. If one enforces raw $\partial_\tau \ge 0$ in $m$-space, one is constraining the wrong quantity. The operator $A_{\tau|K}$ exists precisely to enforce the economically correct derivative.
+Calendar monotonicity is not a fixed-moneyness statement. It is a fixed-strike statement. If one enforces raw $\partial_\tau \ge 0$ in $m$-space, one is constraining the wrong quantity. The operator $A_{\tau|K}$ exists precisely to enforce the economically correct derivative.
 
 ---
 
@@ -453,7 +449,7 @@ This figure matters because it prevents a common conceptual mistake. Calendar mo
   acceptable, while out-of-band deviations incur convex penalty.
 </ChebyshevSectionMedia>
 
-The paper is not fitting to midpoints and then hoping the answer sits inside the spread. It is fitting directly to **executable band geometry**.
+The method fits directly to executable band geometry.
 
 Define the convex band loss
 
@@ -476,11 +472,11 @@ L_{\mathrm{fit}}(a)
 \ell_{\mathrm{band}}\!\bigl((A_q a)_i\,;\,b_i,a_i\bigr).
 $$
 
-The first term is a midpoint anchor. The second term is the economically meaningful term. Inside the bid-ask interval, the band penalty is zero. Outside the interval, the cost grows quadratically with distance to the executable set.
+The first term is a midpoint anchor. The second term fits inside the band. Inside the bid-ask interval, the band penalty is zero. Outside the interval, the cost grows quadratically with distance to the executable set.
 
 That distinction is central. Midpoints are not tradable objects. They are summary statistics. The executable set is $[b_i,a_i]$. The model therefore uses the midpoint to choose among economically acceptable surfaces, not to define economic acceptability itself.
 
-This is why the figure should visually privilege the executable bars. The blue curve is the surface estimate. The bars are the market’s tradable geometry. The red violations are the economically relevant misses.
+The blue curve is the surface estimate. The bars are the market’s tradable geometry. The red violations are the economically relevant misses.
 
 ---
 
@@ -514,7 +510,7 @@ $$
 
 As $\mu$ increases, out-of-band points become more expensive. The optimizer therefore gives up more midpoint fidelity in order to stay inside executable quotes. In practice this creates a monotone control knob between “fit the center of the quote cloud” and “cover the executable set.”
 
-That allows a target-coverage controller. One can solve for $a^\star(\mu)$ and adjust $\mu$ until $\operatorname{Cov}(a^\star(\mu))$ reaches a pre-specified level. The important point is conceptual: coverage is not bolted on afterward as a diagnostic. It is part of the geometry of the objective itself.
+That allows a target-coverage controller. One can solve for $a^\star(\mu)$ and adjust $\mu$ until $\operatorname{Cov}(a^\star(\mu))$ reaches a pre-specified level. Coverage is therefore part of the geometry of the objective itself.
 
 ---
 
@@ -545,7 +541,7 @@ $$
 
 This is a Sobolev-type prior over modes. Low frequencies are cheap. High frequencies are expensive. The anisotropy between $k$ and $\ell$ lets the model penalize strike oscillation and maturity oscillation differently.
 
-The key point is that this acts where the model lives: in the coefficient tensor. It does not blur the price sheet in observation space. It does not average quotes. It says that detailed local oscillation must pay a spectral rent.
+This acts in the coefficient tensor and says that detailed local oscillation must pay a spectral rent rather than averaging quotes or blurring the price sheet in observation space.
 
 ---
 
@@ -590,7 +586,7 @@ Q_\ell,
 I.
 $$
 
-This is not a model change. Prices, operator constraints, and economics are unchanged. What changes is the metric in coefficient coordinates: the local Gram structure becomes near-orthonormal, and the solver stops spending effort distinguishing nearly redundant directions.
+What changes is the metric in coefficient coordinates. The local Gram structure becomes near-orthonormal, and the solver stops spending effort distinguishing nearly redundant directions.
 
 ---
 
@@ -636,9 +632,9 @@ $$
 \rho^\top L_m^+\rho = |\nabla \phi|_2^2.
 $$
 
-That viewpoint matters. The regularizer does not punish density pointwise in an $L^2$ sense. It measures density through the smooth potential that generates it. In practice this is a much better geometry for stabilizing density chatter than simply penalizing curvature magnitude in price space. It says: do not allow economically implausible redistributions of density mass, but also do not mutilate the price sheet to erase every local fluctuation.
+The regularizer does not punish density pointwise in an $L^2$ sense. It measures density through the smooth potential that generates it. In practice this is a much better geometry for stabilizing density chatter than simply penalizing curvature magnitude in price space. It says: do not allow economically implausible redistributions of density mass, but also do not mutilate the price sheet to erase every local fluctuation.
 
-This is why the figure shows both a density proxy and its $H^{-1}$ potential. The penalty lives more naturally in the potential than in the raw density.
+The density proxy and $H^{-1}$ potential show the same regularizer from the signal and Poisson viewpoints. The penalty lives more naturally in the potential than in the raw density.
 
 ---
 
@@ -649,7 +645,7 @@ This is why the figure shows both a density proxy and its $H^{-1}$ potential. Th
   calendar defects in the most fragile maturity regime.
 </ChebyshevSectionMedia>
 
-The short end is a singular region. As $\tau \downarrow 0$, the call must collapse to intrinsic value. At the same time, small calendar inconsistencies become violently visible in forward-relative coordinates.
+The short end is a singular region. As $\tau \downarrow 0$, the call must collapse to intrinsic value. At the same time, small calendar inconsistencies become visible in forward-relative coordinates.
 
 The short-end remedy therefore has two pieces. First, it anchors the surface to the intrinsic boundary:
 
@@ -677,7 +673,7 @@ $$
 
 where $\Gamma_{0+}$ is concentrated on small maturities.
 
-This is not a generic smoothness prior. It is a boundary-layer regularizer aimed at the exact place where the surface must satisfy both a hard terminal geometry and fragile calendar structure. The left panel of the figure should be read as an anchoring-to-intrinsic mechanism; the right panel as a direct suppression of short-end calendar defect.
+This is a boundary-layer regularizer aimed at the exact place where the surface must satisfy both a hard terminal geometry and fragile calendar structure. The left panel of the figure is an anchoring-to-intrinsic mechanism; the right panel as a direct suppression of short-end calendar defect.
 
 ---
 
@@ -701,9 +697,9 @@ M_\omega U_\omega a
 \bigr|_2^2.
 $$
 
-This is a scalpel, not a blanket. The penalty is local in frequency and local in maturity. It says: when the short-end geometry becomes unstable, do not globally over-smooth the entire sheet. Instead, selectively suppress only the modes that are dangerous in that region.
+The penalty is local in frequency and local in maturity. It says: when the short-end geometry becomes unstable, do not globally over-smooth the entire sheet. Instead, selectively suppress only the modes that are dangerous in that region.
 
-This is a recurring theme in the paper: every extra regularizer is targeted. Nothing is global unless it has to be.
+Every extra regularizer is targeted. Nothing is global unless it has to be.
 
 ---
 
@@ -714,7 +710,7 @@ This is a recurring theme in the paper: every extra regularizer is targeted. Not
   no-arbitrage feasible set induced by the operator inequalities.
 </ChebyshevSectionMedia>
 
-This figure is the geometric summary of the global QP.
+The ellipses are objective level sets; the polygon is the no-arbitrage feasible set; the fitted surface is the projection point.
 
 Let $H$ be the Hessian of the unconstrained objective, and let $\hat a$ be its unconstrained minimizer. Define the feasible set
 
@@ -741,7 +737,7 @@ $$
 
 This says the model first computes where the data and penalties would like to go if economics did not matter, and then projects that point onto the convex set of economically valid sheets under the metric defined by the objective.
 
-That is the right mental model for the paper. The global stage is not a hand-built arbitrage-free parameterization. It is a projection of the market onto an economically admissible manifold, with the distance measured in a noise-aware objective metric.
+The global stage is not a hand-built arbitrage-free parameterization. It is a projection of the market onto an economically admissible manifold, with the distance measured in a noise-aware objective metric.
 
 ---
 
@@ -790,13 +786,13 @@ $$
 \{(i,j):B_{ij}>\theta\}.
 $$
 
-The local stage is not global by default. It is triggered by diagnostics. The badness map is the gatekeeper that decides where the deterministic global projection has done enough and where additional local flexibility is justified.
+The local stage is triggered by diagnostics. The badness map is the gatekeeper that decides where the deterministic global projection has done enough and where additional local flexibility is justified.
 
 ---
 
 ## Local stage: the fog is a probability geometry, not a second surface
 
-Sections 17 to 19 are what distinguishes this work from a standard arbitrage-free surface fit. The global sheet is kept intact. Only activated regions are granted extra uncertainty thickness, and that thickness is represented probabilistically.
+The local stage adds a patchwise probability layer over price levels, but only where the global fit is under stress. The global sheet is kept intact. Only activated regions are granted extra uncertainty thickness, and that thickness is represented probabilistically.
 
 ---
 
@@ -854,7 +850,7 @@ $$
 \sum_{k=1}^{n_u} u_k\,p_{k|ij}.
 $$
 
-This is the right way to think about the fog: it is a probability geometry over where the patch is stressed and how thick the local vertical uncertainty must be. It is not a second global price surface. A deterministic local correction is the degenerate case where each conditional distribution collapses to one price level. The fog generalizes that into a local uncertainty cloud.
+The fog is a probability geometry over where the patch is stressed and how thick the local vertical uncertainty must be. It is not a second global price surface. A deterministic local correction is the degenerate case where each conditional distribution collapses to one price level. The fog generalizes that into a local uncertainty cloud.
 
 The figure reinterprets “repair the patch” as “place probability mass on a local lattice in $(m,\tau,u)$.” Once you see the patch this way, the noise-aware penalty in the next figure becomes natural.
 
@@ -927,7 +923,7 @@ M_q^\star
 \right\}.
 $$
 
-That is the central economic message of the fog stage. Small inconsistencies should be repaired deterministically. Large inconsistencies are allowed to buy uncertainty thickness, but only at a quantifiable price. This is not a heuristic slack variable. It is a noise budget with a closed-form trade-off.
+Small inconsistencies should be repaired deterministically. Large inconsistencies are allowed to buy uncertainty thickness, but only at a quantifiable price. This is not a heuristic slack variable. It is a noise budget with a closed-form trade-off.
 
 ---
 
@@ -971,7 +967,7 @@ E_{\mathrm{surf}}(u_I)
 \rho_\Omega(u_I)=B_\Omega u_I+\rho_{\mathrm{off}}.
 $$
 
-The patch correction is not a second global solve. It is a local perturbation with frozen off-patch geometry. That is what allows the architecture to preserve the economic discipline of the global projection while still acknowledging that certain parts of the observed market are locally incompatible with a single deterministic sheet.
+The patch correction is a local perturbation with frozen off-patch geometry. That is what allows the architecture to preserve the economic discipline of the global projection while still acknowledging that certain parts of the observed market are locally incompatible with a single deterministic sheet.
 
 ---
 
@@ -982,7 +978,7 @@ The patch correction is not a second global solve. It is a local perturbation wi
   fog refinement are all cleaner and more coherent here than in implied-volatility coordinates.
 </ChebyshevSectionMedia>
 
-The final figure is the worldview of the paper.
+The last panel compares two modelling domains: maturity smiles in implied volatility and one arbitrage-constrained sheet in price space.
 
 In price space:
 
@@ -992,7 +988,7 @@ In price space:
 * the metric projection interpretation is exact,
 * the local fog penalty is expressed directly in executable quote geometry.
 
-In implied-volatility space, none of this is true naturally. One must invert through a nonlinear pricing map,
+In implied-volatility space, none of this is true naturally. One must invert through a nonlinear pricing map (for example Black-Scholes),
 
 $$
 \sigma_{\mathrm{imp}}
@@ -1002,7 +998,7 @@ $$
 
 and that inversion inherits all the pathologies of vega geometry: deep wings, short maturities, and low-price regions become numerically unstable and economically distorted. The static no-arbitrage system, which is linear in price space, becomes nonlinear and maturity-coupled in IV space.
 
-That is the real closing claim of the paper. Price space is not merely one possible coordinate system. It is the native domain in which global arbitrage control, executable-band geometry, spectral regularization, and local uncertainty repair can all be done cleanly and convexly.
+Price space is not merely one possible coordinate system. It is the native domain in which global arbitrage control, executable-band geometry, spectral regularization, and local uncertainty repair can all be done cleanly and convexly.
 
 The right workflow is therefore:
 
@@ -1014,8 +1010,6 @@ The right workflow is therefore:
 ---
 
 # The whole picture
-
-The full architecture can be read as one continuous argument.
 
 Start from the correct object:
 
@@ -1069,7 +1063,7 @@ $$
 
 Build a badness map from quote misses and operator defects. Activate local patches only where the global projection is under real stress. Lift those patches into a discrete fog over $(m,\tau,u)$. Penalize fog thickness through an explicit noise-aware trade-off rather than through arbitrary slack.
 
-What emerges is not just an arbitrage-free surface fitter. It is a two-scale geometry of the option book.
+What emerges is a two-scale geometry of the option book.
 
 The global scale is deterministic, convex, operator-driven, and economically disciplined.
 The local scale is probabilistic, patchwise, and explicitly noise-aware.

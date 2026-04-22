@@ -15,7 +15,7 @@ export const ongoingWorkItems: OngoingWorkItem[] = [
     category: 'Quantitative finance',
     status: 'Ongoing',
     description:
-      'A structure-preserving Hamiltonian framework for joint spot, rate-curve, and option-surface dynamics, with built-in no-arbitrage, symplectic numerics, and uncertainty propagation.',
+      'A Hamiltonian state space for spot, rates, volatility factors, and option sheets, with symplectic time stepping and no-arbitrage checks built in.',
     source: {
       type: 'pdf',
       reference: '/files/Arbitrage_Free_Option_Price_Surfaces.pdf'
@@ -26,22 +26,21 @@ export const ongoingWorkItems: OngoingWorkItem[] = [
     category: 'Quantitative finance',
     status: 'Ongoing',
     description:
-      'A continuous variational framework for local, noise-aware calibration of arbitrage-free option surfaces, coupling the price sheet with a Hamiltonian fog density over (m, tau, u).',
+      'A local post-fit for quote regions the global surface cannot reconcile: a price sheet coupled to a fog density over (m, τ, u).',
     source: {
       type: 'pdf',
       reference: '/files/Summary_chebyshev.pdf'
     }
   },
   {
-    title: 'Symmetry, Rigidity & Mixed-Boundary Geometric PDE',
+    title: 'Self-Minkowski billiard rigidity',
     category: 'Geometric analysis',
     status: 'Ongoing',
     description:
-      'A platform-problem-driven research direction centered on symmetry and rigidity in mixed-boundary elliptic PDE, with sub-spherical-sector symmetry as the current target and quantitative symplectic geometry as a longer-run bridge.',
+      'A geometric-analysis project on whether total integrability of the self-Minkowski billiard in K = {N ≤ 1} forces the norm N to be Euclidean, equivalently K to be a centered ellipse after a linear change of coordinates.',
     source: {
       type: 'prompt',
-      reference:
-        'Immediate target: mixed-boundary geometric PDE with sub-spherical-sector symmetry extension (or counterexample), then symmetry/rigidity and maximum-principle program with analysis-meets-symplectic bridge.'
+      reference: 'Reversible Hopf/Pestov positivity gap and non-reversible odd-cocycle rigidity gap.'
     }
   }
 ];

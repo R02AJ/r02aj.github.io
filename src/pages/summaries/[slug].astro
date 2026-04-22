@@ -26,7 +26,7 @@ const { targetHref, summaryTitle } = Astro.props as Props;
 
 <BaseLayout
   title={`${summaryTitle} | Redirect`}
-  description="This summary now lives inside the Research library."
+  description="This summary has moved."
   noindex
 >
   <Fragment slot="head">
@@ -37,7 +37,7 @@ const { targetHref, summaryTitle } = Astro.props as Props;
   <section class="surface-light section-space section-divider">
     <div class="page-shell max-w-3xl space-y-5 text-center">
       <h1 class="section-title">Summary moved inside Research</h1>
-      <p class="lede mx-auto">This URL remains as a compatibility alias.</p>
+      <p class="lede mx-auto">Use the current link below.</p>
       <p>
         <a href={targetHref} class="site-nav-cta">
           Continue to technical summary

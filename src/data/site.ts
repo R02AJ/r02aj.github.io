@@ -13,11 +13,11 @@ export const siteConfig = {
   name: 'Robert Jenkinson Alvarez',
   role: 'Researcher',
   tagline:
-    'Geometric machine learning, quantitative finance, and structure-preserving models.',
+    'Representation learning, option surfaces, and geometric analysis.',
   identityStatement:
-    'Research at the intersection of geometric ML, quantitative finance, and structure-preserving modelling.',
+    'Geometric Deep Learning, Quantitative Finance and Geometric Analysis.',
   shortBio:
-    'I work at the intersection of geometric machine learning, quantitative finance, and structure-preserving modelling. My recent work includes Hamiltonian geometry for JEPA-style representation learning, arbitrage-free option-surface construction with Chebyshev tensor bases and a Hamiltonian fog post-fit, and ongoing work on geometric stochastic modelling for spot, rates, and options.',
+    'I work on geometric machine learning, quantitative finance, and geometric analysis. Recent work includes Hamiltonian geometry for JEPA-style representation learning, arbitrage-free option-surface construction with Chebyshev tensor bases and a Hamiltonian fog post-fit, and geometric stochastic modelling for spot, rates, and options.',
   email: 'mailto:robert.j.jenkinson.alvarez@bath.edu',
   socialPreview: {
     imagePath: '/social-preview.svg',
@@ -60,17 +60,17 @@ export const siteConfig = {
     {
       title: 'Geometric deep learning',
       description:
-        'Structure-aware representation learning with phase-space priors, Hamiltonian geometry, and symplectic predictors for self-supervised systems.'
+        'HamJEPA uses a q,p phase-space predictor for JEPA training, then checks the learned geometry with frozen-feature and rollout diagnostics.'
     },
     {
       title: 'Quantitative finance',
       description:
-        'Chebyshev option-surface construction, Hamiltonian fog calibration, and Financial Hamiltonian Theory & Computational Aspects for joint surface, rate, and spot dynamics.'
+        'Chebyshev option surfaces fit forward-discounted prices with sparse no-arbitrage operators; the fog stage handles inconsistent quote patches.'
     },
     {
       title: 'Geometric analysis',
       description:
-        'Symmetry, rigidity, and mixed-boundary elliptic PDE, with sub-spherical-sector symmetry as the current platform problem and quantitative symplectic geometry as a longer-run bridge.'
+        'Self-Minkowski billiards: total integrability, Hopf/Pestov identities, and the question of when the norm must be Euclidean.'
     }
   ],
   projectOrder: [

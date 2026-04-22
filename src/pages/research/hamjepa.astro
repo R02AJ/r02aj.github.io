@@ -179,8 +179,7 @@ const pageJsonLd = {
 
         <h1 class="ham-appendix-title">Beyond Isotropy in JEPAs: Hamiltonian Geometry and Symplectic Prediction</h1>
         <p class="body-copy ham-appendix-intro">
-          A visual overview of HamJEPA, pairing the core phase-space construction and symplectic predictor with the
-          geometry diagnostics that explain its behavior.
+          Diagrams for HamJEPA: phase-space states, symplectic prediction, anti-collapse regularization, and geometry diagnostics.
         </p>
 
         <nav class="ham-appendix-actions" aria-label="HamJEPA visual guide links">
@@ -236,14 +235,14 @@ const pageJsonLd = {
       <article class="ham-appendix-shell ham-appendix-content">
         <section id="intro" class="ham-appendix-section" data-reveal>
           <p class="body-copy">
-            The sequence below explains how HamJEPA is built: how the encoder forms a phase-space state, how the
-            predictor advances that state through structured Hamiltonian transport, and why encoder-side anti-collapse
-            regularization is still needed to keep the representation non-degenerate.
+            HamJEPA has three moving parts: the encoder splits features into <span class="ham-math-inline">q,p</span>,
+            the predictor transports the state with a Hamiltonian rollout, and encoder-side regularizers keep the
+            state cloud from collapsing.
           </p>
         </section>
 
         <section id="highest-level" class="ham-appendix-section" data-reveal>
-          <h2>1. HamJEPA at the highest level</h2>
+          <h2>1. HamJEPA full overview</h2>
           <p class="body-copy">
             Two views are encoded to phase-space states, one state is evolved by a symplectic predictor, and the
             predicted target is matched while encoder-side anti-collapse controls remain active.
@@ -255,7 +254,8 @@ const pageJsonLd = {
           <h2>2. How the encoder constructs the phase-space state</h2>
           <p class="body-copy">
             The split is implemented at token level: the channel stack for each token is partitioned into q and p
-            halves before flattening, so s=[q;p] is a construction choice, not a post-hoc relabeling.
+            halves before flattening, so s=[q;p] is a construction choice (with the split preserved by an identity
+            projector).
           </p>
           <HamJepaEncoderConstructionDiagram />
         </section>
@@ -293,7 +293,7 @@ const pageJsonLd = {
         <section id="regularizers" class="ham-appendix-section" data-reveal>
           <h2>6. Encoder-side anti-collapse regularizers</h2>
           <p class="body-copy">
-            The next figures isolate the role of each encoder-side anti-collapse regularizer.
+            The regularizers act on scale, variance, projected volume, spectrum, and batch mean.
           </p>
 
           <div class="ham-regularizer-sequence">
@@ -311,8 +311,8 @@ const pageJsonLd = {
         <section id="matching-choice" class="ham-appendix-section" data-reveal>
           <h2>7. Why CIFAR-100 and ImageNet-100 use different matching choices</h2>
           <p class="body-copy">
-            Matching/readout choices are dataset-regime dependent. The guide keeps these settings explicit so q, p, and
-            (q,p) comparisons remain interpretable.
+            Matching/readout choices are dataset-regime dependent. These choices are explained so that q, p,
+            and (q,p) comparisons are interpretable.
           </p>
           <div class="ham-regime-cards" aria-label="Regime comparison summary">
             <article class="ham-regime-card">
@@ -336,11 +336,8 @@ const pageJsonLd = {
         <section id="how-to-read" class="ham-appendix-section" data-reveal>
           <h2>8. How to read the sequence</h2>
           <p class="body-copy">
-            Taken together, the figures decompose the method into three conceptual layers: the encoder constructs a
-            structured phase-space state, the predictor evolves that state with a symplectic Hamiltonian rollout, and
-            the regularizers ensure that the encoder supplies a non-degenerate cloud of states for those dynamics to
-            act on. HamJEPA changes both the representation parameterization and the predictor family, while avoiding
-            forced Euclidean isotropy.
+            Read the diagrams as a construction: first the phase-space state, then the symplectic transport map, then
+            the regularizers that keep the encoder output non-degenerate.
           </p>
         </section>
       </article>
@@ -353,8 +350,7 @@ const pageJsonLd = {
         <section class="ham-appendix-section ham-further-intro" data-reveal>
           <h2>Further results</h2>
           <p class="body-copy">
-            Selected ImageNet-100 training-readout figures that complement the conceptual appendix sequence before the
-            broader geometry diagnostics.
+            Epoch ImageNet-100 training-readout figures.
           </p>
         </section>
 
@@ -388,7 +384,7 @@ const pageJsonLd = {
                 than either half alone, indicating that the split halves are complementary (and/or that doubling
                 feature dimension helps). For HamJEPA, q, p, and (q,p) track each other closely, suggesting that both
                 phase-space coordinates are individually informative and largely redundant under the symplectic
-                objective. (Left) SIGReg tokens. (Right) HamJEPA.
+                objective. (Top) SIGReg tokens. (Bottom) HamJEPA.
               </p>
             </section>
           )
@@ -432,17 +428,15 @@ const pageJsonLd = {
       <article class="ham-appendix-shell ham-appendix-content ham-appendix-secondary">
         <section class="ham-appendix-section" data-reveal>
           <h2>Selected geometry diagnostics</h2>
-          <p class="body-copy">
-            Empirical geometry diagnostics are included as a secondary section after the conceptual appendix sequence.
-          </p>
         </section>
 
         <section class="ham-appendix-section ham-geo-subsection" data-reveal>
-          <h3>1. Visual hook: drift in trajectory geometry</h3>
+          <h3>1. Videos: drift in trajectory geometry</h3>
           <p class="body-copy">
-            Long-horizon stability is geometric first. Non-symplectic rollouts distort orbit structure and accumulate
-            directional energy bias, while symplectic rollouts preserve qualitative orbit geometry with bounded
-            oscillatory error consistent with modified-Hamiltonian intuition from backward error analysis.
+            We compare rollouts by energy drift, reversibility, area preservation, symplecticity defect, and ensemble
+            stability. Non-symplectic rollouts distort orbit structure and accumulate directional energy bias, while
+            symplectic rollouts preserve qualitative orbit geometry with bounded oscillatory error consistent with
+            modified-Hamiltonian intuition from backward error analysis.
           </p>
           <div class="ham-geo-grid ham-geo-grid-one">
             {
@@ -677,8 +671,8 @@ const pageJsonLd = {
         <section class="ham-appendix-section ham-geo-subsection" data-reveal>
           <h3>8. Sliced-projection diagnostics</h3>
           <p class="body-copy">
-            This LeJEPA-inspired sliced-projection diagnostic follows a Cramér–Wold viewpoint: instead of only
-            aggregate distribution checks, compare many 1D projections to expose direction-dependent geometric
+            This LeJEPA paper-inspired sliced-projection diagnostic follows a Cramér–Wold viewpoint: instead of only
+            aggregating distribution checks, compare many 1D projections to expose direction-dependent geometric
             distortion.
           </p>
           <div class="ham-geo-grid ham-geo-grid-one">
