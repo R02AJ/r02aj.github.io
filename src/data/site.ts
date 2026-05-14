@@ -33,6 +33,7 @@ export const siteConfig = {
       'https://arxiv.org/search/q-fin?searchtype=author&query=Alvarez,+R+J',
     zenodo: 'https://zenodo.org/records/19006204',
     chebyshevPaper: 'https://arxiv.org/abs/2512.01967',
+    chebyshevPaperPdf: '/files/Arbitrage_Free_Option_Price_Surfaces.pdf',
     hamjepaPaper: '/files/beyond_isotropy_in_jepa.pdf',
     hamjepaCode: ''
   },

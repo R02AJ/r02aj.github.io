@@ -1,14 +1,14 @@
 ---
-import { existsSync, readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
-import HomeDiagnosticsSlideshow from '../components/HomeDiagnosticsSlideshow.astro';
 import OngoingPreviewCard from '../components/OngoingPreviewCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { ongoingWorkItems } from '../data/ongoingWork';
 import { siteConfig, toAbsoluteUrl, withBase } from '../data/site';
-import { entrySlug, projectHref, readableAssetLabel, sortByOrder, summaryHref } from '../utils/content';
+import { entrySlug, projectHref, sortByOrder, summaryHref } from '../utils/content';
+import { projectCardResourceLinks } from '../utils/projectResources';
 
 const projects = (await getCollection('projects')).sort(sortByOrder);
 const summaries = (await getCollection('summaries')).sort(sortByOrder);
@@ -38,42 +38,6 @@ const heroVideoAvailable = existsSync(join(hamjepaImagesDir, heroVideoFile));
 const heroVideoWidth = 2160;
 const heroVideoHeight = 972;
 
-const slideshowImageExtensions = new Set(['.png', '.jpg', '.jpeg', '.webp', '.svg']);
-
-const slideshowSources = [
-  {
-    folder: 'hamjepa',
-    dir: join(projectRoot, 'public', 'images', 'hamjepa')
-  },
-  {
-    folder: 'chebyshev',
-    dir: join(projectRoot, 'public', 'images', 'chebyshev')
-  }
-] as const;
-
-const slideshowItems = slideshowSources.flatMap((source) => {
-  if (!existsSync(source.dir)) {
-    return [];
-  }
-
-  return readdirSync(source.dir)
-    .filter((name) => {
-      const dotIndex = name.lastIndexOf('.');
-      return dotIndex > 0 && slideshowImageExtensions.has(name.slice(dotIndex).toLowerCase());
-    })
-    .sort((a, b) => a.localeCompare(b))
-    .map((name) => {
-      const label = readableAssetLabel(name);
-      const sourceLabel = source.folder === 'hamjepa' ? 'HamJEPA' : 'Chebyshev';
-
-      return {
-        src: withBase(`/images/${source.folder}/${name}`),
-        alt: `${sourceLabel} diagnostic: ${label}`,
-        label
-      };
-    });
-});
-
 const quantCvFile = join(projectRoot, 'public', 'files', 'robert-jenkinson-alvarez-quant-cv.pdf');
 const researchCvFile = join(
   projectRoot,
@@ -88,7 +52,7 @@ const researchCvAvailable = existsSync(researchCvFile);
 const quantCvHref = withBase('/files/robert-jenkinson-alvarez-quant-cv.pdf');
 const researchCvHref = withBase('/files/robert-jenkinson-alvarez-research-cv.pdf');
 const aboutHref = withBase('/about');
-const chebyshevPaperPdfHref = withBase('/files/Arbitrage_Free_Option_Price_Surfaces.pdf');
+const chebyshevPaperPdfHref = withBase(siteConfig.links.chebyshevPaperPdf);
 
 const quickScan = [
   {
@@ -213,6 +177,7 @@ const personJsonLd = {
               <ProjectCard
                 projectHref={projectHref(project)}
                 summaryHref={summaryByProjectSlug.get(slug)}
+                resourceLinks={projectCardResourceLinks(project)}
                 title={project.data.title}
                 category={project.data.category}
                 status={project.data.status}
@@ -240,16 +205,6 @@ const personJsonLd = {
           }
         </div>
       </div>
-    </div>
-  </section>
-
-  <section class="section-tight section-divider">
-    <div class="page-shell space-y-7" data-reveal>
-      <div class="section-header section-header-tight">
-        <h2 class="section-title">Diagnostics</h2>
-      </div>
-
-      <HomeDiagnosticsSlideshow slides={slideshowItems} />
     </div>
   </section>
 

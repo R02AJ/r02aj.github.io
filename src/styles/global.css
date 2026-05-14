@@ -146,6 +146,10 @@ button:focus-visible {
     text-wrap: balance;
   }
 
+  .home-hero-title {
+    font-size: clamp(1.92rem, 5.76vw, 4.72rem);
+  }
+
   .section-title {
     font-size: clamp(1.85rem, 5vw, 3.55rem);
     text-wrap: balance;

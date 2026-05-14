@@ -5,6 +5,7 @@ import OngoingPreviewCard from '../../components/OngoingPreviewCard.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
 import { ongoingWorkItems } from '../../data/ongoingWork';
 import { entrySlug, projectHref, sortByOrder, summaryHref } from '../../utils/content';
+import { projectCardResourceLinks } from '../../utils/projectResources';
 
 const projects = (await getCollection('projects')).sort(sortByOrder);
 const coreProjects = projects.filter((project) => project.data.status !== 'Ongoing');
@@ -68,6 +69,7 @@ const categories = ['All', 'Geometric ML', 'Quantitative Finance', 'Ongoing Work
                 <ProjectCard
                   projectHref={projectHref(project)}
                   summaryHref={summaryByProjectSlug.get(slug)}
+                  resourceLinks={projectCardResourceLinks(project)}
                   title={project.data.title}
                   category={project.data.category}
                   status={project.data.status}
