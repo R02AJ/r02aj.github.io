@@ -1,0 +1,1000 @@
+/* Robert-specific content on the downloaded Clarity structure. */
+
+@font-face {
+  font-family: "Athletics";
+  src: url("../fonts/Athletics/Athletics-Regular.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Athletics";
+  src: url("../fonts/Athletics/Athletics-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Athletics";
+  src: url("../fonts/Athletics/Athletics-Italic.woff2") format("woff2");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+body {
+  background: #fff;
+  --nav-dot-color: #f59e0b;
+  --bg: #f2f1ec;
+  --bg-elevated: #fbfaf6;
+  --fg: #101217;
+  --muted: #5d6470;
+  --line: #d6dbe3;
+  --line-strong: #a7b0bc;
+  --accent: #2a64d6;
+  --accent-soft: #2a64d626;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+code,
+pre,
+ol,
+ul,
+li {
+  font-family: "Athletics", sans-serif;
+}
+
+/* ======================== Reference Navigation ===================== */
+div.nav-bar {
+  background-color: transparent;
+  top: 0;
+  width: 100%;
+  position: absolute;
+  z-index: 9999;
+}
+
+div.nav-bar .nav-container-small {
+  display: none;
+}
+
+body.nav-open {
+  overflow: hidden;
+}
+
+div.nav-bar .nav-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: start;
+  column-gap: 4vw;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  position: relative;
+}
+
+div.nav-bar .nav-container .menu {
+  display: flex;
+  justify-content: flex-start;
+  gap: clamp(2.25rem, 5vw, 5.5rem);
+  position: relative;
+}
+
+div.nav-bar .nav-container .menu a {
+  position: relative;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 500;
+  color: inherit;
+  font-size: 24px;
+  font-family: "Athletics", sans-serif;
+  padding-bottom: 0.5em;
+}
+
+div.nav-bar .nav-container .menu a:hover,
+div.nav-bar .nav-container .menu a.active {
+  color: inherit;
+}
+
+div.nav-bar .nav-container .menu .menu-dot {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: var(--nav-dot-color);
+  border-radius: 50%;
+  transition: left 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+div.nav-bar .nav-container .social {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.45em;
+  color: inherit;
+}
+
+div.nav-bar .nav-container .social .icon a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  text-align: center;
+}
+
+.mobile-brand,
+.menu-bar {
+  display: inline-block;
+  color: #353535;
+  text-decoration: none;
+  font-family: "Athletics", sans-serif;
+  font-weight: 600;
+}
+
+.menu-bar.mobile-menu-toggle {
+  display: none;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #353535;
+}
+
+.menu-bar .menu-default {
+  display: block;
+  width: 44px;
+  height: 44px;
+  pointer-events: none;
+}
+
+.menu-bar .menu-default svg {
+  display: block;
+  width: 44px;
+  height: 44px;
+  stroke: currentColor;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.menu-bar .menu-default svg path {
+  transition:
+    transform 0.28s ease,
+    opacity 0.2s ease;
+  transform-origin: 50% 50%;
+}
+
+.menu-bar.mobile-menu-toggle.is-open .menu-default svg path:nth-child(1) {
+  transform: translateY(18px) rotate(45deg);
+}
+
+.menu-bar.mobile-menu-toggle.is-open .menu-default svg path:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-bar.mobile-menu-toggle.is-open .menu-default svg path:nth-child(3) {
+  transform: translateY(-18px) rotate(-45deg);
+}
+
+@media screen and (max-width: 769px) {
+  #first-content,
+  div.container.blog#first-content {
+    padding-top: 6em;
+  }
+
+  div.nav-bar {
+    position: fixed;
+    background-color: white !important;
+    backdrop-filter: none;
+  }
+
+  div.nav-bar .nav-container-small {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1em;
+    padding-bottom: 0.75em;
+    position: relative;
+    z-index: 2;
+  }
+
+  .menu-bar.mobile-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  div.nav-bar .nav-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(0, 1fr) auto;
+    row-gap: clamp(2rem, 6vh, 4.5rem);
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    width: 100vw;
+    max-width: none;
+    box-sizing: border-box;
+    margin: 0;
+    height: 100dvh;
+    min-height: 100dvh;
+    padding: clamp(5.5rem, 14vh, 7.5rem) max(2rem, 8vw) clamp(2rem, 7vh, 4.5rem);
+    background-color: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transform: translateX(-100%);
+    transition: transform 0.45s ease;
+    overflow: hidden;
+    align-items: stretch;
+    justify-items: center;
+  }
+
+  body.nav-open div.nav-bar .nav-container,
+  div.nav-bar .nav-container.is-open {
+    transform: translateX(0);
+  }
+
+  div.nav-bar .nav-container .menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(1.75rem, 5.5vh, 4rem);
+    width: min(72vw, 24rem);
+    height: 100%;
+    margin: 0 auto;
+    text-align: center;
+    transform: translateY(-2vh);
+  }
+
+  div.nav-bar .nav-container .menu a {
+    color: #353535 !important;
+    display: block;
+    width: 100%;
+    padding: 0;
+    font-size: clamp(30px, 10vw, 54px);
+    line-height: 1.05;
+    text-align: center;
+  }
+
+  div.nav-bar .nav-container .menu .menu-dot {
+    display: none;
+  }
+
+  div.nav-bar .nav-container .menu a.active {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.18em;
+  }
+
+  div.nav-bar .nav-container .social {
+    align-self: end;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+    gap: clamp(3.25rem, 16vw, 8rem);
+    width: min(21rem, 72vw);
+    margin: 0 auto;
+  }
+
+  div.nav-bar .nav-container .social .icon a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    color: #353535 !important;
+    text-decoration: none;
+    font-size: 24px;
+  }
+}
+
+@media screen and (min-width: 769px) {
+  #first-content,
+  div.container.blog#first-content {
+    padding-top: 8em;
+  }
+
+  div.nav-bar .nav-container {
+    padding-top: 3em;
+    padding-bottom: 3em;
+  }
+
+  div.nav-bar .nav-container .menu a,
+  div.nav-bar .nav-container .social .icon a {
+    font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  #first-content,
+  div.container.blog#first-content {
+    padding-top: 10em;
+  }
+
+  div.nav-bar .nav-container {
+    padding-top: 4em;
+    padding-bottom: 4em;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  #first-content,
+  div.container.blog#first-content {
+    padding-top: 12em;
+  }
+
+  div.nav-bar .nav-container {
+    padding-top: 5em;
+    padding-bottom: 5em;
+  }
+
+  div.nav-bar .nav-container .menu a,
+  div.nav-bar .nav-container .social .icon a {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 2400px) {
+  #first-content,
+  div.container.blog#first-content {
+    padding-top: 14em;
+  }
+
+  div.nav-bar .nav-container {
+    padding-top: 6em;
+    padding-bottom: 6em;
+  }
+
+  div.nav-bar .nav-container .menu a,
+  div.nav-bar .nav-container .social .icon a {
+    font-size: 20px;
+  }
+}
+
+/* ======================== Home / Page Titles ===================== */
+div.home-container {
+  position: relative;
+  padding-bottom: 5vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 10vw;
+}
+
+div.home-container .home-intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+div.home-container .home-intro p {
+  padding: 1em 0;
+}
+
+div.home-container .home-profile img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+div.home-container .home-profile .home-kinetic-visual {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: min(78vw, 360px);
+}
+
+div.home-container .home-profile .home-kinetic-visual .pkv {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.home-actions,
+.page-actions,
+.button-row,
+.selector-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+div.page-title {
+  padding-bottom: 1.5em;
+}
+
+div.page-title h1 {
+  padding-bottom: 1.5em;
+}
+
+div.section-title {
+  padding: 1em 0;
+}
+
+@media screen and (min-width: 769px) {
+  div.home-container {
+    display: grid;
+    padding: 10vh 0;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5vw;
+  }
+
+  div.home-container .home-intro p {
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  div.home-container {
+    column-gap: 10vw;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  div.home-container {
+    column-gap: 14vw;
+  }
+}
+
+/* ======================== Research Grid ===================== */
+div.project-block {
+  padding: 1em 0 0.5vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 1em;
+}
+
+div.project-block div.project-container .project-cover {
+  background-size: 80% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding-top: 125%;
+  transition: all 0.6s ease-in-out;
+  transform: rotate(0.0001deg);
+}
+
+div.project-block div.project-container .project-cover.kinetic-project-cover {
+  position: relative;
+  padding-top: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #f4f3ef;
+}
+
+div.project-block div.project-container .project-cover:hover {
+  box-shadow: 0 0 40px 10px rgba(0, 0, 0, 0.15);
+  transform: scale(1.01) rotate(0.0001deg);
+}
+
+.paper-kinetic-slot {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.paper-kinetic-slot .pkv {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.paper-kinetic-slot--card,
+.paper-kinetic-slot--card .pkv {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.paper-kinetic-slot--hero {
+  width: min(100%, 560px);
+  aspect-ratio: 16 / 11;
+  min-height: 260px;
+  margin-left: auto;
+}
+
+.paper-kinetic-slot--hero .pkv {
+  border-radius: 24px;
+}
+
+@media screen and (max-width: 769px) {
+  .paper-kinetic-slot--hero {
+    max-width: calc(100vw - 2rem);
+    margin-inline: auto;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  div.container.blog.project-hero--hamjepa#first-content div.blog-title {
+    grid-template-columns: minmax(0, 0.56fr) minmax(0, 1fr);
+  }
+
+  div.container.blog.project-hero--hamjepa#first-content div.blog-title .blog-cover {
+    min-height: clamp(410px, 51vh, 510px);
+  }
+}
+
+div.container.blog#first-content div.blog-title .blog-cover .paper-kinetic-slot {
+  position: relative;
+  z-index: 2;
+}
+
+div.project-block div.project-container .project-info {
+  padding: 10px 0 25px;
+}
+
+div.project-block div.project-container .project-info .project-title {
+  padding: 0;
+}
+
+div.project-block div.project-container .project-info .project-title a {
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: "Athletics", sans-serif;
+}
+
+div.project-block div.project-container .project-info .project-title a:hover {
+  text-decoration: underline;
+}
+
+div.project-block div.project-container .project-info p,
+.project-kicker,
+.project-intro,
+.metric-row li,
+.link-row a {
+  line-height: 1.2;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "Athletics", sans-serif;
+}
+
+.project-kicker {
+  padding-bottom: 0.4em;
+  color: #666;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.metric-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35em;
+  list-style: none;
+  padding: 0.65em 0 0 !important;
+}
+
+.metric-row li {
+  padding: 0.35em 0.55em;
+  border: 1px solid rgba(53, 53, 53, 0.14);
+  border-radius: 999px;
+  background: #f8f8f8;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.link-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25em 0.85em;
+  padding-top: 0.7em;
+}
+
+.link-row a {
+  text-decoration: none;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.link-row a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.button,
+button,
+input[type="submit"],
+input[type="reset"],
+input[type="button"] {
+  font-family: "Athletics", sans-serif;
+}
+
+@media screen and (min-width: 769px) {
+  div.project-block {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5vw;
+    row-gap: 1.5em;
+    padding-bottom: 1em;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  div.project-block {
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2.5vw;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  div.project-block {
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 2.5vw;
+    row-gap: 1em;
+    padding-bottom: 1.5em;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  div.project-block {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: 1.5vw;
+  }
+}
+
+/* ======================== Ongoing / Publication List ===================== */
+div.paper-page {
+  padding-bottom: 1.5em;
+}
+
+div.paper-page .paper-container {
+  padding: 0.5vh 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+div.paper-page .paper-container .paper-conference p {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #353535;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+div.paper-page .paper-container .paper-info p {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+div.paper-page .paper-container .paper-info p b {
+  font-weight: 700;
+}
+
+@media screen and (min-width: 1200px) {
+  div.paper-page {
+    padding-bottom: 4vh;
+  }
+
+  div.paper-page .paper-container {
+    grid-template-columns: 1fr 4fr;
+  }
+
+  div.ongoing-page .paper-container {
+    grid-template-columns: minmax(260px, 300px) minmax(0, 1fr);
+    column-gap: clamp(3rem, 5vw, 4.5rem);
+  }
+
+  div.paper-page .paper-container .paper-conference p {
+    font-size: 15px;
+  }
+
+  div.paper-page .paper-container .paper-info p {
+    font-size: 17px;
+  }
+}
+
+/* ======================== Project Pages / Prose ===================== */
+div.container.blog#first-content .metric-row {
+  justify-content: flex-start;
+}
+
+div.container.blog#first-content .metric-row li {
+  background: rgba(255, 255, 255, 0.65);
+}
+
+div.container.blog#first-content div.blog-title .blog-cover img.foreground,
+div.container.blog#first-content div.blog-title .blog-cover img.background {
+  max-height: 46vh;
+  object-fit: contain;
+}
+
+div.container.blog#first-content div.blog-title.no-cover h1 {
+  text-align: center;
+}
+
+div.container.blog#first-content div.blog-title.no-cover .link {
+  justify-content: center;
+}
+
+.selector-row {
+  padding-top: 0.25em;
+}
+
+.selector-row .button.project {
+  margin-bottom: 0;
+}
+
+.selector-active {
+  box-shadow: inset 0 0 0 1px rgba(53, 53, 53, 0.36);
+  background: #f7f7f7;
+}
+
+.project-resource-row {
+  align-items: center;
+}
+
+.project-tab-shell {
+  padding-top: 2.2rem;
+  padding-bottom: 0;
+}
+
+.project-tab-nav {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.project-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-bottom: 1px solid rgba(53, 53, 53, 0.16);
+}
+
+.project-tab {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0 0 0.55rem;
+  text-decoration: none;
+  font-family: "Athletics", sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.project-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: #353535;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.2s ease;
+}
+
+.project-tab:hover::after,
+.project-tab.active::after {
+  transform: scaleX(1);
+}
+
+.project-tab-panel {
+  scroll-margin-top: 9rem;
+}
+
+.project-tab-panel:not(.active) {
+  display: none;
+}
+
+.project-tab-panel[hidden] {
+  display: none !important;
+}
+
+.project-tab-panel .caption:first-child {
+  padding-top: 0;
+  padding-bottom: 2rem;
+}
+
+.prose-panel h1,
+.prose-panel h2,
+.prose-panel h3 {
+  scroll-margin-top: 8rem;
+}
+
+.prose-panel section {
+  margin-top: 1rem;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 2vw;
+  row-gap: 1rem;
+}
+
+.mini-panel {
+  padding: 1rem 0 0;
+  border-top: 1px solid rgba(53, 53, 53, 0.18);
+}
+
+.mini-panel h3 {
+  padding-top: 0;
+}
+
+@media screen and (min-width: 769px) {
+  .mini-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.resume-list {
+  padding-left: 1.1rem !important;
+}
+
+.resume-list li + li {
+  margin-top: 0.8rem;
+}
+
+div.about-container {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+div.about-container .about-intro {
+  padding: 1em 0;
+}
+
+div.about-container .about-intro p {
+  font-size: 0.85em;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.8;
+}
+
+div.about-container .about-content {
+  padding-bottom: 2.5vh;
+}
+
+div.about-container .about-content p {
+  font-weight: 300;
+  padding-bottom: 0.5em;
+}
+
+@media screen and (min-width: 769px) {
+  div.about-container {
+    grid-template-columns: 1fr 3fr;
+    column-gap: 5vw;
+  }
+
+  div.about-container .about-intro {
+    padding-top: 0;
+    padding-bottom: 2.5vh;
+  }
+
+  div.about-container .about-content {
+    padding-bottom: 2.5vh;
+  }
+}
+
+.cv-section .about-intro p {
+  text-transform: uppercase;
+}
+
+.cv-education p + p {
+  padding-top: 1rem;
+}
+
+.summary-box,
+.summary-table-block,
+.source-figure {
+  margin: 1rem 0;
+}
+
+.summary-box {
+  padding: 1rem 0 0;
+  border-top: 1px solid rgba(53, 53, 53, 0.18);
+}
+
+.summary-box-title,
+.summary-table-caption-head,
+.source-figure-title {
+  font-family: "Athletics", sans-serif;
+  font-weight: 700;
+}
+
+.summary-table-wrap {
+  overflow-x: auto;
+}
+
+.summary-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 0.45rem 0.55rem;
+  border-top: 1px solid rgba(53, 53, 53, 0.14);
+  text-align: left;
+}
+
+.summary-table th {
+  font-weight: 700;
+}
+
+.summary-table-caption {
+  padding-top: 0.5rem;
+  color: #555;
+  font-size: 0.86rem !important;
+}
+
+.source-figure {
+  padding-top: 0.4rem;
+}
+
+.source-figure-title {
+  padding-bottom: 0.4rem;
+}
+
+.source-media-shell {
+  background: #f6f6f6;
+}
+
+.source-media {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.source-figure figcaption {
+  padding-top: 0.75rem;
+  color: #555;
+  font-size: 90%;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.source-figure figcaption strong,
+.hamjepa-diagram-caption strong,
+.hamjepa-encoder-caption strong,
+.hamjepa-leapfrog-caption strong,
+.hamjepa-concept-caption strong,
+.hamjepa-regularizer-caption strong,
+.hamjepa-matching-caption strong {
+  color: #353535;
+  font-weight: 700;
+}
+
+/* ======================== Footer ===================== */
+footer {
+  padding: 1.5em 0;
+  background-color: #fafafa;
+}
+
+.site-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.site-footer-inner p,
+.site-footer-inner a {
+  font-family: "Athletics", sans-serif;
+  font-size: 14px;
+}
