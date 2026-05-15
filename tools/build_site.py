@@ -13,6 +13,16 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = Path("/Users/robjenkinson/Documents/Website")
 OLD_DIAGRAM_FRAGMENTS = ROOT / "assets/generated-diagrams/hamjepa-old-astro-fragments.json"
 
+GA4_TAG = """<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4ZQW6PQJR3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4ZQW6PQJR3');
+</script>"""
+
 SITE = {
     "name": "Robert Jenkinson Álvarez",
     "name_ascii": "Robert Jenkinson Alvarez",
@@ -223,6 +233,7 @@ def page(
   <link rel="stylesheet" type="text/css" media="all" href="{prefix}assets/stylesheets/old-astro-hamjepa-diagrams.css">
   {navbar}
   {math_head}
+{GA4_TAG}
 </head>
 <body class="page-{active}" style="--nav-dot-color: {NAV_DOT_COLORS.get(active, NAV_DOT_COLORS['home'])};">
   {nav(active, depth)}
@@ -930,6 +941,7 @@ def about_page() -> str:
         <a href="{SITE['email']}">Email →</a>
       </div>
       <p class="text">Best reached by email for research discussions or serious opportunities; include the technical context and constraints.</p>
+      <p class="caption analytics-note">This site uses Google Analytics to understand aggregate visits, referrers, and broad geography. It is not used to identify individual visitors.</p>
     </div>
     """
     return page("About | Robert Jenkinson Alvarez", "About Robert Jenkinson Alvarez.", "about", body)
@@ -944,6 +956,7 @@ def redirect_page(title: str, target: str = "index.html") -> str:
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="refresh" content="0; url={escaped_target}">
   <title>{html.escape(title)}</title>
+{GA4_TAG}
 </head>
 <body>
   <p><a href="{escaped_target}">Open {SITE['name']}</a></p>
