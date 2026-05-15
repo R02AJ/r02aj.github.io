@@ -1,29 +1,5 @@
 /* Robert-specific content on the downloaded Clarity structure. */
 
-@font-face {
-  font-family: "Athletics";
-  src: url("../fonts/Athletics/Athletics-Regular.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Athletics";
-  src: url("../fonts/Athletics/Athletics-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Athletics";
-  src: url("../fonts/Athletics/Athletics-Italic.woff2") format("woff2");
-  font-weight: 500;
-  font-style: italic;
-  font-display: swap;
-}
-
 body {
   background: #fff;
   --nav-dot-color: #f59e0b;
@@ -50,7 +26,7 @@ pre,
 ol,
 ul,
 li {
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
 }
 
 /* ======================== Reference Navigation ===================== */
@@ -96,7 +72,7 @@ div.nav-bar .nav-container .menu a {
   font-weight: 500;
   color: inherit;
   font-size: 24px;
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   padding-bottom: 0.5em;
 }
 
@@ -137,7 +113,7 @@ div.nav-bar .nav-container .social .icon a {
   display: inline-block;
   color: #353535;
   text-decoration: none;
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 600;
 }
 
@@ -547,7 +523,7 @@ div.project-block div.project-container .project-info .project-title a {
   text-decoration: none;
   font-size: 17px;
   font-weight: 700;
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
 }
 
 div.project-block div.project-container .project-info .project-title a:hover {
@@ -562,7 +538,7 @@ div.project-block div.project-container .project-info p,
   line-height: 1.2;
   font-size: 15px;
   font-weight: 500;
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
 }
 
 .project-kicker {
@@ -614,7 +590,7 @@ button,
 input[type="submit"],
 input[type="reset"],
 input[type="button"] {
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
 }
 
 @media screen and (min-width: 769px) {
@@ -766,7 +742,7 @@ div.container.blog#first-content div.blog-title.no-cover .link {
   width: 100%;
   padding: 0 0 0.55rem;
   text-decoration: none;
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   line-height: 1.2;
   text-align: center;
@@ -911,7 +887,7 @@ div.about-container .about-content p {
 .summary-box-title,
 .summary-table-caption-head,
 .source-figure-title {
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
 }
 
@@ -995,6 +971,6 @@ footer {
 
 .site-footer-inner p,
 .site-footer-inner a {
-  font-family: "Athletics", sans-serif;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
 }
