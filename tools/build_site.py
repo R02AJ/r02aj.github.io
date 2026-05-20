@@ -30,7 +30,7 @@ SITE = {
     "email": "mailto:robert.j.jenkinson.alvarez@bath.edu",
     "github": "https://github.com/R02AJ",
     "linkedin": "https://www.linkedin.com/in/robert-jenkinson-álvarez-9707a9224",
-    "arxiv_author": "https://arxiv.org/search/q-fin?searchtype=author&query=Alvarez,+R+J",
+    "arxiv_author": "https://arxiv.org/search/?searchtype=author&query=Alvarez%2C+R+J",
     "zenodo": "https://zenodo.org/records/19006204",
     "cheb_arxiv": "https://arxiv.org/abs/2512.01967",
     "hamjepa_code": "https://github.com/R02AJ/HamJEPA-HamSIGReg",
@@ -284,7 +284,7 @@ def project_resource_buttons(slug: str, depth: int) -> str:
         links = [
             ("Paper PDF", project["paper_pdf"], True, "fa-solid fa-book-open"),
             ("Code", SITE["hamjepa_code"], True, "fa-solid fa-code"),
-            ("Paper", SITE["zenodo"], True, "fa-solid fa-arrow-up-right-from-square"),
+            ("Paper", "https://arxiv.org/abs/2605.20107", True, "fa-solid fa-arrow-up-right-from-square"),
         ]
     else:
         links = [
