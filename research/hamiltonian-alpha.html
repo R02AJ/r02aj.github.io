@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="We start from the idea that the options market is not a collection of disconnected quotes or assets, but a coupled system of evolving surfaces, underlyings and other market variables. The option surfaces and their relationships are viewed as pricing objects and also high-dimensional observations of market-state. The geometry of the surfaces, constraints and their relationship with the rest of the market are used to construct a canonical phase-space state, which is then evolved using learned Hamiltonian dynamics. However, since these dynamics are deterministic descriptions of the structured evolution of the market state, we incorporate stochastic components to represent uncertainty around the evolutions. We therefore allow distributions of future states, rather than only point forecasts.">
+  <meta name="robots" content="all">
+  <title>Hamiltonian Alpha Engine | Robert Jenkinson Alvarez</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/main_free.css">
+  <link href="../assets/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/Web_assets/paper-kinetic-visual.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/robert-clarity.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/old-astro-hamjepa-diagrams.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/research-programmes.css?v=20261009-rounded1">
+  <link rel="stylesheet" href="../assets/stylesheets/research-explorers.css?v=20261009">
+  <link rel="stylesheet" href="../assets/stylesheets/research-summaries.css?v=20261009">
+  <link rel="stylesheet" href="../assets/stylesheets/research-header-themes.css?v=20261009-colours1">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({jax:["input/TeX","output/SVG"],extensions:["tex2jax.js"],TeX:{extensions:["AMSmath.js","AMSsymbols.js"],Macros:{"R":"\\mathbb{R}","Q":"\\mathbb{Q}","Z":"\\mathbb{Z}","T":"\\mathbb{T}","E":"\\mathbb{E}","Id":"\\mathrm{Id}","dd":"\\,\\mathrm{d}","diff":"\\,\\mathrm{d}","HH":"\\mathsf{H}","Ball":"\\mathbb{B}^2","Sym":"\\operatorname{Sym}","Span":"\\operatorname{span}","argmin":"\\operatorname*{arg\\,min}","diver":"\\operatorname{div}","supp":"\\operatorname{supp}","osc":"\\operatorname{osc}","diam":"\\operatorname{diam}","norm":["\\left\\lVert#1\\right\\rVert",1]}},SVG:{scale:95,font:"TeX",linebreaks:{automatic:true}},tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:true}});
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG"></script>
+</head>
+<body class="page-research" data-research-header="alpha" style="--nav-dot-color: #8aa6cf;">
+  <div class="nav-bar">
+    <div class="nav-container-small container"><a class="mobile-brand" href="../index.html" aria-label="Home">Robert Jenkinson Álvarez</a><button class="menu-bar mobile-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-mobile-menu"><span class="menu-default" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false"><path d="M18 32H82"></path><path d="M18 50H82"></path><path d="M18 68H82"></path></svg></span></button></div>
+    <div class="nav-container container" id="site-mobile-menu">
+      <nav class="menu" aria-label="Primary navigation"><a href="../index.html" data-dot-color="#f59e0b">Home</a><a class="active" href="../research.html" data-dot-color="#8aa6cf">Research</a><a href="../resume.html" data-dot-color="#7f9f87">CV</a><a href="../about.html" data-dot-color="#c88774">About</a><span class="menu-dot" aria-hidden="true"></span></nav>
+      <div class="social" aria-label="Social links"><span class="icon"><a href="https://github.com/R02AJ" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a></span><span class="icon"><a href="https://www.linkedin.com/in/robert-jenkinson-álvarez-9707a9224" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a></span></div>
+    </div>
+  </div>
+
+  <div class="container blog project-hero--hamjepa" id="first-content">
+    <div class="blog-title">
+      <div class="blog-intro">
+        <div>
+          <h1 class="title">Hamiltonian Alpha Engine</h1>
+          <p class="author">by Robert Jenkinson Álvarez</p>
+          <p class="abstract">We treat option surfaces, underlyings and other market variables as a single coupled, evolving market state. HamJEPA learns its structured Hamiltonian dynamics, with stochastic and foliation-based extensions to describe uncertainty, memory and regime changes.</p>
+        </div>
+        <div class="info"><p>Quantitative finance</p></div>
+      </div>
+      <div class="blog-cover"><div id="hamiltonian-alpha-hero" class="paper-kinetic-slot paper-kinetic-slot--hero research-hero-slot" data-research-project-visual="alpha" data-paper-fit="hero"></div></div>
+    </div>
+  </div>
+
+  <section class="container blog main prose-panel continuous-project-content">
+<p class="caption">Downloadable summary PDF: <a href="../assets/files/summary_hamiltonian_alpha.pdf" target="_blank" rel="noreferrer noopener">open PDF</a>.</p>
+<div class="verbatim-summary" data-summary-source="hamiltonian-alpha">
+<div class="tcolorbox"><p>We start from the idea that the options market is not a collection of disconnected quotes or assets, but a coupled system of evolving surfaces, underlyings and other market variables. The option surfaces and their relationships are viewed as pricing objects and also high-dimensional observations of market-state. The geometry of the surfaces, constraints and their relationship with the rest of the market are used to construct a canonical phase-space state, which is then evolved using learned Hamiltonian dynamics. However, since these dynamics are deterministic descriptions of the structured evolution of the market state, we incorporate stochastic components to represent uncertainty around the evolutions. We therefore allow distributions of future states, rather than only point forecasts.</p></div><h2 class="unnumbered" id="selected-forecasting-results">Selected forecasting results</h2><div class="summary-table-scroll"><table><thead><tr class="header"><th style="text-align: left;"><strong>Forecast target</strong></th><th style="text-align: left;"><strong>Result</strong></th><th style="text-align: left;"><strong>Historical evaluation</strong></th></tr></thead><tbody><tr class="odd"><td style="text-align: left;">Relative surface state<sup>[1]</sup></td><td style="text-align: left;">Innovation <span class="math inline">\(R^2=\mathbf{0.3654}\)</span></td><td style="text-align: left;">2023; 41-observation horizon</td></tr><tr class="even"><td style="text-align: left;">Aggregate state<sup>[1]</sup></td><td style="text-align: left;">Innovation <span class="math inline">\(R^2=\mathbf{0.2513}\)</span></td><td style="text-align: left;">Same block and horizon</td></tr><tr class="odd"><td style="text-align: left;">Physical index–basket covariance<sup>[2]</sup></td><td style="text-align: left;">IC <strong>0.5051</strong>; rank IC <strong>0.4867</strong></td><td style="text-align: left;">NDX; 20-day validation</td></tr><tr class="even"><td style="text-align: left;">Covariance innovation<sup>[2]</sup></td><td style="text-align: left;">IC <strong>0.4577</strong>; rank IC <strong>0.3859</strong></td><td style="text-align: left;">Same NDX benchmark</td></tr><tr class="odd"><td style="text-align: left;">Quote-count state<sup>[1]</sup></td><td style="text-align: left;">Newey–West <span class="math inline">\(t=\mathbf{7.495}\)</span></td><td style="text-align: left;">2021 annual evaluation</td></tr><tr class="even"><td style="text-align: left;">Half-spread state<sup>[1]</sup></td><td style="text-align: left;">Newey–West <span class="math inline">\(t=\mathbf{6.010}\)</span></td><td style="text-align: left;">2023; five-day horizon</td></tr></tbody></table></div><p><em>IC denotes forecast–outcome correlation; rank IC uses ranks. These are state and liquidity results, not returns. The 2023 figures are previously inspected development evidence. NDX validation has 40 sequences with overlapping horizons and retains index-replication residuals.</em></p><div class="tcolorbox"><p><span><strong>Surface history, 2019–2023<sup>[1]</sup></strong></span></p><p><strong>9,346</strong> Surface-state records</p><p><strong>1,174</strong> Market dates</p><p><strong>11.0 million</strong> Quote-residual records</p><p><strong>0</strong> Surface-fit failures</p><p><em>Eight equities; frozen SANOS histories. Record counts are not independent observations or trades.</em></p></div><h2 id="data-and-research-protocol">Data and research protocol</h2><p>Over the 2019–2023 research window, the engine combines daily equity-market data, option surfaces, rates, VIX, credit information and supported alternative data. Option surfaces are obtained from the <a href="chebyshev-surface-engine.html">separate arbitrage-free surface engine</a> which supplies surfaces, derivatives and fit-quality information. Write the information available at date <span class="math inline">\(t\)</span> as <span class="math display">\[\mathcal D_t=
+\left\{
+\begin{gathered}
+\text{equities},\,
+\text{option surfaces},\,
+\text{rates},\,
+\\
+\text{VIX},\,
+\text{credit},\,
+\text{alternative data}
+\end{gathered}
+\right\}_{\leq t}.\]</span> Importantly, every feature used at date <span class="math inline">\(t\)</span> is constructed only from information available by that date, <span class="math display">\[X_t=\Phi(\mathcal D_{\leq t})\in\mathcal F_t .\]</span> Publication times, missing observations, identifier changes and corporate actions are therefore treated as part of the data and we do not let the historical backtest know information available at a later time.</p><p>Quantities learned from data are estimated from the training sample: <span class="math display">\[\bigl(
+\widehat{\mu},
+\widehat{\Sigma},
+\widehat M,
+\widehat T,
+\widehat\theta,
+\widehat c_{\mathrm{trade}}
+\bigr)
+=
+\mathcal A(\mathcal D_{\mathrm{train}}).\]</span></p><p>Feature dates and target dates are treated separately. For horizon <span class="math inline">\(h\)</span>, an observation is admissible only when <span class="math display">\[t\leq T_{\mathrm{feature,end}},
+\qquad
+L(t,h)\leq T_{\mathrm{target,end}},\]</span> with purging across split boundaries where future holding periods overlap. Executable forecasts use the timing <span class="math display">\[\begin{gathered}
+\text{signal at }t
+\;\longrightarrow\;
+\text{entry at }t+1
+\\
+\;\longrightarrow\;
+\text{liquidation at }t+h+1.
+\end{gathered}\]</span></p><p>So training data fit the model, validation data select specifications and trading rules, and evaluation data are used for reporting. Statistical inference is performed at the date or trade-cohort level. Candidate signals are compared against simple matched baselines and are subject to negative controls, multiple-testing correction, stability checks and the same execution-cost assumptions before entering a trading rule.</p><p>The separate option-surface engine supplies prices, derivatives and fit-quality information. Its call field is <span class="math display">\[\mathcal C_{i,t}(m,\tau),\qquad
+m=\log\!\frac{K}{F_{i,t}(\tau)}.\]</span></p><h2 id="hamiltonian-market-world-model">Hamiltonian market world model</h2><p>The core model treats the market as a single coupled dynamical system. At date <span class="math inline">\(t\)</span>, the observed market is represented by a canonical phase-space state <span class="math display">\[z_t=(q_t,p_t),\]</span> where <span class="math inline">\(q_t\)</span> describes the current market configuration (position) and <span class="math inline">\(p_t\)</span> its local direction of motion (momentum). The state contains information across assets and across the different market blocks.</p><p>The deterministic (non-stochastic) evolution is generated by a learned Hamiltonian, <span class="math display">\[\begin{gathered}
+    \dot q_t=\nabla_p H_\theta(z_t;c_t),
+    \\
+    \dot p_t=-\nabla_q H_\theta(z_t;c_t),
+\end{gathered}\]</span> where <span class="math inline">\(c_t\)</span> denotes information used to condition the dynamics. We write <span class="math display">\[H_\theta(z;c)
+    =
+    H_0(z;c)+V_\theta(z;c),\]</span> with <span class="math inline">\(H_0\)</span> providing the structured reference dynamics and <span class="math inline">\(V_\theta\)</span> learning nonlinear residual structure. The Hamiltonian is defined on the joint state, so cross-asset and cross-market relationships are part of the dynamics.</p><p>The conservative evolution is computed through a structure-preserving map <span class="math display">\[\begin{gathered}
+    z_{t+1}
+    =
+    \Phi_{\theta,\Delta t}(z_t;c_t),
+    \\
+    \Phi_{\theta,\Delta t}^{*}\omega=\omega,
+\end{gathered}\]</span> so the learned transition retains the canonical phase-space geometry. Longer-horizon forecasts are obtained recursively from the same one-step law, <span class="math display">\[\widehat z_{t+h}
+    =
+    \Phi_{\theta,\Delta t}^{\,h}(z_t;c_t).\]</span></p><p>HamJEPA (<a href="hamjepa.html">NeurIPS2026 paper on the website</a>) is used to learn this transition in representation space. It predicts the future market state generated by the Hamiltonian flow. In simplified form, <span class="math display">\[\begin{gathered}
+    \widehat z_{t+h}
+    =
+    P_\phi(z_t,c_t,h),
+    \\
+    \mathcal L_{\mathrm{JEPA}}
+    =
+    \left\|
+        \widehat z_{t+h}
+        -
+        \operatorname{sg}(z_{t+h})
+    \right\|^2
+    +
+    \lambda\,\mathcal R(z),
+\end{gathered}\]</span> where <span class="math inline">\(\operatorname{sg}\)</span> denotes the stop-gradient target and <span class="math inline">\(\mathcal R\)</span> prevents representation collapse while respecting the phase-space structure.</p><p>The output of this stage is therefore a forecast of the evolution of the joint market state. Uncertainty around that evolution is introduced separately in the stochastic layer.</p><h2 id="stochastic-dynamics-memory-and-shocks">Stochastic dynamics, memory and shocks</h2><p>The Hamiltonian model gives a structured conditional evolution of the market state, but this single deterministic path is not sufficient for forecasting or trading. We therefore embed the Hamiltonian dynamics in a stochastic open-system model. In general form, <span class="math display">\[\begin{aligned}
+    dz_t
+    &amp;=
+    \left[
+        X_{H_\theta}(z_t;c_t)
+        +
+        r_\psi(z_t;c_t)
+    \right]dt
+\\
+    &amp;+
+    \sum_{k=1}^{M}
+        X_{G_k}(z_t;c_t)\circ dW_t^k
+    +
+    dJ_t ,
+\end{aligned}\]</span> where <span class="math inline">\(X_{H_\theta}\)</span> is the learned Hamiltonian evolution, <span class="math inline">\(r_\psi\)</span> represents dissipative or unresolved effects, the <span class="math inline">\(G_k\)</span> generate continuous stochastic forcing and <span class="math inline">\(J_t\)</span> contains discontinuous shocks.</p><p>The corresponding stochastic flow retains the canonical geometry pathwise, <span class="math display">\[\Phi_t^{*}\omega=\omega .\]</span> Dissipative and open-system components are kept separate and are not assumed to preserve Hamiltonian volume.</p><p>The observed state is only a partial description of the market. Unresolved variables can generate persistence and delayed response, which are represented through the finite-memory correction, <span class="math display">\[r_t^{\mathrm{mem}}
+    =
+    -\int_0^t
+        K_\psi(t-s)\,v(z_s)\,ds
+    +
+    \eta_t ,\]</span> where <span class="math inline">\(K_\psi\)</span> determines how previous state motion affects the present dynamics. This allows persistence and dissipation to arise from the dynamics rather than from an arbitrary collection of lagged features.</p><p>Large market moves are treated separately from continuous fluctuations. For a sequence of shock times <span class="math display">\[\begin{gathered}
+    T_n=\sum_{j=1}^{n}\tau_j,
+    \\
+    N_t=\max\{n:T_n\leq t\},
+\end{gathered}\]</span> the shock time may depend on the elapsed time since the previous event, <span class="math inline">\(a_t=t-T_{N_t},
+    \quad
+    \lambda_t=\lambda_\eta(a_t,c_t).\)</span> This allows non-memoryless arrival dynamics. At a shock time the state changes according to <span class="math display">\[z_{T_n}
+    =
+    z_{T_n^-}
+    +
+    \mathcal J_\psi
+    \!\left(
+        z_{T_n^-},c_{T_n^-},\xi_n
+    \right),\]</span> with the arrival process and the size and direction of the state displacement modelled separately.</p><p>The output of this layer is a conditional distribution over future market states, <span class="math display">\[\mathcal P_{t,h}
+    =
+    \mathcal L
+    \left(
+        z_{t+h}\mid\mathcal F_t
+    \right),\]</span> from which quantities such as <span class="math inline">\(\mu_{t,h}
+    =
+    \mathbb E[z_{t+h}\mid\mathcal F_t],
+    \quad
+    \Sigma_{t,h}
+    =
+    \operatorname{Cov}
+    (z_{t+h}\mid\mathcal F_t)\)</span> can be obtained.</p><h2 id="regime-and-foliation-geometry">Regime and foliation geometry</h2><p>A large displacement in the market state does not necessarily distinguish a temporary dislocation from a change in the underlying market regime. We introduce a low-dimensional regime map <span class="math display">\[\begin{gathered}
+    \rho:\mathcal P\rightarrow\mathbb R^k,
+    \\
+    \rho(z)=
+    \bigl(\rho_1(z),\ldots,\rho_k(z)\bigr),
+\end{gathered}\]</span> whose level sets <span class="math inline">\(\mathcal L_c
+    =
+    \{z\in\mathcal P:\rho(z)=c\}\)</span> define a foliation (theory explained in foliation paper) of the relevant region of phase space.</p><p>The market dynamics are separated locally into motion along the current regime and motion across regimes, <span class="math display">\[X_t
+    =
+    X_t^{\parallel}
+    +
+    X_t^{\perp},\]</span> where <span class="math inline">\(X_t^{\parallel}\)</span> is tangent to the current leaf and <span class="math inline">\(X_t^{\perp}\)</span> changes the regime coordinates. Equivalently, <span class="math display">\[\dot\rho_t
+    =
+    D\rho(z_t)\,X_t .\]</span></p><p>For the slowly varying regime coordinates, the structured Hamiltonian dynamics are approximately tangential, <span class="math display">\[\{\rho_a,H_\theta\}\approx0,
+    \qquad a=1,\ldots,k,\]</span> so ordinary state evolution occurs primarily within the current regime, while stronger transverse motions represent a change in the relationships defining that regime.</p><p>This provides a geometric distinction between two superficially similar market states: <span class="math display">\[\begin{gathered}
+    X_t^{\parallel}
+    \;\longrightarrow\;
+    \text{within-regime dislocation},
+    \\
+    X_t^{\perp}
+    \;\longrightarrow\;
+    \text{regime transition}.
+\end{gathered}\]</span></p><p>The foliation therefore separates uncertainty about motion within the current market structure from uncertainty about whether that structure itself is changing. The trading layer uses this distinction when converting state forecasts into positions.</p><h2 id="contract-level-trading-and-execution">Contract-level trading and execution</h2><p>The Hamiltonian model does not forecast trading signals. For a candidate book <span class="math inline">\(b\)</span> consisting of fixed option contracts, let <span class="math inline">\(V_b\)</span> denote the market value. Its expected net return over holding period <span class="math inline">\(h\)</span> is evaluated <span class="math display">\[\widehat{\mu}_{b,t,h}^{\mathrm{net}}
+    =
+    \mathbb E\!\left[
+        \Delta V_b^{\mathrm{mid}}
+        +G_b^{\mathrm{hedge}}
+        \mid\mathcal F_t
+    \right]
+    -\widehat C_{b,t,h},\]</span> where <span class="math inline">\(G_b^{\mathrm{hedge}}\)</span> denotes gross hedge cashflows and <span class="math inline">\(\widehat C_{b,t,h}\)</span> includes estimated execution, hedging, impact and funding costs.</p><p>The direction and size of a position are determined using information available at the <em>signal date</em>. Candidate books must satisfy liquidity, capacity and risk constraints, and their expected net gains must exceed an allowance for forecast uncertainty: <span class="math display">\[\widehat{\mu}_{b,t,h}^{\mathrm{net}}
+    &gt;
+    \mathcal U_{b,t,h},
+    \qquad
+    b\in\mathcal B_t^{\mathrm{feasible}}.\]</span> When no candidate satisfies these conditions, the decision is not to trade. Trading follows a fixed chronological convention, <span class="math display">\[\begin{gathered}
+    \text{signal at }t
+    \;\longrightarrow\;
+    \text{entry at }t+1
+    \\
+\;\longrightarrow\;
+    \text{exit at }t+h+1.
+\end{gathered}\]</span> Holding horizon <span class="math inline">\(h\)</span> is specified prior to entry. Each position retains its original contracts, strikes and expiries throughout the holding period, with hedging cashflows accounted for separately.</p><p>Realized performance is measured using the complete contract-level ledger, <span class="math display">\[\begin{aligned}
+    \mathrm{PnL}_{b}^{\mathrm{net}}
+    ={}&amp;
+    \Delta V_b^{\mathrm{mid}}
+    +G_b^{\mathrm{hedge}}\\
+    &amp;-C_b^{\mathrm{spread}}
+    -C_b^{\mathrm{impact}}
+\\
+    &amp;-C_b^{\mathrm{hedge}}
+    -C_b^{\mathrm{funding}}.
+\end{aligned}\]</span></p><p>A predictable movement in the market state is only a trading opportunity if it can be converted into a feasible position with sufficient expected net return after costs and uncertainty. The term <span class="math inline">\(\Delta V_b^{\mathrm{mid}}\)</span> measures the change in the value of the midpoint and does not mean that we trade at the midpoint. Trades buy at the <em>ask</em> and sell at the <em>bid</em>, with the resulting spread costs accounted in <span class="math inline">\(C_b^{\mathrm{spread}}\)</span>.</p><div class="tcolorbox"><p><span><strong>Recorded numerical and accounting checks<sup>[3]</sup></strong></span></p><div class="summary-table-scroll"><table><tbody><tr class="odd"><td style="text-align: left;">Conservative symplectic residual</td><td style="text-align: left;">Maximum net cashflow discrepancy</td><td style="text-align: left;">Software regression tests</td></tr><tr class="even"><td style="text-align: left;"><span class="math inline">\(\mathbf{2.98\times10^{-14}}\)</span></td><td style="text-align: left;"><span class="math inline">\(\mathbf{5.23\times10^{-12}}\)</span> dollars</td><td style="text-align: left;"><strong>741 / 741 passed</strong></td></tr></tbody></table></div><p><em>The geometry check applies to the tested conservative step. The cash audit covers 2,185 complete admissions in overlapping alternative books.</em></p></div><p><em><strong>Evidence.</strong> Selected internal historical results from different model versions, not a pooled track record or live performance. State forecasts and numerical checks do not establish validated net alpha.</em></p><p><strong>Sources.</strong> [1] <em>Prequential Hamiltonian 2019–2023 Review</em>, pass five. [2] <em>Exact Canonical Alpha Program: 2022–2023 Review</em>, second pass. [3] <em>Response-Law Campaign Review</em>, 23 September 2026. [4] <em>Payoff-Jet Hamiltonian Program Review</em>, final stable pass. [5] <em>Forecast Engine Repair Review</em>, 18 September 2026.</p>
+
+</div>
+
+<a class="research-back" href="../research.html">← Back to all research</a>
+  </section>
+
+  <footer><div class="container site-footer-inner"><p>© Robert Jenkinson Álvarez. Built on the <a href="https://shikun.io/projects/clarity" target="_blank" rel="noreferrer noopener">Clarity Template</a>, thanks to Shikun Liu.</p><p><a href="mailto:robert.j.jenkinson.alvarez@bath.edu">Email</a> · <a href="https://github.com/R02AJ" target="_blank" rel="noreferrer noopener">GitHub</a> · <a href="https://www.linkedin.com/in/robert-jenkinson-álvarez-9707a9224" target="_blank" rel="noreferrer noopener">LinkedIn</a></p></div></footer>
+  <script src="../assets/scripts/main.js"></script>
+  <script src="../assets/scripts/site.js"></script>
+  <script type="module" src="../assets/scripts/paper-visual-init.js"></script>
+  <script type="module" src="../assets/scripts/research-visual-init.js?v=20261009"></script>
+  <script type="module" src="../assets/scripts/research-explorers.js?v=20261009"></script>
+</body>
+</html>

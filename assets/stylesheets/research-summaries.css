@@ -1,0 +1,41 @@
+/* Only the supplied new summaries and their exploratory viewers. Native type,
+   hero, research grid and the two original research pages are unchanged. */
+.verbatim-summary .center { text-align: center; }
+.verbatim-summary .center img { width: 100%; height: auto; display: block; }
+.verbatim-summary .center p { margin: 1.4rem 0; padding: 0; }
+.verbatim-summary .tcolorbox,
+.verbatim-summary .panel {
+  margin: 1rem 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid rgba(53,53,53,.18);
+}
+.verbatim-summary .tcolorbox p:last-child,
+.verbatim-summary .panel p:last-child { padding-bottom: 0; }
+.verbatim-summary h2 { scroll-margin-top: 6rem; }
+.verbatim-summary .math.display { display: block; overflow-x: auto; overflow-y: hidden; padding: .7rem 0; }
+.verbatim-summary .MathJax_SVG_Display { margin: .65em 0 !important; }
+.verbatim-summary .summary-table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+.verbatim-summary table { border-collapse: collapse; width: 100%; font: inherit; }
+.verbatim-summary th,.verbatim-summary td { padding: .7rem .8rem; vertical-align: top; border-bottom: 1px solid #dce4e3; }
+.verbatim-summary th { background: #edf3f2; font-weight: 700; }
+.verbatim-summary tbody tr:last-child td { border-bottom: 2px solid #c4d2d0; }
+.verbatim-summary sup { font-size: .7em; }
+.research-explorations { margin-top: 2.8rem; }
+.saved-surface-viewer { margin: 1.2rem 0 2rem; }
+.saved-surface-stage {
+  position: relative; width: 100%; height: clamp(320px,52vw,530px);
+  background: radial-gradient(ellipse at 30% 20%,#fff9ec 0%,#eef7f5 50%,#d6e6e7 100%);
+  overflow: hidden; border: 1px solid #d3dfde;
+}
+.saved-surface-stage canvas { width: 100%; height: 100%; display: block; touch-action: none; cursor: grab; }
+.saved-surface-stage canvas:active { cursor: grabbing; }
+.saved-surface-axis { position: absolute; bottom: 1rem; left: 1.2rem; right: 1.2rem; color: #425d61; font-size: .73rem; pointer-events: none; }
+.saved-surface-controls { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: space-between; align-items: center; padding: .9rem 0; font-size: .78rem; }
+.saved-surface-controls div { display: flex; gap: .5rem; }
+.saved-surface-controls button { background: #fff; color: #353535; border: 1px solid #bfcfcd; padding: .5rem .7rem; border-radius: 3px; font: inherit; cursor: pointer; }
+.saved-surface-controls button:focus-visible,.saved-surface-stage canvas:focus-visible { outline: 2px solid #326c70; outline-offset: 3px; }
+@media(max-width:600px) {
+  .verbatim-summary .tcolorbox,.verbatim-summary .panel { padding: 1rem 0 0; }
+  .verbatim-summary th,.verbatim-summary td { min-width: 120px; padding: .6rem; }
+  .saved-surface-controls { align-items: flex-start; }
+}

@@ -1,0 +1,112 @@
+/* CV-only layout: the rest of the site retains its existing typography. */
+.page-resume .cv-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(20px, 1.5vw, 22px);
+}
+
+.page-resume .cv-section-heading {
+  padding: 0;
+  font-size: 0.85em;
+  line-height: 1.8;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.page-resume .cv-section-content {
+  min-width: 0;
+}
+
+.page-resume .cv-section-content,
+.page-resume .cv-section-content ul,
+.page-resume .cv-section-content ol,
+.page-resume .cv-section-content a {
+  font-size: inherit;
+}
+
+.page-resume .cv-section-content h3,
+.page-resume .cv-section-content h4,
+.page-resume .cv-section-content p,
+.page-resume .cv-section-content li {
+  font-size: inherit;
+  line-height: 1.6;
+  padding: 0;
+}
+
+.page-resume .cv-section-content h3,
+.page-resume .cv-section-content h4 {
+  font-weight: 600;
+}
+
+.page-resume .cv-entry + .cv-entry {
+  margin-top: 2.5rem;
+}
+
+.page-resume .cv-project {
+  margin-top: 1.3rem;
+}
+
+.page-resume .cv-project + .cv-project {
+  margin-top: 2rem;
+}
+
+.page-resume .cv-section-content .cv-details {
+  margin-top: 1rem;
+  padding-left: 1.15em;
+  list-style-type: disc;
+}
+
+.page-resume .cv-details li + li {
+  margin-top: 0.75rem;
+}
+
+.page-resume .cv-section-content .cv-publications {
+  padding: 0;
+  list-style: none;
+  counter-reset: cv-publication;
+}
+
+.page-resume .cv-publications .cv-entry {
+  position: relative;
+  padding-left: 2.1em;
+  counter-increment: cv-publication;
+  scroll-margin-top: 2rem;
+}
+
+.page-resume .cv-publications .cv-entry::before {
+  position: absolute;
+  top: 0.18em;
+  left: 0;
+  content: "[" counter(cv-publication) "]";
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.8em;
+  line-height: 1.6;
+}
+
+.page-resume .cv-publications p + p {
+  margin-top: 0.6rem;
+}
+
+.page-resume .cv-skill + .cv-skill {
+  margin-top: 1.4rem;
+}
+
+.page-resume .cv-section-content a {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+.page-resume .cv-section-content a:focus-visible {
+  outline: 2px solid #7f9f87;
+  outline-offset: 4px;
+}
+
+@media screen and (min-width: 769px) {
+  .page-resume .cv-section {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+  }
+}

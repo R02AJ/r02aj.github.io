@@ -1,0 +1,83 @@
+/* About-only typography and the CV-style numbered side headings. */
+.page-about .about-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  padding-block: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(20px, 1.5vw, 22px);
+}
+
+.page-about .about-section-heading {
+  padding: 0;
+  font-size: 0.85em;
+  font-weight: 700;
+  line-height: 1.8;
+  letter-spacing: 2px;
+}
+
+.page-about .about-section-content {
+  min-width: 0;
+}
+
+.page-about .about-section-content,
+.page-about .about-section-content p,
+.page-about .about-section-content ul,
+.page-about .about-section-content li,
+.page-about .about-section-content a {
+  font-size: inherit;
+  line-height: 1.6;
+}
+
+.page-about .about-section-content p {
+  padding: 0;
+}
+
+.page-about .about-section-content p + p {
+  margin-top: 1.5rem;
+}
+
+.page-about .about-section-content .about-research-fields {
+  margin-top: 1.5rem;
+  padding-left: 1.15em;
+  list-style-type: disc;
+}
+
+.page-about .about-research-fields li + li {
+  margin-top: 1.2rem;
+}
+
+.page-about .about-section-content a {
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+.page-about .about-contact {
+  padding-top: 2rem;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.page-about .about-contact .about-links {
+  gap: 0.65rem 1.1rem;
+}
+
+.page-about .about-contact .about-links a {
+  font-size: 16px !important;
+}
+
+.page-about .about-contact-text {
+  margin-top: 1.5rem;
+  font-size: clamp(20px, 1.5vw, 22px);
+  line-height: 1.6;
+}
+
+.page-about .about-body a:focus-visible {
+  outline: 2px solid #c88774;
+  outline-offset: 4px;
+}
+
+@media screen and (min-width: 769px) {
+  .page-about .about-section {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr);
+    column-gap: clamp(1.5rem, 3vw, 3rem);
+  }
+}

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="CV downloads and selected evidence.">
+  <meta name="description" content="Education, quantitative research and trading experience, publications, and skills of Robert Jenkinson Álvarez.">
   <meta name="robots" content="all">
   <title>Curriculum Vitae | Robert Jenkinson Alvarez</title>
   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
@@ -13,6 +13,7 @@
 
   <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/robert-clarity.css">
   <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/old-astro-hamjepa-diagrams.css">
+  <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/cv.css?v=20261009-cv2">
   
   
 <!-- Google tag (gtag.js) -->
@@ -59,26 +60,132 @@
     <div class="container" id="first-content">
       <div class="page-title">
         <h1 class="title">Curriculum Vitae</h1>
-        <p>CV downloads, education, and selected evidence.</p>
+        <p>Education, quantitative research and trading experience, publications, and skills.</p>
         <p class="page-actions">
           <a href="assets/files/robert-jenkinson-alvarez-quant-cv.pdf" class="button icon" target="_blank" rel="noreferrer noopener">Quant CV <i class="fa-regular fa-file-pdf"></i></a>
           <a href="assets/files/robert-jenkinson-alvarez-research-cv.pdf" class="button icon" target="_blank" rel="noreferrer noopener">Research CV <i class="fa-regular fa-file-pdf"></i></a>
         </p>
       </div>
     </div>
-    <div class="container blog main first">
-      <div class="about-container cv-section">
-        <div class="about-intro"><p>EDUCATION</p></div>
-        <div class="about-content cv-education">
-          <p><b>MSc Financial Mathematics (Distinction)</b><br>London School of Economics and Political Science<br>2023–2024</p>
-          <p><b>BSc Mathematics (First-Class Honours)</b><br>University of Bath<br>2020–2023</p>
-        </div>
+    <main class="cv-body" aria-label="Curriculum vitae">
+      <div class="container blog first">
+        <section class="cv-section" aria-labelledby="cv-education-heading">
+          <h2 class="cv-section-heading" id="cv-education-heading">Education</h2>
+          <div class="cv-section-content">
+            <article class="cv-entry">
+              <h3>MSc Financial Mathematics (Distinction)</h3>
+              <p class="cv-institution">London School of Economics and Political Science (LSE)</p>
+              <p class="cv-date">Sep 2023 – Jul 2024</p>
+              <ul class="cv-details">
+                <li>Black-Scholes; Interest Rate/Credit Risk-Hull-White/Vasicek/HJM; Stochastic Processes-Ito; Fixed Income; Portfolio Management.</li>
+                <li>Algathon (Top 2): Built LSTM on BTC/ETH returns with unconventional sentiment data: 1.2 OOS Sharpe, 54% directional accuracy.</li>
+                <li>Analysed CRSP, TRACE/FISD and OptionMetrics across equities, credit and derivatives; yield-curve calibration and option hedging.</li>
+                <li>Finite-difference PDE solvers, variance-reduced Monte Carlo and Euler SDE simulation, analysing stability and convergence.</li>
+              </ul>
+            </article>
+            <article class="cv-entry">
+              <h3>BSc Mathematics (First-Class Honours)</h3>
+              <p class="cv-institution">University of Bath</p>
+              <p class="cv-date">Sep 2020 – Jul 2023</p>
+              <ul class="cv-details">
+                <li>Markov Processes; Martingales; Stochastic Systems; Discrete Probability; Machine Learning; Measure Theory; Statistics, Advanced Real/Complex Analysis; Algebra; ODEs/Control Theory; PDEs/Vector Calculus; Numerical Analysis (97%).</li>
+              </ul>
+            </article>
+          </div>
+        </section>
       </div>
-    </div>
-    <div class="container blog main gray">
-      <h1>Selected evidence</h1>
-      <div class="mini-grid"><article class='mini-panel'><h3>HamJEPA</h3><p>A JEPA variant that predicts between views by rolling a q,p state through a symplectic Hamiltonian map instead of forcing the latent cloud toward an isotropic Gaussian.</p></article><article class='mini-panel'><h3>Arbitrage-free option surfaces</h3><p>Fits forward-discounted call prices with Chebyshev tensors and sparse no-arbitrage operators; local fog handles inconsistent quote patches.</p></article><article class='mini-panel'><h3>Geometric stochastic modelling</h3><p>A joint spot–curve–surface model where no-arbitrage and transport structure are built into the state update, not checked after calibration.</p></article><article class='mini-panel'><h3>Optiver / market making</h3><p>Quant trading and market-making training focused on options quoting, inventory risk, hedge execution, and latency-aware decisions under live exchange simulation.</p></article></div>
-    </div>
+      <div class="container blog gray">
+        <section class="cv-section" aria-labelledby="cv-experience-heading">
+          <h2 class="cv-section-heading" id="cv-experience-heading">Quantitative research &amp; trading experience</h2>
+          <div class="cv-section-content">
+            <article class="cv-entry">
+              <h3>Quantitative Researcher</h3>
+              <p class="cv-date">Sep 2024 – Present</p>
+              <section class="cv-project" aria-labelledby="cv-alpha-heading">
+                <h4 id="cv-alpha-heading"><a href="research/hamiltonian-alpha.html">Cross-Asset Hamiltonian Alpha Engine</a></h4>
+                <ul class="cv-details">
+                  <li>Discovered incremental cross-asset volatility signal beyond model-free implied variance, forecasting 20-day relative realised variance with 0.232 locked-test rank IC, date clustered t=4.40 and positive coefficients in 13/13 asset/month omission tests.</li>
+                  <li>Transformed option markets into arbitrage-consistent density, calendar and momentum states, achieving maximal primal/dual feasibility errors of 8.9×10<sup>−7</sup>/2.1×10<sup>−13</sup>, 100% projection convergence and 100% sigma-estimator completion.</li>
+                  <li>Designed a stochastic Port-Hamiltonian JEPA capturing non-linear surface dynamics beyond damped mechanics, attaining 0.365 out-of-sample relative-state innovation R<sup>2</sup> and 0.251 aggregate innovation R<sup>2</sup> against the train-fitted baseline at 40 observations.</li>
+                </ul>
+              </section>
+              <section class="cv-project" aria-labelledby="cv-surface-heading">
+                <h4 id="cv-surface-heading"><a href="research/chebyshev-surface-engine.html">Chebyshev Global Options Surface Engine</a></h4>
+                <ul class="cv-details">
+                  <li>Architected a global martingale-density/calendar-flow engine with a surface enforcing density positivity, unit mass/mean, strike convexity and calendar monotonicity with 99.77-100% inside-spread coverage and 0 static-arbitrage violations on 720x61 grids.</li>
+                  <li>Outperformed independent SANOS on 100% of 272 material-stability comparisons, reducing gamma-curvature q95 by 87.5%, gamma finite-difference sensitivity by 81.1%, local-variance strike roughness by 82.7% and calendar-curvature RMS by 46.7%.</li>
+                  <li>Compiled the certified global surface into analytic Chebyshev price/Greek caches, accelerating price-plus-Greeks evaluation by 11.1-14.4x, decreasing model size by 58-83% and cutting local-variance invalid-domain mass by 98.8-99.4% versus SANOS.</li>
+                </ul>
+              </section>
+            </article>
+            <article class="cv-entry">
+              <h3>Machine Learning Researcher, NeurIPS 2026</h3>
+              <p class="cv-date">Oct 2025 – Present</p>
+              <ul class="cv-details">
+                <li>Developed <a href="research/hamjepa.html">HamJEPA</a> <a href="#cv-publication-1" aria-label="Publication 1">[1]</a>, a phase-space JEPA with symplectic leapfrog/non-isotropic priors, deriving an optimal prior and isotropy bound, beating LeJEPA/SIGReg linear-probe/kNN-20 by 10.6/6.5 (80 ep.) on CIFAR-100 and 7.52/4.82 (45 ep.) on ImageNet-100.</li>
+                <li>Proved state-dimension and finite-bit lower bounds for cumulative learning, quantifying information beyond predictions <a href="#cv-publication-2" aria-label="Publication 2">[2]</a>.</li>
+              </ul>
+            </article>
+            <article class="cv-entry">
+              <h3>Optiver</h3>
+              <p class="cv-role">Derivatives Quant Trading &amp; Market Making Trainee</p>
+              <p class="cv-date">Oct 2023 – Nov 2023</p>
+              <ul class="cv-details">
+                <li>Developed Black-Scholes options market-making algorithms, adapting bid-ask spreads to liquidity and order-book depth, reducing daily PnL variance by 30% and 95% VaR by 25% via delta-hedging and gamma rebalancing (IOC orders).</li>
+                <li>Improved order placement latency by 40% with a priority queue architecture, using real-time Greeks caching for high-frequency updates and pruning low-liquidity strike/expiry pairs in a 3-person team on Optibook’s live simulated exchange.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+      </div>
+      <div class="container blog">
+        <section class="cv-section" aria-labelledby="cv-publications-heading">
+          <h2 class="cv-section-heading" id="cv-publications-heading">Selected publications and manuscripts</h2>
+          <div class="cv-section-content">
+            <ol class="cv-publications">
+              <li class="cv-entry" id="cv-publication-1">
+                <h3><a href="research/hamjepa.html">Beyond Isotropy in JEPAs: Hamiltonian Embeddings and Symplectic Prediction</a></h3>
+                <p>NeurIPS 2026: main-track accept – Poster.</p>
+              </li>
+              <li class="cv-entry" id="cv-publication-2">
+                <h3><a href="research/prediction-memory.html">Prediction is not a Sufficient Memory State</a></h3>
+                <p>ICLR 2027 – Under Review.</p>
+              </li>
+              <li class="cv-entry" id="cv-publication-3">
+                <h3><a href="research/self-minkowski-rigidity.html">Variational rigidity for alternating symplectic billiards</a></h3>
+                <p>Submitted to Annals of Mathematics, 2026.</p>
+                <p>Resolved an open billiard problem, proving integrability forces an inner-product ellipse without reversibility or finite symmetry.</p>
+              </li>
+              <li class="cv-entry" id="cv-publication-4">
+                <h3><a href="research/foliation-rigidity-1d.html">Rational-slope rigidity with identity holonomy through finite-amplitude resonant cells</a></h3>
+                <p>Submitted to ETDS, 2026.</p>
+                <p>Established one-dimensional rigidity under identity holonomy via finite-amplitude classification of resonant variational cells.</p>
+              </li>
+              <li class="cv-entry" id="cv-publication-5">
+                <h3><a href="research/minimizing-foliations-common-volume.html">Minimizing foliations: counterexamples and common-volume rigidity</a></h3>
+                <p>Submitted to Annals of Mathematics, 2026.</p>
+                <p>Answered the higher-dimensional question negatively and derived an exact rigidity criterion under common invariant volume.</p>
+              </li>
+              <li class="cv-entry" id="cv-publication-6">
+                <h3><a href="research/chebyshev-option-surfaces.html">Arbitrage-free option price surfaces via Chebyshev tensor bases and a Hamiltonian fog post-fit</a></h3>
+                <p>arXiv:2512.01967, 2025.</p>
+                <p>Built arbitrage-free surfaces via CVXPY/OSQP convex QP, achieving &gt;98% inside-spread, &lt;1% no-arb violations with 3D fog noise.</p>
+              </li>
+            </ol>
+          </div>
+        </section>
+      </div>
+      <div class="container blog gray">
+        <section class="cv-section" aria-labelledby="cv-skills-heading">
+          <h2 class="cv-section-heading" id="cv-skills-heading">Skills &amp; interests</h2>
+          <div class="cv-section-content">
+            <p class="cv-skill"><b>Technical Skills:</b> Python (NumPy, Pandas, PyTorch, TensorFlow, SciPy, QuantLib, OSQP), MATLAB, R, SQL, LaTeX.</p>
+            <p class="cv-skill"><b>Communication:</b> Tutored metric spaces &amp; stochastic processes to 5 university students, improving pass rates by 10%.</p>
+            <p class="cv-skill"><b>Languages / Interests:</b> Native Spanish &amp; English (CPE C2). Piano (ABRSM Grade 8), Giveaway chess (2220 Elo, top 100 worldwide).</p>
+          </div>
+        </section>
+      </div>
+    </main>
     
   
     <footer>

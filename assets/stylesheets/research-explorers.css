@@ -1,0 +1,17 @@
+/* These rules belong only to the new project explorers, never the legacy pages. */
+.rx-lab { margin: 1.8rem 0 1rem; border: 1px solid #dce2df; background: #f6f7f5; overflow: hidden; }
+.rx-canvas { position: relative; width: 100%; aspect-ratio: 8 / 5; background: #10252c; }
+.rx-canvas--short { aspect-ratio: 8 / 3; }
+.rx-canvas canvas { display: block; width: 100%; height: 100%; }
+.rx-controls { padding: 1.1rem 1.3rem .6rem; }
+.rx-controls label { display: flex; justify-content: space-between; gap: 1rem; font: 500 13px/1.5 'Poppins',sans-serif; color: #364b4d; }
+.rx-controls output { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.rx-controls input[type=range] { display: block; width: 100%; height: 28px; margin: .5rem 0 .7rem; accent-color: #387e7c; cursor: pointer; }
+.rx-buttons { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .9rem; }
+.rx-buttons button { border: 1px solid #b9cdca; background: transparent; color: #365452; border-radius: 3px; padding: .5rem .8rem; min-height: 40px; cursor: pointer; font: 500 12px/1.3 'Poppins',sans-serif; }
+.rx-buttons button[aria-pressed=true] { background: #244c50; color: white; border-color: #244c50; }
+.rx-buttons button:hover { border-color: #244c50; }
+.rx-controls :focus-visible { outline: 2px solid #b37635; outline-offset: 4px; }
+.prose-panel .rx-status { min-height: 4.5em; padding: 0; margin: .5rem 0; font-size: 13px; line-height: 1.5; color: #526565; }
+.continuous-project-content .research-equation { overflow-x: auto; }
+@media (max-width: 600px) { .rx-canvas { aspect-ratio: 1 / 1; } .rx-canvas--short { aspect-ratio: 5 / 3; } .rx-controls { padding: .9rem; } .prose-panel .rx-status { min-height: 6em; } }

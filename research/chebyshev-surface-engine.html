@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="We fit option quotes as a globally coupled surface across strike and maturity. Strike convexity and moment consistency are enforced through a constrained risk-neutral density, while a certified calendar-flow field couples maturities. The surface is fitted within the bid-ask spreads, using the flexibility that they provide to obtain smoother and more stable prices, derivatives and Greeks. Once the surface is fitted and certified, we convert it exactly into local Chebyshev tensors enabling faster price-plus-Greeks queries and smaller stored artifacts. [1,5]">
+  <meta name="robots" content="all">
+  <title>Production Option-Surface Engine | Robert Jenkinson Alvarez</title>
+  <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/main_free.css">
+  <link href="../assets/fontawesome-free-7.2.0-web/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/Web_assets/paper-kinetic-visual.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/robert-clarity.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/old-astro-hamjepa-diagrams.css">
+  <link rel="stylesheet" type="text/css" media="all" href="../assets/stylesheets/research-programmes.css?v=20261009-rounded1">
+  <link rel="stylesheet" href="../assets/stylesheets/research-explorers.css?v=20261009">
+  <link rel="stylesheet" href="../assets/stylesheets/research-summaries.css?v=20261009">
+  <link rel="stylesheet" href="../assets/stylesheets/research-header-themes.css?v=20261009-colours1">
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({jax:["input/TeX","output/SVG"],extensions:["tex2jax.js"],TeX:{extensions:["AMSmath.js","AMSsymbols.js"],Macros:{"R":"\\mathbb{R}","Q":"\\mathbb{Q}","Z":"\\mathbb{Z}","T":"\\mathbb{T}","E":"\\mathbb{E}","Id":"\\mathrm{Id}","dd":"\\,\\mathrm{d}","diff":"\\,\\mathrm{d}","HH":"\\mathsf{H}","Ball":"\\mathbb{B}^2","Sym":"\\operatorname{Sym}","Span":"\\operatorname{span}","argmin":"\\operatorname*{arg\\,min}","diver":"\\operatorname{div}","supp":"\\operatorname{supp}","osc":"\\operatorname{osc}","diam":"\\operatorname{diam}","norm":["\\left\\lVert#1\\right\\rVert",1]}},SVG:{scale:95,font:"TeX",linebreaks:{automatic:true}},tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]],processEscapes:true}});
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_SVG"></script>
+</head>
+<body class="page-research" data-research-header="production-surface" style="--nav-dot-color: #8aa6cf;">
+  <div class="nav-bar">
+    <div class="nav-container-small container"><a class="mobile-brand" href="../index.html" aria-label="Home">Robert Jenkinson Álvarez</a><button class="menu-bar mobile-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-mobile-menu"><span class="menu-default" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false"><path d="M18 32H82"></path><path d="M18 50H82"></path><path d="M18 68H82"></path></svg></span></button></div>
+    <div class="nav-container container" id="site-mobile-menu">
+      <nav class="menu" aria-label="Primary navigation"><a href="../index.html" data-dot-color="#f59e0b">Home</a><a class="active" href="../research.html" data-dot-color="#8aa6cf">Research</a><a href="../resume.html" data-dot-color="#7f9f87">CV</a><a href="../about.html" data-dot-color="#c88774">About</a><span class="menu-dot" aria-hidden="true"></span></nav>
+      <div class="social" aria-label="Social links"><span class="icon"><a href="https://github.com/R02AJ" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a></span><span class="icon"><a href="https://www.linkedin.com/in/robert-jenkinson-álvarez-9707a9224" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a></span></div>
+    </div>
+  </div>
+
+  <div class="container blog project-hero--hamjepa" id="first-content">
+    <div class="blog-title">
+      <div class="blog-intro">
+        <div>
+          <h1 class="title">Production Option-Surface Engine</h1>
+          <p class="author">by Robert Jenkinson Álvarez</p>
+          <p class="abstract">We construct a globally coupled option-price surface by calibrating a risk-neutral density subject to no-arbitrage constraints across strikes and maturities. The calibration uses the flexibility to obtain smoother prices and more stable Greeks. The certified surface is then converted exactly into local Chebyshev tensors for fast pricing and analytic derivatives.</p>
+        </div>
+        <div class="info"><p>Quantitative finance</p></div>
+      </div>
+      <div class="blog-cover"><div id="chebyshev-surface-engine-hero" class="paper-kinetic-slot paper-kinetic-slot--hero research-hero-slot" data-research-project-visual="chebyshev-production" data-paper-fit="hero"></div></div>
+    </div>
+  </div>
+
+  <section class="container blog main prose-panel continuous-project-content">
+<p class="caption">Downloadable summary PDF: <a href="../assets/files/summary_production_surface.pdf" target="_blank" rel="noreferrer noopener">open PDF</a>.</p>
+<div class="verbatim-summary" data-summary-source="production-surface">
+<div class="panel"><p>We fit option quotes as a globally coupled surface across strike and maturity. Strike convexity and moment consistency are enforced through a constrained risk-neutral density, while a certified calendar-flow field couples maturities. The surface is fitted within the bid-ask spreads, using the flexibility that they provide to obtain smoother and more stable prices, derivatives and Greeks. Once the surface is fitted and certified, we convert it exactly into local Chebyshev tensors enabling faster price-plus-Greeks queries and smaller stored artifacts.<sup>[1,5]</sup></p></div><h2 class="unnumbered" id="selected-surface-stability-results-versus-sanos2">Selected surface-stability results versus SANOS<sup>[2]</sup></h2><div class="summary-table-scroll"><table><thead><tr class="header"><th style="text-align: left;"><strong>Diagnostic</strong></th><th style="text-align: left;"><strong><strong>Mean reduction</strong></strong></th><th style="text-align: left;"><strong><strong>Smallest reduction</strong></strong></th></tr></thead><tbody><tr class="odd"><td style="text-align: left;">Gamma-curvature q95</td><td style="text-align: left;"><strong>87.5%</strong></td><td style="text-align: left;">79.6%</td></tr><tr class="even"><td style="text-align: left;">Local-variance strike-slope RMS</td><td style="text-align: left;"><strong>82.7%</strong></td><td style="text-align: left;">58.1%</td></tr><tr class="odd"><td style="text-align: left;">Gamma finite-difference sensitivity RMS</td><td style="text-align: left;"><strong>81.1%</strong></td><td style="text-align: left;">78.0%</td></tr><tr class="even"><td style="text-align: left;">Short-maturity gamma-curvature RMS</td><td style="text-align: left;"><strong>81.0%</strong></td><td style="text-align: left;">79.1%</td></tr><tr class="odd"><td style="text-align: left;">Calendar bounded variation, total</td><td style="text-align: left;"><strong>73.7%</strong></td><td style="text-align: left;">49.3%</td></tr><tr class="even"><td style="text-align: left;">Calendar-curvature RMS</td><td style="text-align: left;"><strong>46.7%</strong></td><td style="text-align: left;">22.8%</td></tr></tbody></table></div><div class="panel"><p><strong>Reference surface panel<sup>[1,2]</sup></strong></p><p><strong>272/272</strong> Material stability wins 34 diagnostics <span class="math inline">\(\times\)</span> 8 fits</p><p><strong>99.77–100%</strong> Inside-spread quote coverage</p><p><strong>0</strong> Sampled arbitrage violations Audits up to <span class="math inline">\(721\times61\)</span></p></div><p><em>Reductions use matched engine/SANOS diagnostic ratios across eight fits. The last column is the least improvement across those fits. RMS measures quadratic magnitude; q95 is the 95th percentile of absolute diagnostic magnitude.</em> <em>Four snapshots, each fitted twice from raw quotes; SANOS fitted separately. The remaining 16 comparisons were numerical ties.</em></p><h2 id="risk-neutral-density-and-no-arbitrage">Risk-Neutral Density and No-Arbitrage</h2><p>We first model the risk-neutral density of the underlying asset jointly across strikes and maturities. We calibrate this density so that the implied option prices are consistent with the market quotes.</p><p>Let <span class="math inline">\(F(\tau)\)</span> denote the forward price at maturity time <span class="math inline">\(\tau\)</span>. We work with the forward-normalised underlying <span class="math inline">\(X_\tau=S_{t+\tau}/F(\tau)\)</span> and define its risk-neutral density <span class="math inline">\(\rho(x,\tau)\)</span>. For every maturity <span class="math inline">\(\tau\)</span> we impose <span class="math display">\[\boxed{
+\begin{aligned}
+\rho(x,\tau) &amp;\geq 0,\\
+\int_0^\infty \rho(x,\tau)\,dx &amp;= 1,\\
+\int_0^\infty x\rho(x,\tau)\,dx &amp;= 1.
+\end{aligned}
+}\]</span></p><p>These three conditions guarantee nonnegative probability density, unit probability mass and consistency with the forward price.</p><p>The corresponding normalised call-price surface is obtained by integrating the option payoff against the density: <span class="math display">\[\begin{gathered}
+c(k,\tau)
+=
+\int_k^\infty (x-k)\rho(x,\tau)\,dx,
+\\[2pt]
+ k=\frac{K}{F(\tau)}.
+\end{gathered}\]</span> If we differentiate with respect to strike we have <span class="math display">\[\begin{aligned}
+\frac{\partial c}{\partial k}
+&amp;=
+-\int_k^\infty \rho(x,\tau)\,dx,\\[4pt]
+\frac{\partial^2 c}{\partial k^2}
+&amp;=
+\rho(k,\tau)\geq 0.
+\end{aligned}\]</span></p><p>Therefore, strike monotonicity and convexity follow directly from the density representation. A difficulty we encountered in the research surface fitter (arXiv:2512.01967) was that when directly fitting option prices, small oscillations were amplified by second differentiation, producing negative curvature and convexity violations. By fitting the nonnegative risk-neutral density instead, strike convexity follows directly from the representation.</p><p>The density is calibrated through the option prices, subject to the observed bid–ask intervals and the structural constraints above.</p><h2 id="global-calibration-and-stability">Global Calibration and Stability</h2><p>The risk-neutral densities are calibrated jointly across strike and maturity which produce a single globally coupled option-price surface. In addition to these risk-neutral density constraints, we impose a nonnegative calendar-flow condition in the chosen forward-normalised coordinates: <span class="math display">\[g(k,\tau)
+=
+\frac{\partial c(k,\tau)}{\partial \tau}
+\geq 0.\]</span></p><p>The calendar-flow field is certified across the continuous fitted domain, ensuring consistent maturity behaviour between observed expiries.</p><p>The surface is fitted by optimising for smoother prices and more stable Greeks, subject to the protected bid–ask spreads. Necessary quote releases are explicitly recorded. The calibration balances quote agreement with regularity in strike and maturity, including the behaviour of gamma, calendar derivatives and local variance.</p><p>Therefore, the resulting surface combines global maturity consistency, structural no-arbitrage constraints and controlled derivative stability within a single calibration.</p><h2 id="chebyshev-representation-and-production-evaluation">Chebyshev Representation and Production Evaluation</h2><p>Once the global surface has been fitted and certified, we convert its polynomial representation <em>exactly</em> to local Chebyshev tensors. On each polynomial cell, the price surface takes the form <span class="math display">\[c(k,\tau)
+=
+\sum_{i=0}^{N}
+\sum_{j=0}^{M}
+a_{ij}T_i(\xi(k))T_j(\eta(\tau)),\]</span> where <span class="math inline">\(T_i\)</span> denotes the Chebyshev polynomial of degree <span class="math inline">\(i\)</span>, and <span class="math inline">\(\xi,\eta\)</span> are local coordinate transformations.</p><p>This is a change of polynomial basis, we do not fit a new surface fit. The local tensors represent <em>exactly</em> the same globally calibrated surface and retain its prices and derivatives up to floating-point precision.</p><p>Chebyshev recurrence relations and derivative transforms allow prices, delta, gamma and calendar sensitivities to be evaluated analytically, without finite-difference approximations.</p><div class="panel"><p><strong>Evaluation and local-variance results versus SANOS<sup>[3,4]</sup></strong></p><p><strong>11.1–14.4<span class="math inline">\(\times\)</span></strong> Faster price-plus-Greeks queries</p><p><strong>58–83%</strong> Smaller stored artifacts</p><p><strong>98.8–99.4%</strong> Lower weighted local-variance invalidity</p><p><em>Timing: 500 query points, median of seven samples, after cache construction, against the benchmark SANOS implementation. Storage is serialised size, not RAM. Local variance uses weighted union-domain invalidity on four second-iteration snapshots.</em></p></div><h2 id="certification-and-validation">Certification and Validation</h2><p>Before being accepted, each surface must satisfy structural and numerical checks. The structural certificate verifies density positivity, probability mass, forward-moment consistency and nonnegative calendar flow.</p><p>Additional numerical checks then test price bounds, strike monotonicity, convexity and calendar consistency. These checks are repeated on increasingly fine grids to detect violations that may be missed on coarser grids.</p><p>We also evaluate the stability of Greeks and local variance, whose normalised form depends on the ratio <span class="math display">\[\sigma_{\mathrm{loc}}^2(k,\tau)
+\propto
+\frac{\partial_\tau c(k,\tau)}
+{k^2\partial_{kk}c(k,\tau)}.\]</span></p><p>Local-variance smoothness is assessed together with valid-domain coverage, avoiding artificial improvements obtained by excluding difficult regions.</p><p>In a reference campaign, the engine achieved 99.77–100% inside-spread coverage and zero sampled static-arbitrage violations on grids up to <span class="math inline">\(721\times61\)</span>.</p><p>Against independently calibrated SANOS surfaces, the engine won all 272 material stability comparisons, with 16 numerical ties and no losses.</p><h3 id="market-making-and-hedging-evaluation">Market-Making and Hedging Evaluation</h3><p>To evaluate the economic relevance of the surface, we compare its hedging performance against the benchmark SANOS using identical primary options, market observations, hedge instruments and execution assumptions.</p><p>For every primary option, we consider both sides of a customer transaction separately:</p><ul><li><p>Customer buys: the dealer sells at the ask and hedges the resulting short option position.</p></li><li><p>Customer sells: the dealer buys at the bid and hedges the resulting long option position.</p></li></ul><p>We test delta and delta–gamma hedging using the Greeks produced by each surface. For a primary option position <span class="math inline">\(s\in\{-1,+1\}\)</span>, the residual exposures are <span class="math display">\[\label{eq:delta-gamma}
+\begin{aligned}
+\Delta_{\mathrm{net}}
+&amp;=sM_P\Delta_P+h+\sum\nolimits_j n_jM_j\Delta_j,\\
+\Gamma_{\mathrm{net}}
+&amp;=sM_P\Gamma_P+\sum\nolimits_j n_jM_j\Gamma_j,
+\end{aligned}\]</span> <span class="math inline">\(s=-1\)</span> corresponds to the dealer selling an option to a customer at the ask, and <span class="math inline">\(s=+1\)</span> corresponds to buying an option from a customer at the bid.</p><p>Let <span class="math inline">\(M_P\)</span>, <span class="math inline">\(\Delta_P\)</span> and <span class="math inline">\(\Gamma_P\)</span> denote the primary option’s contract multiplier (usually 100 shares), delta and gamma. The initial exposures are therefore <span class="math inline">\(sM_P\Delta_P\)</span> and <span class="math inline">\(sM_P\Gamma_P\)</span>. These differ by surface.</p><p>To hedge the exposures, we construct a portfolio of secondary options indexed by <span class="math inline">\(j\)</span>, where <span class="math inline">\(n_j\)</span> is the number of contracts held, <span class="math inline">\(M_j\)</span> is the contract multiplier, and <span class="math inline">\(\Delta_j\)</span> and <span class="math inline">\(\Gamma_j\)</span> are their respective Greeks. Therefore, the total gamma exposure is <span class="math display">\[\Gamma_{\mathrm{net}}
+=
+sM_P\Gamma_P
++
+\sum\nolimits_j n_jM_j\Gamma_j.\]</span></p><p>We first choose the portfolio of secondary option positions <span class="math inline">\(n_j\)</span> to neutralise gamma exposure to obtain <span class="math inline">\(\Gamma_{\mathrm{net}}=0\)</span>. However, these secondary options also introduce additional delta exposure. Once the gamma hedge has been constructed, the remaining delta is <span class="math display">\[\Delta_{\mathrm{options}}
+=
+sM_P\Delta_P
++
+\sum\nolimits_j n_jM_j\Delta_j.\]</span></p><p>We then hedge this remaining delta using the underlying asset. Let <span class="math inline">\(h\)</span> denote the number of shares held, with positive values representing long positions and negative values representing short positions.</p><p>Delta neutrality is achieved by choosing <span class="math display">\[h
+=
+-sM_P\Delta_P
+-
+\sum\nolimits_j n_jM_j\Delta_j.\]</span></p><p>Since the underlying contributes unit delta and zero gamma, we obtain <a href="#eq:delta-gamma" data-reference-type="ref" data-reference="eq:delta-gamma">[eq:delta-gamma]</a>.</p><p>In practice, transaction costs, liquidity and position limits may prevent exact neutrality. Furthermore, both exposures change as the market evolves, so entry-time neutrality does not eliminate subsequent hedging risk.</p><p>Chebyshev and SANOS calculate their own option Greeks and therefore may produce different hedge quantities for the same primary position. We compare these portfolios under identical market observations, hedging instruments and execution assumptions to assess their realised risk reduction.</p><p>We evaluate the hedges under two different assumptions about how the volatility surface changes as the underlying price moves. Under <em>frozen-normalised dynamics</em>, the volatility smile remains fixed relative to the forward price, while under <em>sticky-cash-strike dynamics</em>, implied volatility remains fixed at each absolute strike. The assumptions produce different delta and gamma estimates and hence different hedges.</p><p>We also test the hedging portfolios against simultaneous changes in the underlying price, volatility and interest rates, while imposing constraints on risk exposure and transaction costs.</p><p>Hedge trades cross the bid–ask spread, with fees, funding and stock-borrow costs recorded in the cash ledger. Positions are evaluated using common market marks rather than model-specific valuations.</p><p>We distinguish three terminal conventions:</p><ul><li><p>Open marking: retain the inventory and mark outstanding positions without forced liquidation.</p></li><li><p>Active liquidation: close positions at the prevailing executable bid or ask.</p></li><li><p>Passive offset: assume a later opposite customer transaction at the later market quote, including the cost of unwinding the hedge.</p></li></ul><p>Hedging performance is measured through RMS error, absolute-error q95, expected shortfall (ES95), maximum residual, execution costs and net P&amp;L.</p><div class="panel"><p><strong>Frozen-normalized delta–gamma hedging<sup>[6]</sup></strong></p><p><strong>4.61%</strong> Lower RMS error</p><p><strong>2.64%</strong> Lower q95</p><p><strong>5.06%</strong> Lower ES95</p><p><em>Protocol-specific hedging-error reductions, reported separately from the surface-stability panel. These are not net trading returns or results for other hedge policies.</em></p></div><p><em><strong>Evidence.</strong> Selected internal historical benchmarks, not a pooled or live track record.</em></p><p><strong>Sources.</strong> [1] <em>Mathematical Model; Executive Summary; Constraint and Certificate System; Projection Pipeline.</em> [2] <em>Full Stability Comparison</em> and metric definitions. [3] <em>Local-Variance Coverage and Stability.</em> [4] <em>Calibration Speed, Query Speed, Memory, and Artifact Size.</em> [5] <em>The Chebyshev Advantage</em> (architecture). [6] Author-supplied frozen-normalized delta–gamma results.</p>
+
+</div>
+<section class="research-explorations"><h2>Saved option surface</h2><div class="saved-surface-viewer" data-saved-surface="../assets/data/option-surface.json"><div class="saved-surface-stage" role="img" aria-label="Interactive saved option price surface"></div><div class="saved-surface-controls"><span>Drag to rotate · Shift-drag to pan · Scroll to zoom</span><div><button type="button" data-surface-spin aria-pressed="true">Pause rotation</button><button type="button" data-surface-reset>Reset view</button></div></div><p class="caption" data-surface-caption>Loading saved surface…</p></div></section>
+<a class="research-back" href="../research.html">← Back to all research</a>
+  </section>
+
+  <footer><div class="container site-footer-inner"><p>© Robert Jenkinson Álvarez. Built on the <a href="https://shikun.io/projects/clarity" target="_blank" rel="noreferrer noopener">Clarity Template</a>, thanks to Shikun Liu.</p><p><a href="mailto:robert.j.jenkinson.alvarez@bath.edu">Email</a> · <a href="https://github.com/R02AJ" target="_blank" rel="noreferrer noopener">GitHub</a> · <a href="https://www.linkedin.com/in/robert-jenkinson-álvarez-9707a9224" target="_blank" rel="noreferrer noopener">LinkedIn</a></p></div></footer>
+  <script src="../assets/scripts/main.js"></script>
+  <script src="../assets/scripts/site.js"></script>
+  <script type="module" src="../assets/scripts/paper-visual-init.js"></script>
+  <script type="module" src="../assets/scripts/research-visual-init.js?v=20261009"></script>
+  <script type="module" src="../assets/scripts/research-explorers.js?v=20261009"></script>
+  <script type="module" src="../assets/scripts/saved-surface-viewer.js?v=20261009"></script>
+</body>
+</html>

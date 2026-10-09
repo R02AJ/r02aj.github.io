@@ -1,0 +1,70 @@
+/* Project-specific header colours only; preserve the native layout and covers. */
+body[data-research-header="alpha"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(64, 166, 159, 0.2), transparent 76%),
+    linear-gradient(135deg, #bfe5e2 0%, #d8eeeb 58%, #edf7f5 100%);
+}
+
+body[data-research-header="production-surface"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(163, 119, 84, 0.24), transparent 76%),
+    linear-gradient(135deg, #dfc7af 0%, #ecddcd 58%, #f6eee5 100%);
+}
+
+body[data-research-header="foliation-1d"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(102, 155, 98, 0.23), transparent 76%),
+    linear-gradient(135deg, #d0e3c8 0%, #e1ecd8 58%, #f0f5eb 100%);
+}
+
+body[data-research-header="foliation-common-volume"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(66, 118, 90, 0.45), transparent 76%),
+    linear-gradient(135deg, #123d32 0%, #245649 58%, #153b32 100%);
+}
+
+body[data-research-header="minkowski"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(57, 116, 164, 0.45), transparent 76%),
+    linear-gradient(135deg, #102b49 0%, #234d70 58%, #142d4b 100%);
+}
+
+body[data-research-header="prediction"] {
+  --research-header-background:
+    radial-gradient(circle at 72% 44%, rgba(179, 64, 68, 0.18), transparent 76%),
+    linear-gradient(135deg, #e6b0ac 0%, #edc4bf 58%, #f7e0d8 100%);
+}
+
+body[data-research-header] div.container.blog#first-content {
+  background: var(--research-header-background);
+}
+
+/* Keep the dark green and blue headers readable, without recolouring the body. */
+body[data-research-header-dark] #first-content .blog-intro :is(h1, p, a, li) {
+  color: #f5f8f5;
+}
+
+body[data-research-header-dark] div.container.blog#first-content div.blog-title .blog-intro .info p {
+  color: #f5f8f5;
+}
+
+body[data-research-header-dark] #first-content .button {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(245, 248, 245, 0.6);
+}
+
+body[data-research-header-dark] #first-content .button:hover,
+body[data-research-header-dark] #first-content .button:focus-visible {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+body[data-research-header-dark] #first-content .metric-row li {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(245, 248, 245, 0.35);
+}
+
+@media screen and (min-width: 770px) {
+  body[data-research-header-dark] .nav-bar .nav-container :is(.menu a, .social a) {
+    color: #f5f8f5;
+  }
+}

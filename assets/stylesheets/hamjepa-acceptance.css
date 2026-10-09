@@ -1,0 +1,29 @@
+.paper-acceptance-pill {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 5;
+  max-width: calc(100% - 24px);
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, .55);
+  border-radius: 999px;
+  color: #284e4c;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+div.container.blog#first-content .blog-intro p.paper-acceptance {
+  margin: 0;
+  padding: 0 0 .6rem;
+  color: #315e5b;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 85%;
+  font-weight: 500;
+  line-height: 1.5;
+}

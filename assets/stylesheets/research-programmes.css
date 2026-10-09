@@ -1,0 +1,263 @@
+/* Scoped additions for the five new research projects.
+   The native research grid, hero, prose and typography remain owned by
+   main_free.css and robert-clarity.css. */
+
+.research-cover-slot,
+.research-hero-slot,
+.research-demo-canvas {
+  position: relative;
+  overflow: hidden;
+  background: #f4f3ef;
+}
+
+.paper-kinetic-slot--card.research-cover-slot {
+  position: absolute;
+  inset: 0;
+}
+
+.research-cover-slot .pkv,
+.research-hero-slot .pkv {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+  border-radius: inherit;
+}
+
+.research-cover-slot .pkv {
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+}
+
+.research-hero-slot {
+  background: transparent;
+  border-radius: 24px;
+}
+
+.continuous-project-content {
+  padding-top: 2.2rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.research-demo {
+  margin: 1.25rem 0 1.75rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(53, 53, 53, 0.18);
+  border-bottom: 1px solid rgba(53, 53, 53, 0.12);
+  background: #f7f7f7;
+}
+
+.research-demo h3 {
+  padding-top: 0;
+}
+
+.research-demo p:last-child {
+  padding-bottom: 0;
+}
+
+.research-demo-canvas {
+  width: 100%;
+  min-height: 280px;
+  margin: 0.9rem 0;
+  aspect-ratio: 16 / 10;
+}
+
+.research-demo-canvas canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.research-cover-fallback {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.85rem;
+  left: 1rem;
+  color: rgba(53, 53, 53, 0.58);
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.research-demo-canvas.is-ready .research-cover-fallback {
+  display: none;
+}
+
+.research-control-row,
+.research-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.65rem 0;
+}
+
+.research-control-row button,
+.research-tabs button,
+.proof-spine button,
+button[data-alpha-gate] {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.72rem;
+  border: 1px solid rgba(53, 53, 53, 0.22);
+  border-radius: 999px;
+  color: #353535;
+  background: rgba(255, 255, 255, 0.82);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.research-control-row button[aria-pressed="true"],
+.research-control-row button[aria-selected="true"],
+.research-tabs button[aria-selected="true"],
+button[data-alpha-gate][aria-pressed="true"] {
+  border-color: rgba(53, 53, 53, 0.72);
+  background: #fff;
+  box-shadow: inset 0 0 0 1px rgba(53, 53, 53, 0.14);
+}
+
+.research-range {
+  display: grid;
+  grid-template-columns: auto minmax(120px, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  margin: 0.8rem 0;
+  color: #555;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.research-range input {
+  width: 100%;
+}
+
+.research-readout {
+  border-top: 1px solid rgba(53, 53, 53, 0.16);
+}
+
+.research-readout-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(53, 53, 53, 0.12);
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.research-readout-row strong {
+  text-align: right;
+}
+
+.proof-spine > div + div {
+  margin-top: 0.5rem;
+}
+
+.proof-spine button {
+  width: 100%;
+  border-radius: 0;
+  text-align: left;
+}
+
+.proof-panel {
+  display: none;
+  padding: 0.75rem 0.85rem 0;
+}
+
+.proof-panel.is-open {
+  display: block;
+}
+
+.research-warning {
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  border-left: 3px solid rgba(53, 53, 53, 0.5);
+  background: #f6f6f6;
+}
+
+.research-equation {
+  overflow-x: auto;
+  padding: 0.55rem 0;
+}
+
+.research-table-wrap {
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.research-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+}
+
+.research-table th,
+.research-table td {
+  padding: 0.5rem 0.6rem;
+  border-top: 1px solid rgba(53, 53, 53, 0.14);
+  text-align: left;
+}
+
+.research-table th {
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+}
+
+.research-back {
+  display: inline-block;
+  margin-top: 1rem;
+  font-family: "Poppins", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.research-back:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.pkv--minkowski::after {
+  border-color: rgba(231, 180, 128, 0.26);
+}
+
+.pkv--attention::after {
+  border-color: rgba(170, 142, 255, 0.24);
+}
+
+.pkv--alpha::after {
+  border-color: rgba(104, 224, 211, 0.22);
+}
+
+.pkv--chebyshev-production::after {
+  border-color: rgba(72, 142, 145, 0.22);
+}
+
+.pkv-fallback--minkowski span,
+.pkv-fallback--attention span,
+.pkv-fallback--alpha span,
+.pkv-fallback--chebyshev-production span {
+  border-color: rgba(130, 190, 210, 0.35);
+}
+
+@media screen and (max-width: 720px) {
+  .continuous-project-content {
+    padding-top: 1.4rem !important;
+  }
+
+  .research-demo-canvas {
+    min-height: 230px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .research-range {
+    grid-template-columns: 1fr;
+  }
+}

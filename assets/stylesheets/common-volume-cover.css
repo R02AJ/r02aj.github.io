@@ -1,0 +1,15 @@
+/* Retain the existing torus animation; colour only the common-volume project.
+   The one-dimensional foliation, HamJEPA and research Chebyshev are unaffected. */
+#common-volume-card-visual .pkv--foliation,
+#minimizing-foliations-common-volume-hero .pkv--foliation {
+  background:
+    radial-gradient(circle at 27% 21%, rgba(71, 143, 151, .24), transparent 32%),
+    radial-gradient(circle at 72% 31%, rgba(94, 77, 139, .23), transparent 34%),
+    radial-gradient(circle at 54% 78%, rgba(53, 102, 114, .17), transparent 38%),
+    linear-gradient(135deg, #0c1c27, #192a35 48%, #211e34) !important;
+}
+
+#common-volume-card-visual .pkv-canvas,
+#minimizing-foliations-common-volume-hero .pkv-canvas {
+  filter: brightness(.68) saturate(1.18);
+}
