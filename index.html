@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" media="all" href="assets/Web_assets/paper-kinetic-visual.css">
   <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/robert-clarity.css">
   <link rel="stylesheet" type="text/css" media="all" href="assets/stylesheets/old-astro-hamjepa-diagrams.css">
+  <link rel="stylesheet" href="assets/stylesheets/home-evidence.css?v=20261010-evidence2">
   
   
 <!-- Google tag (gtag.js) -->
@@ -60,7 +61,6 @@
       <div class="home-container">
         <div class="home-intro">
           <h1 class="title">Robert Jenkinson Álvarez</h1>
-          <p>Researcher</p>
           <p><em>Investigating how geometry can reshape the way we think about different problems.<br>Working across machine learning, quantitative finance, and pure mathematics.</em></p>
           <div class="home-actions">
             <a href="research.html" class="button icon">Research <i class="fa-solid fa-arrow-right"></i></a>
@@ -73,6 +73,39 @@
         </div>
       </div>
     </div>
+
+    <section class="container home-evidence" aria-labelledby="selected-evidence">
+      <h2 id="selected-evidence">Selected Evidence</h2>
+      <div class="home-evidence-grid">
+        <a class="home-evidence-card home-evidence-card--alpha" href="research/hamiltonian-alpha.html" aria-labelledby="home-alpha-title" aria-describedby="home-alpha-description">
+          <h3 id="home-alpha-title">Hamiltonian Alpha Engine</h3>
+          <div class="home-evidence-body">
+            <p id="home-alpha-description">Structured market dynamics for options research, connecting geometric forecasts to portfolio outcomes under costs, risk and causal evaluation.</p>
+            <div id="home-alpha-visual" class="paper-kinetic-slot home-evidence-visual" data-research-project-visual="alpha" aria-hidden="true"></div>
+          </div>
+          <span class="home-evidence-link">View project <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="home-evidence-card home-evidence-card--surface" href="research/chebyshev-surface-engine.html" aria-labelledby="home-surface-title" aria-describedby="home-surface-description">
+          <h3 id="home-surface-title">Production Option-Surface Engine</h3>
+          <div class="home-evidence-body">
+            <p id="home-surface-description">A production-oriented option-surface system with a coherent price representation, analytic sensitivities and reproducible numerical validation.</p>
+            <div id="home-surface-visual" class="paper-kinetic-slot home-evidence-visual" data-research-project-visual="chebyshev-production" aria-hidden="true"></div>
+          </div>
+          <span class="home-evidence-link">View project <span aria-hidden="true">→</span></span>
+        </a>
+        <a class="home-evidence-card home-evidence-card--hamjepa" href="research/hamjepa.html" aria-labelledby="home-hamjepa-title" aria-describedby="home-hamjepa-acceptance home-hamjepa-description">
+          <div class="home-evidence-heading">
+            <h3 id="home-hamjepa-title">Beyond Isotropy in JEPAs: HamJEPA</h3>
+            <span id="home-hamjepa-acceptance" class="home-evidence-acceptance">Accepted to NeurIPS 2026 Main Track–Poster</span>
+          </div>
+          <div class="home-evidence-body">
+            <p id="home-hamjepa-description">JEPAs usually target an isotropic latent cloud; HamJEPA instead predicts between views with a symplectic map on phase space.</p>
+            <div id="home-hamjepa-visual" class="paper-kinetic-slot home-evidence-visual" data-paper-visual="hamjepa" aria-hidden="true"></div>
+          </div>
+          <span class="home-evidence-link">View project <span aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </section>
     
   
     <footer>
@@ -86,5 +119,6 @@
   <script src="assets/scripts/main.js"></script>
   <script src="assets/scripts/site.js"></script>
   <script type="module" src="assets/scripts/paper-visual-init.js"></script>
+  <script type="module" src="assets/scripts/research-visual-init.js?v=20261009"></script>
 </body>
 </html>
