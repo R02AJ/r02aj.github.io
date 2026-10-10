@@ -13,6 +13,11 @@
 }
 
 @media (min-width: 769px) {
+  .page-home div.home-container {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    column-gap: clamp(3rem, 6vw, 7rem);
+  }
+
   /* Only the intro sets the row height; the torus follows it instead of expanding it. */
   .page-home div.home-container .home-profile {
     position: relative;

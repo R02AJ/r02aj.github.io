@@ -1,4 +1,17 @@
 /* About-only typography and the CV-style numbered side headings. */
+.page-about #first-content .page-title,
+.page-about #first-content .page-title h1 {
+  padding-bottom: 0;
+}
+
+.page-about .about-body div.container.blog.first {
+  margin-top: 0;
+}
+
+.page-about .about-body .blog.first .about-section {
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+}
+
 .page-about .about-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
